@@ -16,6 +16,10 @@ public class Animation {
     ArrayList<Track> tracks;
     Track currentTrack;
     
+    /**
+     * Create a new Animation object with the given tracks.
+     * @param tracks The initial tracks in this Animation object.
+     */
     public Animation(ArrayList<Track> tracks) {
         this.tracks = tracks;
     }
@@ -39,5 +43,12 @@ public class Animation {
         return tracks.indexOf(t);
     }
     
-
+    /**
+     * Set the current track to be updated in this Animation object.
+     * @param index The index of the track to be set to in this 
+     * Animation object.
+     */
+    public void setTrack(int index) {
+        currentTrack = tracks.get(index);
+    }
 }
