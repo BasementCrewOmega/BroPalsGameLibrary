@@ -6,7 +6,9 @@ package bropals.lib.simplegame.test;
 
 import bropals.lib.simplegame.*;
 import bropals.lib.simplegame.io.PropertiesReader;
+import bropals.lib.simplegame.logger.ErrorLogger;
 import bropals.lib.simplegame.logger.InfoLogger;
+import bropals.lib.simplegame.networking.Server;
 import bropals.lib.simplegame.state.util.AssetBank;
 import bropals.lib.simplegame.state.util.AssetLoader;
 import java.io.File;
@@ -19,16 +21,14 @@ import java.io.IOException;
 public class TesterClass {
 
     public static void main(String[] args) {
-        /* Testing sound */
-        AssetLoader al = new AssetLoader();
-        AssetBank bank = new AssetBank();
+        //Test the server
         try {
-            al.loadSoundEffect("test_files/sound.wav", "testSound", bank);
-        } catch (Exception e) {
-            InfoLogger.println(e);
+            Server server = new Server(17373, new TestServerMessageHandler());
+            server.startServer();
+        } catch(IOException e) {
+            ErrorLogger.println("Error while making server: " + e);
         }
-        bank.getSoundEffect("testSound").play();
-
+        /* 
         // make a window
         GameWindow window = new GameWindow("Super cool", 500, 350);
 
@@ -38,5 +38,6 @@ public class TesterClass {
 
         // begin looping the game!
         runner.loop();
+        */
     }
 }
