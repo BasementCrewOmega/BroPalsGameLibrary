@@ -21,6 +21,7 @@ public class TesterClassClient {
         try {
             Client client = new Client(InetAddress.getByName("192.168.1.74"), 17373, new TestClientMessageHandler());
             client.listenToServer();
+            client.sendMessageToServer("Message");
         } catch (IOException e) {
             ErrorLogger.println("Error while making server: " + e);
         }

@@ -5,6 +5,7 @@
  */
 package bropals.lib.simplegame.test;
 
+import bropals.lib.simplegame.logger.InfoLogger;
 import bropals.lib.simplegame.networking.ClientHandler;
 import bropals.lib.simplegame.networking.Server;
 import bropals.lib.simplegame.networking.ServerMessageHandler;
@@ -17,7 +18,7 @@ public class TestServerMessageHandler implements ServerMessageHandler {
 
     @Override
     public void handleMessage(Server server, ClientHandler handler, String message) {
-        
+        InfoLogger.println(message);
     }
     
 }
