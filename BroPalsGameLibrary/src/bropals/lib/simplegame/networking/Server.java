@@ -89,5 +89,6 @@ public class Server {
 
     public void disconnect(ClientHandler handler) {
         clientHandlers.remove(handler);
+        InfoLogger.println("Server now has " + clientHandlers.size() + " clients");
     }
 }
