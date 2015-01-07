@@ -6,6 +6,7 @@ package bropals.lib.simplegame.test;
 
 import bropals.lib.simplegame.entity.GameWorld;
 import bropals.lib.simplegame.entity.block.BlockEntity;
+import bropals.lib.simplegame.entity.block.VertexShape;
 import bropals.lib.simplegame.state.GameState;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -18,13 +19,14 @@ import java.awt.event.MouseEvent;
  */
 public class TestState extends GameState {
 
-    GameWorld<BlockEntity> world;
+    GameWorld<VertexShape> world;
     BlockEntity playerBlock;
     int x;
     boolean left, right, up;
     
     @Override
     public void update() {
+        /*
         if (left && !right) {
             playerBlock.getVelocity().setX(-5);
         } else if (right && !left) {
@@ -32,6 +34,7 @@ public class TestState extends GameState {
         } else if (!right && !left) {
             playerBlock.getVelocity().setX(0);
         }
+        */
         
         world.updateEntities();
     }
@@ -44,25 +47,19 @@ public class TestState extends GameState {
                 (int)getWindow().getHeight());
         
         g2.setColor(Color.BLACK);
-        for (BlockEntity be : world.getEntities()) {
-            g2.fillRect((int)be.getX(),
-                    (int)be.getY(),
-                    (int)be.getWidth(),
-                    (int)be.getHeight());
+        for (VertexShape vs : world.getEntities()) {
+            vs.render(graphicsObj);
         }
     }
     
     @Override
     public void onEnter() {
         world = new GameWorld<>();
-        playerBlock = new BlockEntity(world, 150, 50, 20, 20, false);
-        world.addEntity(new BlockEntity(world, 100, 200, 200, 30, true));
-        world.addEntity(playerBlock);
-        
-        // gravity!
-        for (BlockEntity be : world.getEntities()) {
-            be.getAcceleration().setValues(0, 1);
-        }
+       
+        world.addEntity(new VertexShape(world, 
+            new float[]{40, 50, 
+                        120, 50, 
+                        85, 110}));
     }
 
     @Override
