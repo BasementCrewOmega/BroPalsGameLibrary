@@ -5,6 +5,7 @@
 package bropals.lib.simplegame.state;
 
 import bropals.lib.simplegame.GameWindow;
+import bropals.lib.simplegame.state.util.AssetBank;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 
@@ -19,18 +20,50 @@ import java.awt.event.MouseListener;
 public abstract class GameState implements KeyListener, MouseListener {
     
     /**
-     * A reference to the Window being used by the GameRunner running
+     * A reference to the Window being used by the GameStateRunner running
      * this game state.
      */
     private GameWindow window;
+    /**
+     * A reference to the AssetBank in the GameStateRunner running
+     * this game state.
+     */
+    private AssetBank assetBank;
     
+    /**
+     * For internal use.
+     */
     public void setWindow(GameWindow window) {
         this.window = window;
     }
     
+    /**
+     * Returns a reference to the GameWindow used by the GameStateRunner 
+     * that is running this GameState.
+     * @return a reference to the GameWindow used by the GameStateRunner 
+     * that is running this GameState.
+     */
     public GameWindow getWindow() {
         return window;
     }
+    
+    /**
+     * For internal use.
+     */
+    public void setAssetBank(AssetBank bank) {
+        assetBank = bank;
+    }
+    
+    /**
+     * Returns a reference to the AssetBank used by the GameStateRunner 
+     * that is running this GameState.
+     * @return a reference to the AssetBank used by the GameStateRunner 
+     * that is running this GameState.
+     */
+    public AssetBank getAssetBank() {
+        return assetBank;
+    }
+    
     /**
      * Update this game state.
      */

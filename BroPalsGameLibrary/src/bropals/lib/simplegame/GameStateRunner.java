@@ -5,6 +5,7 @@
 package bropals.lib.simplegame;
 
 import bropals.lib.simplegame.state.GameState;
+import bropals.lib.simplegame.state.util.AssetBank;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -19,6 +20,7 @@ import java.awt.image.BufferStrategy;
  */
 public class GameStateRunner implements KeyListener, MouseListener {
     
+    private AssetBank assetBank;
     private GameState currentState;
     private GameWindow currentWindow;
     private long startTime, diff;
@@ -35,6 +37,7 @@ public class GameStateRunner implements KeyListener, MouseListener {
         currentWindow = window;
         currentWindow.getCanvas().addKeyListener(this);
         currentWindow.getCanvas().addMouseListener(this);
+        assetBank = new AssetBank();
     }
     
     /**
@@ -47,6 +50,10 @@ public class GameStateRunner implements KeyListener, MouseListener {
         setState(initialState);
     }
     
+    /**
+     * Set how  many frames per second this GameStateRunner runs at.
+     * @param fps How many frames per second this GameStateRunner will run at.
+     */
     public void setFps(int fps) {
         millisBetweenFrames = (int)(1000.0/(double)fps);
     }
@@ -63,6 +70,7 @@ public class GameStateRunner implements KeyListener, MouseListener {
         
         currentState = state;
         state.setWindow(currentWindow);
+        state.setAssetBank(assetBank);
         state.onEnter();
     }
     
@@ -77,7 +85,8 @@ public class GameStateRunner implements KeyListener, MouseListener {
     }
     
     /**
-     * Endlessly loops until something goes wrong.
+     * Endlessly loops the current GameState until something goes wrong.
+     * 
      */
     public void loop() {
         boolean running = true;
@@ -148,5 +157,9 @@ public class GameStateRunner implements KeyListener, MouseListener {
     public void mouseExited(MouseEvent e) {
         if (currentState != null)
             currentState.mouseExited(e);
+    }
+    
+    public AssetBank getAssetBank() {
+        return assetBank;
     }
 }
