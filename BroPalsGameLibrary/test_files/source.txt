@@ -1,0 +1,14 @@
+blah {
+    
+    int x = 0;
+
+    function a() {
+        x = 6;
+    }
+
+    constructor blah(int x) {
+        this.x = x;
+    }
+}
+
+//this is mumbo jumbo

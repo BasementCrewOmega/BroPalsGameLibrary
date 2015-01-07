@@ -6,6 +6,7 @@ package bropals.lib.simplegame.test;
 
 import bropals.lib.simplegame.entity.GameWorld;
 import bropals.lib.simplegame.entity.block.BlockEntity;
+import bropals.lib.simplegame.logger.InfoLogger;
 import bropals.lib.simplegame.state.GameState;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -67,7 +68,7 @@ public class TestState extends GameState {
 
     @Override
     public void onExit() {
-        System.out.println("Oh no we exitedteteteededed");
+        InfoLogger.println("Oh no we exitedteteteededed");
     }
 
     @Override

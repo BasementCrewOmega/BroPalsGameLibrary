@@ -38,15 +38,28 @@ public class AssetBank {
         return imageMap;
     }
     
+    /**
+     * Get the HashMap containing SoundEffects
+     * @return a HashMap containing SoundEffects
+     */
     public HashMap<String, SoundEffect> getSoundEffectHashMap() {
         return soundEffectMap;
     }
     
-    
+    /**
+     * Gets the image with the specified key.
+     * @param key the key of the image
+     * @return the image with that key.
+     */
     public BufferedImage getImage(String key) {
         return imageMap.get(key);
     }
     
+    /**
+     * Gets the sound effect with the specified key.
+     * @param key the key of the sound effect
+     * @return the sond effect with that key.
+     */
     public SoundEffect getSoundEffect(String key) {
         return soundEffectMap.get(key);
     }

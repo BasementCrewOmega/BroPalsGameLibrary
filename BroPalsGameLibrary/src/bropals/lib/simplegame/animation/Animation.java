@@ -38,9 +38,9 @@ public class Animation {
      * @param track The track being added
      * @return The index of the newly added track
      */
-    public int addTrack(Track t) {
-        tracks.add(t);
-        return tracks.indexOf(t);
+    public int addTrack(Track track) {
+        tracks.add(track);
+        return tracks.indexOf(track);
     }
     
     /**

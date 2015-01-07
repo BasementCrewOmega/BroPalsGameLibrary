@@ -5,15 +5,14 @@
 package bropals.lib.simplegame.state.util;
 
 import bropals.lib.simplegame.logger.ErrorLogger;
+import bropals.lib.simplegame.logger.InfoLogger;
 import bropals.lib.simplegame.sound.SoundEffect;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -69,7 +68,7 @@ public class AssetLoader {
         
         BufferedImage img = ImageIO.read(getFile(loc));
         intoBank.getImageHashMap().put(key, img);
-        System.out.println("Loaded image " + loc + " with key " + key); // report it
+        InfoLogger.println("Loaded image " + loc + " with key " + key); // report it
     }
 
     /**
@@ -126,13 +125,32 @@ public class AssetLoader {
             ais.close();
             SoundEffect sfx = new SoundEffect(clip);
             intoBank.getSoundEffectHashMap().put(key, sfx);
-            System.out.println("Loaded sound " + loc + " with key " + key); // report it
+            InfoLogger.println("Loaded sound " + loc + " with key " + key); // report it
         } catch (UnsupportedAudioFileException uafe) {
             ErrorLogger.println("Unsupported audio format; file loc is " + loc + "; exception is " + uafe);
         } catch (LineUnavailableException lue) {
             ErrorLogger.println("The requested audio line is unable to be "
                     + "opened: another application might be using it?");
         }
+    }
+    
+    /**
+     * Loads all the text from a file. This method keeps all white space
+     * including new lines.
+     * @param loc the relative path to the source file
+     * @return the source contained in the file.
+     * @throws java.io.IOException if there is an error in reading the file
+     */
+    public String loadSource(String loc) throws IOException {
+        //Arbitrary string builder initial capacity
+        StringBuilder sourceBuilder = new StringBuilder(500);
+        BufferedReader rdr = new BufferedReader(new FileReader(getFile(loc)));
+        int cur;
+        while ( (cur = rdr.read()) != -1 ) {
+            sourceBuilder.append((char)cur);
+        }
+        rdr.close();
+        return sourceBuilder.toString();
     }
     
     private File getFile(String loc) {

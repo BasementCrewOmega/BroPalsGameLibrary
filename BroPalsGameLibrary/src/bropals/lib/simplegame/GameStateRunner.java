@@ -101,7 +101,7 @@ public class GameStateRunner implements KeyListener, MouseListener {
             runState.update();
             renderState(runState);
             diff = System.currentTimeMillis() - startTime;
-            if (millisBetweenFrames - diff > 0) {
+            if (diff < millisBetweenFrames) {
                 try {
                     Thread.sleep(millisBetweenFrames - diff);
                 } catch(Exception e) {}
