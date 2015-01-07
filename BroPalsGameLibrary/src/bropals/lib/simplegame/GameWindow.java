@@ -38,6 +38,8 @@ public class GameWindow extends JFrame {
         containedCanvas.setSize(width, height);
         add(containedCanvas);
         containedCanvas.createBufferStrategy(2);
+        containedCanvas.setFocusable(true);
+        containedCanvas.requestFocus();
     }
     
     public Canvas getCanvas() {

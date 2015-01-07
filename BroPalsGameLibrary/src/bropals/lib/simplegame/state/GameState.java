@@ -4,6 +4,7 @@
  */
 package bropals.lib.simplegame.state;
 
+import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.state.util.AssetBank;
 import java.awt.event.KeyListener;
@@ -29,6 +30,11 @@ public abstract class GameState implements KeyListener, MouseListener {
      * this game state.
      */
     private AssetBank assetBank;
+    
+    /**
+     * A reference to the GameStateRunner that is running this GameState.
+     */
+    private GameStateRunner runner;
     
     /**
      * For internal use.
@@ -63,20 +69,38 @@ public abstract class GameState implements KeyListener, MouseListener {
     public AssetBank getAssetBank() {
         return assetBank;
     }
+
+    /**
+     * Returns a reference to the GameStateRunner running this game state.
+     * @return a reference to the GameStateRunner running this game state.
+     */
+    public GameStateRunner getGameStateRunner() {
+        return runner;
+    }
+
+    /**
+     * For internal use.
+     */
+    public void setGameStateRunner(GameStateRunner runner) {
+        this.runner = runner;
+    }
     
     /**
      * Update this game state.
      */
     public abstract void update();
+    
     /**
      * Render the game state to an Object.
      * @param graphicsObj The graphics object being used to draw
      */
     public abstract void render(Object graphicsObj);
+    
     /**
      * The method called when this game state is first set.
      */
     public abstract void onEnter();
+    
     /**
      * The method called when this game state is being swapped
      * with a different game state.

@@ -71,6 +71,7 @@ public class GameStateRunner implements KeyListener, MouseListener {
         currentState = state;
         state.setWindow(currentWindow);
         state.setAssetBank(assetBank);
+        state.setGameStateRunner(this);
         state.onEnter();
     }
     
