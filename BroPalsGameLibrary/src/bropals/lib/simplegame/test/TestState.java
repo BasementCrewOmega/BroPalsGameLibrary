@@ -58,9 +58,12 @@ public class TestState extends GameState {
         world = new GameWorld<>();
        
         world.addEntity(new VertexShape(world, 
-            new float[]{40, 50, 
+            new float[]{40,50, 
                         120, 50, 
-                        85, 110}));
+                        185, 110,
+                        40, 180}));
+        
+        //getGameStateRunner().setFps(80);
     }
 
     @Override
