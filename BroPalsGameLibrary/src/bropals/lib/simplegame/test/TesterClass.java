@@ -5,6 +5,7 @@
 package bropals.lib.simplegame.test;
 
 import bropals.lib.simplegame.*;
+import bropals.lib.simplegame.io.PropertiesReader;
 
 /**
  *
@@ -13,6 +14,7 @@ import bropals.lib.simplegame.*;
 public class TesterClass {
     
     public static void main(String[] args) {
+        
         // make a window
         GameWindow window = new GameWindow("Super cool", 500, 350);
         
