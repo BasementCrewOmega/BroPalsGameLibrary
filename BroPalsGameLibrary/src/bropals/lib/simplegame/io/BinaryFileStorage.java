@@ -124,4 +124,289 @@ public abstract class BinaryFileStorage<T> {
             return 0;
         }
     }
+    
+    /**
+     * Reads the next short from the binary stream.
+     * @return the read short.
+     */
+    public short readShort() {
+        if (input==null) {
+            println("Open the binary input stream before using any read functions.");
+            return 0;
+        }
+        try {
+            return input.readShort();
+        } catch(IOException e) {
+            println("Unable to read short from current input stream: " + e);
+            return 0;
+        }
+    }
+    
+    /**
+     * Reads the next integer from the binary stream.
+     * @return the read integer.
+     */
+    public int readInt() {
+        if (input==null) {
+            println("Open the binary input stream before using any read functions.");
+            return 0;
+        }
+        try {
+            return input.readInt();
+        } catch(IOException e) {
+            println("Unable to read integer from current input stream: " + e);
+            return 0;
+        }
+    }
+    
+    /**
+     * Reads the next float from the binary stream.
+     * @return the read float.
+     */
+    public float readFloat() {
+        if (input==null) {
+            println("Open the binary input stream before using any read functions.");
+            return 0;
+        }
+        try {
+            return input.readFloat();
+        } catch(IOException e) {
+            println("Unable to read float from current input stream: " + e);
+            return 0;
+        }
+    }
+    
+    /**
+     * Reads the next long from the binary stream.
+     * @return the read long.
+     */
+    public long readLong() {
+        if (input==null) {
+            println("Open the binary input stream before using any read functions.");
+            return 0;
+        }
+        try {
+            return input.readLong();
+        } catch(IOException e) {
+            println("Unable to read long from current input stream: " + e);
+            return 0;
+        }
+    }
+    
+    /**
+     * Reads the next character from the binary stream.
+     * @return the read character.
+     */
+    public char readChar() {
+        if (input==null) {
+            println("Open the binary input stream before using any read functions.");
+            return 0;
+        }
+        try {
+            return input.readChar();
+        } catch(IOException e) {
+            println("Unable to read char from current input stream: " + e);
+            return 0;
+        }
+    }
+    
+    /**
+     * Reads the next double from the binary stream.
+     * @return the read double.
+     */
+    public double readDouble() {
+        if (input==null) {
+            println("Open the binary input stream before using any read functions.");
+            return 0;
+        }
+        try {
+            return input.readDouble();
+        } catch(IOException e) {
+            println("Unable to read double from current input stream: " + e);
+            return 0;
+        }
+    }
+    
+    /**
+     * Reads the next boolean from the binary stream.
+     * @return the read boolean.
+     */
+    public boolean readBoolean() {
+        if (input==null) {
+            println("Open the binary input stream before using any read functions.");
+            return false;
+        }
+        try {
+            return input.readBoolean();
+        } catch(IOException e) {
+            println("Unable to read boolean from current input stream: " + e);
+            return false;
+        }
+    }
+    
+    /**
+     * Reads the next boolean from the binary stream.
+     * The format for strings in a binary stream that this class uses is
+     * to first read a short that is the number of bytes taken up by the string,
+     * then read that many bytes, grouping them up to a string.
+     * @return the read boolean.
+     */
+    public String readString() {
+        if (input==null) {
+            println("Open the binary input stream before using any read functions.");
+            return null;
+        }
+        try {
+            return input.readUTF();
+        } catch(IOException e) {
+            println("Unable to read string from current input stream: " + e);
+            return null;
+        }
+    }
+    
+    /**
+     * Writes the given byte to the end of the binary output.
+     * @param b the byte to write.
+     */
+    public void writeByte(byte b) {
+        if (output == null) {
+            println("Open the binary output stream before using any write functions");
+            return;
+        }
+        try {
+            output.writeByte(b);
+        } catch(IOException e) {
+            println("Unable to write a byte to the current output stream: " + e);
+        }
+    }
+    
+    /**
+     * Writes the given short to the end of the binary output.
+     * @param s the short to write.
+     */
+    public void writeShort(short s) {
+        if (output == null) {
+            println("Open the binary output stream before using any write functions");
+            return;
+        }
+        try {
+            output.writeShort(s);
+        } catch(IOException e) {
+            println("Unable to write a short to the current output stream: " + e);
+        }
+    }
+    
+    /**
+     * Writes the given boolean to the end of the binary output.
+     * @param b the boolean to write.
+     */
+    public void writeBoolean(boolean b) {
+        if (output == null) {
+            println("Open the binary output stream before using any write functions");
+            return;
+        }
+        try {
+            output.writeBoolean(b);
+        } catch(IOException e) {
+            println("Unable to write a boolean to the current output stream: " + e);
+        }
+    }
+    
+    /**
+     * Writes the given integer to the end of the binary output.
+     * @param i the integer to write.
+     */
+    public void writeInt(int i) {
+        if (output == null) {
+            println("Open the binary output stream before using any write functions");
+            return;
+        }
+        try {
+            output.writeInt(i);
+        } catch(IOException e) {
+            println("Unable to write an integer to the current output stream: " + e);
+        }
+    }
+    
+    /**
+     * Writes the given float to the end of the binary output.
+     * @param f the float to write.
+     */
+    public void writeFloat(float f) {
+        if (output == null) {
+            println("Open the binary output stream before using any write functions");
+            return;
+        }
+        try {
+            output.writeFloat(f);
+        } catch(IOException e) {
+            println("Unable to write a float to the current output stream: " + e);
+        }
+    }
+    
+    /**
+     * Writes the given double to the end of the binary output.
+     * @param d the double to write.
+     */
+    public void writeDouble(double d) {
+        if (output == null) {
+            println("Open the binary output stream before using any write functions");
+            return;
+        }
+        try {
+            output.writeDouble(d);
+        } catch(IOException e) {
+            println("Unable to write a double to the current output stream: " + e);
+        }
+    }
+    
+    /**
+     * Writes the given long to the end of the binary output.
+     * @param l the long to write.
+     */
+    public void writeLong(long l) {
+        if (output == null) {
+            println("Open the binary output stream before using any write functions");
+            return;
+        }
+        try {
+            output.writeLong(l);
+        } catch(IOException e) {
+            println("Unable to write a long to the current output stream: " + e);
+        }
+    }
+    
+    /**
+     * Writes the given character to the end of the binary output.
+     * @param c the character to write.
+     */
+    public void writeChar(char c) {
+        if (output == null) {
+            println("Open the binary output stream before using any write functions");
+            return;
+        }
+        try {
+            output.writeChar(c);
+        } catch(IOException e) {
+            println("Unable to write a character to the current output stream: " + e);
+        }
+    }
+    
+    /**
+     * Writes the given String to the end of the binary output.
+     * This is done by first writing a short that is how many bytes the
+     * String takes up, then by writing the byte data that is the String.
+     * @param str the String to write.
+     */
+    public void writeString(String str) {
+        if (output == null) {
+            println("Open the binary output stream before using any write functions");
+            return;
+        }
+        try {
+            output.writeUTF(str);
+        } catch(IOException e) {
+            println("Unable to write a String to the current output stream: " + e);
+        }
+    }
 }
