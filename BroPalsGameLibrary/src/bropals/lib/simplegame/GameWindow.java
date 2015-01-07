@@ -18,14 +18,14 @@ public class GameWindow extends JFrame {
     private Canvas containedCanvas;
     
     /**
-     * Creates an invisible GameWindow that is the given size and contains
-     * the given Canvas object. The Canvas object is resized, inserted, 
+     * Creates a visible GameWindow that is the given size and contains
+     * the a Canvas object. The Canvas object is resized, inserted, 
      * and then creates a BufferStrategy
      * @param width The window's width in pixels
      * @param height The window's height in pixels
      * @param canvas The canvas that the GameWindow will contain
      */
-    public GameWindow(String title, int width, int height, Canvas canvas) {
+    public GameWindow(String title, int width, int height) {
         setSize(width, height);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,7 +33,8 @@ public class GameWindow extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((int)(screenSize.getWidth()/2)-(width/2), // center the window
                  (int)(screenSize.getHeight()/2)-(height/2));
-        containedCanvas = canvas;
+        setVisible(true);
+        containedCanvas = new Canvas();
         containedCanvas.setSize(width, height);
         add(containedCanvas);
         containedCanvas.createBufferStrategy(2);

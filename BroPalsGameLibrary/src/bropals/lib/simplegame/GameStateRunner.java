@@ -7,31 +7,41 @@ package bropals.lib.simplegame;
 import bropals.lib.simplegame.state.GameState;
 import java.awt.Canvas;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 
 /**
  * Continuously runs the update and render loop of a GameState object.
  * @author Kevin Prehn
  */
-public class GameStateRunner {
+public class GameStateRunner implements KeyListener, MouseListener {
     
     private GameState currentState;
     private GameWindow currentWindow;
     private long startTime, diff;
     private int millisBetweenFrames;
     
-    public GameStateRunner() {
+    /**
+     * Creates a GameStateRunner with a GameWindow.
+     * @param window The window that will be drawn to for this GameStateRunner
+     */
+    public GameStateRunner(GameWindow window) {
         currentState = null;
-        currentWindow = null;
         startTime = 0;
         millisBetweenFrames = 40;
-    }
-    
-    public GameStateRunner(GameWindow window) {
-        this();
         currentWindow = window;
+        currentWindow.getCanvas().addKeyListener(this);
+        currentWindow.getCanvas().addMouseListener(this);
     }
     
+    /**
+     * Creates a GameStateRunner with an initial GameState.
+     * @param window The window that will be draw to for this GameStateRunner.
+     * @param initialState The initial state in this GameStateRunner.
+     */
     public GameStateRunner(GameWindow window, GameState initialState) {
         this(window);
         setState(initialState);
@@ -52,6 +62,7 @@ public class GameStateRunner {
             currentState.onExit();
         
         currentState = state;
+        state.setWindow(currentWindow);
         state.onEnter();
     }
     
@@ -61,7 +72,7 @@ public class GameStateRunner {
     protected void renderState(GameState state) {
         BufferStrategy bs = currentWindow.getCanvas().getBufferStrategy();
         Graphics g = bs.getDrawGraphics();
-        state.render(g);
+        state.render((Object)g);
         bs.show();
     }
     
@@ -86,5 +97,56 @@ public class GameStateRunner {
                 } catch(Exception e) {}
             }
         }
+    }
+
+    
+    // applying a level of indirection with the event methods...
+    
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if (currentState != null)
+            currentState.keyTyped(e);
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (currentState != null)
+            currentState.keyPressed(e);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+         if (currentState != null)
+            currentState.keyReleased(e);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (currentState != null)
+            currentState.mouseClicked(e);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (currentState != null)
+            currentState.mousePressed(e);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if (currentState != null)
+            currentState.mouseReleased(e);
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        if (currentState != null)
+            currentState.mouseEntered(e);
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if (currentState != null)
+            currentState.mouseExited(e);
     }
 }

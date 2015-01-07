@@ -4,9 +4,9 @@
  */
 package bropals.lib.simplegame.state;
 
+import bropals.lib.simplegame.GameWindow;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
-import java.awt.Graphics2D;
 
 /**
  * A class that is meant to hold code for a state in the game.
@@ -18,6 +18,19 @@ import java.awt.Graphics2D;
  */
 public abstract class GameState implements KeyListener, MouseListener {
     
+    /**
+     * A reference to the Window being used by the GameRunner running
+     * this game state.
+     */
+    private GameWindow window;
+    
+    public void setWindow(GameWindow window) {
+        this.window = window;
+    }
+    
+    public GameWindow getWindow() {
+        return window;
+    }
     /**
      * Update this game state.
      */
