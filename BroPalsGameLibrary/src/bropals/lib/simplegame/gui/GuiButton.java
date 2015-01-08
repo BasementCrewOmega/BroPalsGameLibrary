@@ -41,13 +41,22 @@ public class GuiButton extends GuiElement {
         this.guiButtonAction=guiButtonAction;
     }
 
+    /**
+     * Sets the number of frames the button is shown in the down state after
+     * being pressed.
+     * @param downTime the number of the frames the button is down. 
+     */
+    public void setDownTime(int downTime) {
+        this.downTime=downTime;
+    }
+    
     @Override
     public void update(int mouseX, int mouseY) {
         super.update(mouseX, mouseY);
         if (downCounter > 0) {
             downCounter--;
         } else {
-            if (contains(mouseY, mouseY)) {
+            if (contains(mouseX, mouseY)) {
                 current = hover;
             } else {
                 current = up;
@@ -59,6 +68,7 @@ public class GuiButton extends GuiElement {
     public void onMousePress() {
         current = down;
         downCounter = downTime;
+        guiButtonAction.onButtonPress();
     }
     
     @Override
