@@ -23,7 +23,6 @@ public class GameWindow extends JFrame {
      * and then creates a BufferStrategy
      * @param width The window's width in pixels
      * @param height The window's height in pixels
-     * @param canvas The canvas that the GameWindow will contain
      */
     public GameWindow(String title, int width, int height) {
         setSize(width, height);
@@ -35,13 +34,15 @@ public class GameWindow extends JFrame {
                  (int)(screenSize.getHeight()/2)-(height/2));
         setVisible(true);
         containedCanvas = new Canvas();
+        containedCanvas.setPreferredSize(new Dimension(width, height));
         containedCanvas.setSize(width, height);
         add(containedCanvas);
         containedCanvas.createBufferStrategy(2);
         containedCanvas.setFocusable(true);
         containedCanvas.requestFocus();
+        containedCanvas.setIgnoreRepaint(true);
     }
-    
+            
     public Canvas getCanvas() {
         return containedCanvas;
     }
