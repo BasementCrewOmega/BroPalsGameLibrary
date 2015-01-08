@@ -19,7 +19,7 @@ public class TesterClassClient {
     public static void main(String[] args) {
         //Test the client
         try {
-            Client client = new Client(InetAddress.getByName("192.168.1.74"), 17373, new TestClientMessageHandler());
+            Client client = new Client(InetAddress.getByName("104.10.220.61"), 17373, new TestClientMessageHandler());
             client.listenToServer();
             client.sendMessageToServer("Message");
         } catch (IOException e) {
