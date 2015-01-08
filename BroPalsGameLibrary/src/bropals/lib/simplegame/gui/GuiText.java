@@ -154,6 +154,5 @@ public class GuiText extends GuiElement {
         } else {
             g.drawString(getText(), xLoc, yLoc);
         }
-        g.drawRect(getX(), getY(), getWidth(), getHeight());
     }
 }
