@@ -133,6 +133,7 @@ public class GuiText extends GuiElement {
      */
     public void setFont(Font font) {
         this.font=font;
+        lines = null;
     }
 
     @Override
