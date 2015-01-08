@@ -87,7 +87,11 @@ public class Server {
         }
     }
 
-    public void disconnect(ClientHandler handler) {
+    /**
+     * Remove a ClientHandler from the server's list of handlers.
+     * @param handler The handler being removed from the server's list of handlers.
+     */
+    public void removeHandler(ClientHandler handler) {
         clientHandlers.remove(handler);
         InfoLogger.println("Server now has " + clientHandlers.size() + " clients");
     }

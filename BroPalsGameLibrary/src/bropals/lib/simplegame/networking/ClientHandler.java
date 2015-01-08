@@ -68,7 +68,7 @@ public class ClientHandler extends Thread {
         }
         InfoLogger.println("ClientHandler lost connection to its client: "
                 + "removing handler");
-        this.server.disconnect(this);
+        this.server.removeHandler(this);
         server = null;
         socket = null;
     }

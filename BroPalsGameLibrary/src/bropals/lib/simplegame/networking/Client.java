@@ -41,6 +41,9 @@ public class Client extends Thread {
         toServer = new PrintStream(socket.getOutputStream(), true);
     }
     
+    /**
+     * Stops communication with the server and stop running the client.
+     */
     public void closeClient() {
         running = false;
         try {
@@ -53,12 +56,17 @@ public class Client extends Thread {
     }
 
     /**
-     * Has this client begin to listen to the server for messages.
+     * Has this client begin to listen to the server for messages. This
+     * will start a new thread.
      */
     public void listenToServer() {
         start();
     }
     
+    /**
+     * Send a message to the server the client is connected to.
+     * @param message The message being sent to the server
+     */
     public void sendMessageToServer(String message) {
         toServer.println(message);
     }
