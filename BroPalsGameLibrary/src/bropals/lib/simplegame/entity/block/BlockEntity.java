@@ -65,6 +65,17 @@ public class BlockEntity extends BaseEntity {
     }
     
     /**
+     * Checks to see if the given point is inside this Block Entity.
+     * @param x the x position of the point
+     * @param y the y position of the point
+     * @return whether or not it contains the point
+     */
+    public boolean containsPoint(float x, float y) {
+        return x>getX() && y>getY() && x<getX()+getWidth() && 
+                y<getY()+getHeight();
+    }
+    
+    /**
      * Check and fix the collision with another BlockEntity.
      * @param other The other BlockEntity
      * @return Whether or not this object collided with the other object.
