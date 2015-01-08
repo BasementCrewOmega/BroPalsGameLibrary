@@ -17,6 +17,16 @@ import java.io.PrintStream;
 public class ErrorLogger {
     
     private static PrintStream err = System.err;
+    private static boolean silent = false;
+    
+     /**
+     * Set if you want the ErrorLogger to stop printing messages or not.
+     * @param silent whether or not to silence the InfoLogger.
+     */
+    public static void setSilent(boolean silent) {
+        ErrorLogger.println("ErrorLogger is now silent = " + silent);
+        ErrorLogger.silent = silent;
+    }
     
     /**
      * Sets where the errors are printed to.
@@ -51,8 +61,10 @@ public class ErrorLogger {
      * @param str the string to print to the error stream.
      */
     public static void print(String str) {
-        getErr().print(str);
-        getErr().flush();
+        if (!silent) {
+            getErr().print(str);
+            getErr().flush();
+        }
     }
     
     /**
@@ -60,7 +72,9 @@ public class ErrorLogger {
      * @param str the string to print to the error stream.
      */
     public static void println(String str) {
-        getErr().println(str);
-        getErr().flush();
+        if (!silent) {
+            getErr().println(str);
+            getErr().flush();
+        }
     }
 }

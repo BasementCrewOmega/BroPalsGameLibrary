@@ -16,6 +16,16 @@ import java.io.PrintStream;
 public class InfoLogger {
     
     private static PrintStream info = System.out;
+    private static boolean silent = false;
+    
+    /**
+     * Set if you want the InfoLogger to stop printing messages or not.
+     * @param silent whether or not to silence the InfoLogger.
+     */
+    public static void setSilent(boolean silent) {
+        InfoLogger.println("InfoLogger is now silent = " + silent);
+        InfoLogger.silent = silent;
+    }
     
     /**
      * Sets where info messages are printed to.
