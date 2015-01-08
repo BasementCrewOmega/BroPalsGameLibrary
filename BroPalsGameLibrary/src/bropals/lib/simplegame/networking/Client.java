@@ -68,7 +68,7 @@ public class Client extends Thread {
         try {
             String str;
             while ( (str = fromServer.readLine()) != null ) {
-                messageHandler.handleMessage(str);
+                messageHandler.handleMessage(this, str);
             }
         } catch(IOException e) {
             ErrorLogger.println("Error in client while communicating with "

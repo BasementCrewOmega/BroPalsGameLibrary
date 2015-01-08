@@ -25,12 +25,23 @@ public class Animation {
     }
     
     /**
+     * Create a new Animation object with the no tracks.
+     */
+    public Animation() {
+        this.tracks = new ArrayList<>();
+    }
+    
+    /**
      * Updates the animation
      */
     public void update() {
         for (Track t : tracks) {
             t.update();
         }
+    }
+    
+    public BufferedImage getCurrentImage() {
+        return currentTrack.getCurrentImage();
     }
     
     /**

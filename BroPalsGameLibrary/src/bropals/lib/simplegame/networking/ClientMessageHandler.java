@@ -14,7 +14,8 @@ public interface ClientMessageHandler {
     
     /**
      * Handle a message that has come from the server.
+     * @param client the client that is receiving this message
      * @param message the message that was received from the server.
      */
-    void handleMessage(String message);
+    void handleMessage(Client client, String message);
 }

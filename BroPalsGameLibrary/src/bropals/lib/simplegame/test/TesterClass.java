@@ -9,8 +9,8 @@ import bropals.lib.simplegame.io.PropertiesReader;
 import bropals.lib.simplegame.logger.ErrorLogger;
 import bropals.lib.simplegame.logger.InfoLogger;
 import bropals.lib.simplegame.networking.Server;
-import bropals.lib.simplegame.state.util.AssetBank;
-import bropals.lib.simplegame.state.util.AssetLoader;
+import bropals.lib.simplegame.util.AssetBank;
+import bropals.lib.simplegame.util.AssetLoader;
 import java.io.File;
 import java.io.IOException;
 

@@ -6,7 +6,7 @@ package bropals.lib.simplegame.state;
 
 import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
-import bropals.lib.simplegame.state.util.AssetBank;
+import bropals.lib.simplegame.util.AssetBank;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 

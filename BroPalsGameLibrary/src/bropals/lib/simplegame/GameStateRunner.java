@@ -5,7 +5,7 @@
 package bropals.lib.simplegame;
 
 import bropals.lib.simplegame.state.GameState;
-import bropals.lib.simplegame.state.util.AssetBank;
+import bropals.lib.simplegame.util.AssetBank;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
