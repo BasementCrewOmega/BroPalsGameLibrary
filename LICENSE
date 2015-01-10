@@ -21,15 +21,3 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  **/
-package bropals.lib.simplegame.util;
-
-/**
- * An exception used by AssetLoader
- * @author Kevin Prehn
- */
-public class KeyAlreadyUsedException extends Exception {
-    
-    public KeyAlreadyUsedException(String msg) {
-        super(msg);
-    }
-}
