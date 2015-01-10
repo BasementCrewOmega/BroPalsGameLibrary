@@ -9,6 +9,7 @@ import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.util.AssetBank;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 /**
  * A class that is meant to hold code for a state in the game.
@@ -58,6 +59,27 @@ public abstract class GameState implements KeyListener, MouseListener {
      */
     public void setAssetBank(AssetBank bank) {
         assetBank = bank;
+    }
+    
+    /**
+     * Gets the image with the specified key from this GameState's AssetBank.
+     * This is the same thing as doing 
+     * <code>getAssetBank().getImage(key)</code>
+     * @param key the image key
+     * @return the image with the given key if it exists.
+     */
+    public BufferedImage getImage(String key) {
+        return getAssetBank().getImage(key);
+    }
+    
+    /**
+     * Convenience method for playing a sound effect from this GameState's
+     * AssetBank. This is the same as doing 
+     * <code>getAssetBank().getSoundEffect(key).play()</code>
+     * @param key 
+     */
+    public void playSoundEffect(String key) {
+        getAssetBank().getSoundEffect(key).play();
     }
     
     /**

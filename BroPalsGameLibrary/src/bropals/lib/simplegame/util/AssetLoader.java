@@ -10,8 +10,12 @@ import bropals.lib.simplegame.sound.SoundEffect;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -31,22 +35,22 @@ public class AssetLoader {
     private File root;
 
     /**
-     * Make an AssetLoader for the given root directory. This root
-     * directory is where all locations will be made relative to.
+     * Make an AssetLoader for the given root directory. This root directory is
+     * where all locations will be made relative to.
      *
      * @param root the direction to use when looking for assets.
      */
     public AssetLoader(File root) {
-        this.root=root;
+        this.root = root;
     }
-    
+
     /**
      * Makes an AssetLoader whose root is the default relative directory.
      */
     public AssetLoader() {
         this(new File(""));
     }
-    
+
     /**
      * Load a BufferedImage from a relative path into an AssetBank.
      *
@@ -65,10 +69,94 @@ public class AssetLoader {
             throw new KeyAlreadyUsedException("The image key \"" + key
                     + "\" already used by " + intoBank.toString());
         }
-        
+
         BufferedImage img = ImageIO.read(getFile(loc));
         intoBank.getImageHashMap().put(key, img);
         InfoLogger.println("Loaded image " + loc + " with key " + key); // report it
+    }
+
+    /**
+     * Loads all images in a directory into the given AssetBank, giving each one
+     * their file name (without the extension) as its key. Does nothing if the
+     * supplied path is not a directory.
+     *
+     * @param dir the directory that will have its contents loaded.
+     * @param bank the bank to load the images into.
+     * @param readSubDirectories if true, this will read all of the given directory's
+     * subdirectories, their subdirectories and so on.
+     */
+    public void loadBufferedImagesInDirectory(String dir, AssetBank bank, boolean readSubDirectories) {
+        File directory = getFile(dir);
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            for (File f : files) {
+                String name = extractNameWithoutExtension(f);
+                String path = dir + System.getProperty("file.separator") + f.getName();
+                if (f.isFile()) {
+                    try {
+                        loadBufferedImage(path,
+                                name,
+                                bank);
+                    } catch (IOException ioe) {
+                        ErrorLogger.println("Error while loading image \""
+                                + path + "\" " + ioe);
+                    } catch (KeyAlreadyUsedException ex) {
+                        ErrorLogger.println("There is already an image named \""
+                                + name + "\" in this AssetBank.");
+                    }
+                } else if (f.isDirectory() && readSubDirectories) {
+                    loadBufferedImagesInDirectory(path, bank, true);
+                }
+            }
+        }
+    }
+
+    /**
+     * Loads all sound effects in a directory into the given AssetBank, giving
+     * each one their file name (without the extension) as its key. Does nothing
+     * if the supplied path is not a directory.
+     *
+     * @param dir the directory that will have its contents loaded
+     * @param bank the bank to load the images into.
+     * @param readSubDirectories if true, this will read all of the given directory's
+     * subdirectories, their subdirectories and so on.
+     */
+    public void loadSoundEffectsInDirectory(String dir, AssetBank bank,  boolean readSubDirectories) {
+        File directory = getFile(dir);
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            for (File f : files) {
+                String name = extractNameWithoutExtension(f);
+                String path = dir + System.getProperty("file.separator") + f.getName();
+                if (f.isFile()) {
+                    try {
+                        loadSoundEffect(path,
+                                name,
+                                bank);
+                    } catch (IOException ioe) {
+                        ErrorLogger.println("Error while loading sound effect \""
+                                + path + "\" " + ioe);
+                    } catch (KeyAlreadyUsedException ex) {
+                        ErrorLogger.println("There is already a sound effect named \""
+                                + name + "\" in this AssetBank.");
+                    }
+                } else if (f.isDirectory() && readSubDirectories) {
+                    loadSoundEffectsInDirectory(path, bank, true);
+                }
+            }
+        }
+    }
+
+    private String extractNameWithoutExtension(File file) {
+        return file.getName().split(Pattern.quote("."))[0];
+    }
+
+    private String extractExtension(File file) {
+        try {
+            return file.getName().split(Pattern.quote("."))[1];
+        } catch (Exception e) {
+            return "NO_EXTENSION";
+        }
     }
 
     /**
@@ -133,10 +221,11 @@ public class AssetLoader {
                     + "opened: another application might be using it?");
         }
     }
-    
+
     /**
      * Loads all the text from a file. This method keeps all white space
      * including new lines.
+     *
      * @param loc the relative path to the source file
      * @return the source contained in the file.
      * @throws java.io.IOException if there is an error in reading the file
@@ -146,13 +235,13 @@ public class AssetLoader {
         StringBuilder sourceBuilder = new StringBuilder(500);
         BufferedReader rdr = new BufferedReader(new FileReader(getFile(loc)));
         int cur;
-        while ( (cur = rdr.read()) != -1 ) {
-            sourceBuilder.append((char)cur);
+        while ((cur = rdr.read()) != -1) {
+            sourceBuilder.append((char) cur);
         }
         rdr.close();
         return sourceBuilder.toString();
     }
-    
+
     private File getFile(String loc) {
         return new File(root.getAbsolutePath() + System.getProperty("file.separator") + loc);
     }

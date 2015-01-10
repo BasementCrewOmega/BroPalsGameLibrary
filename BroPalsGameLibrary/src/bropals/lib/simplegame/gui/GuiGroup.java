@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class GuiGroup {
     
     private ArrayList<GuiElement> group = new ArrayList<GuiElement>();
+    private boolean enabled = true;
     
     /**
      * Adds an element to this GuiGroup
@@ -30,13 +31,33 @@ public class GuiGroup {
     public void removeElement(GuiElement element) {
         group.remove(element);
     }
-    
+
+    /**
+     * Checks to see if this GuiGroup is enabled.
+     * @return the enabled state of this GuiGroup.
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Sets the enabled state of this GuiGroup. When this GuiGroup is not
+     * enabled, then it will not draw, update, or react to input even when
+     * its functions are called.
+     * @param enabled the new enabled state.
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+        
     /**
      * Updates all elements in this GuiGroup
      * @param mouseX the current X mouse position
      * @param mouseY the current Y mouse position
      */
     public void update(int mouseX, int mouseY) {
+        if (!isEnabled())
+            return;
         for (GuiElement element : group) {
             element.update(mouseX, mouseY);
         }
@@ -47,6 +68,8 @@ public class GuiGroup {
      * @param graphicsObject the graphics object to draw this GuiGroup with
      */
     public void render(Object graphicsObject) {
+        if (!isEnabled())
+            return;
         for (GuiElement element : group) {
             element.render(graphicsObject);
         }
@@ -58,6 +81,8 @@ public class GuiGroup {
      * @param mouseY the Y mouse position
      */
     public void mouseInput(int mouseX, int mouseY) {
+        if (!isEnabled())
+            return;
         for (GuiElement element : group) {
             element.mouseInput(mouseX, mouseY);
         }
