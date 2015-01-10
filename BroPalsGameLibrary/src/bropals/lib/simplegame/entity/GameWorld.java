@@ -24,19 +24,22 @@
 package bropals.lib.simplegame.entity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A generic GameWorld that holds objects of type {@link bropals.lib.simplegame.entity.BaseEntity}.
  * The GameWorld will update and render all the entities.
  * 
  * @author Kevin Prehn
+ * @param <T> the type of Entity that this GameWorld uses as its base entity type.
  */
 public class GameWorld<T extends BaseEntity> {
     
-    private ArrayList<T> entities;
+    private final List<T> entities;
     
     public GameWorld() {
-        entities = new ArrayList<>();
+        entities = Collections.synchronizedList(new ArrayList<T>());
     }
     
     /**
@@ -44,14 +47,16 @@ public class GameWorld<T extends BaseEntity> {
      * will also remove any entity whose parent is not this GameWorld or null.
      */
     public void updateEntities() {
-        for (int i=0; i<entities.size(); i++) {
-            // remove the entity from this game world if it doesn't belong
-            // here or if it's been removed
-            if (entities.get(i).getParent() != this) {
-                entities.remove(i);
-                continue;
+        synchronized (entities) {
+            for (int i=0; i<entities.size(); i++) {
+                // remove the entity from this game world if it doesn't belong
+                // here or if it's been removed
+                if (entities.get(i).getParent() != this) {
+                    entities.remove(i);
+                    continue;
+                }
+                entities.get(i).update();
             }
-            entities.get(i).update();
         }
     }
     
@@ -59,7 +64,7 @@ public class GameWorld<T extends BaseEntity> {
      * Returns a list of the entities in this GameWorld.
      * @return A list of the entities in this GameWorld.
      */
-    public ArrayList<T> getEntities() {
+    public List<T> getEntities() {
         return entities;
     }
     

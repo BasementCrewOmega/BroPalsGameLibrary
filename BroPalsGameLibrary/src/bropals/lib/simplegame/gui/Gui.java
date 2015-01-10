@@ -23,9 +23,10 @@
  **/
 package bropals.lib.simplegame.gui;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Groups together GuiGroups. Each GuiGroup will have a name that it is
@@ -34,8 +35,8 @@ import java.util.Set;
  */
 public class Gui {
     
-    private HashMap<String, GuiGroup> groups = new HashMap<>();
-    private Collection<GuiGroup> groupSet;
+    private Map<String, GuiGroup> groups = new HashMap<>();
+    private List<GuiGroup> groupSet = new ArrayList<>();
     
     /**
      * Adds a GuiGroup to this Gui.
@@ -44,7 +45,7 @@ public class Gui {
      */
     public void addGroup(String key, GuiGroup group) {
         groups.put(key, group);
-        groupSet = groups.values();
+        groupSet.add(group);
     }
     
     /**
@@ -52,8 +53,8 @@ public class Gui {
      * @param key the key of the group to remove
      */
     public void removeGroup(String key) {
+        groupSet.remove(groups.get(key));
         groups.remove(key);
-        groupSet = groups.values();
     }
     
     /**

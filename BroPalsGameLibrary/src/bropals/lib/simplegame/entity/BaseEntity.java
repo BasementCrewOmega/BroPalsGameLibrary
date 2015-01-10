@@ -73,7 +73,8 @@ public abstract class BaseEntity {
     }
     
     /**
-     * Set the parent of this entity to null.
+     * Set the parent of this entity to null. This will cause GameWorld to
+     * remove this Entity when it reaches it in the update loop.
      */
     public void removeParent() {
         this.parent = null;
