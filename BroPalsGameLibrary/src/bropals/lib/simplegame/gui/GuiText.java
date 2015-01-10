@@ -1,14 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/**
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Jonathon Prehn and Kevin Prehn
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ **/
 package bropals.lib.simplegame.gui;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -24,6 +43,8 @@ public class GuiText extends GuiElement {
     private String text;
     private Font font;
     private Color textColor;
+    private int padding = 0;
+    private BufferedImage backgroundImage = null;
     private boolean wordWrap;
     private String[] lines;
     
@@ -77,7 +98,40 @@ public class GuiText extends GuiElement {
         this.wordWrap = wordWrap;
         lines = null;
     }
-        
+
+    /**
+     * Gets the text padding. This is similar to the CSS text padding..
+     * @return the text padding
+     */
+    public int getPadding() {
+        return padding;
+    }
+
+    /**
+     * Sets the text padding. This is similar to the CSS text padding..
+     * @param padding the text padding
+     */
+    public void setPadding(int padding) {
+        this.padding = padding;
+        lines = null;
+    }
+
+    /**
+     * Gets the background image.
+     * @return the background image.
+     */
+    public BufferedImage getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    /**
+     * Sets the background image.
+     * @param backgroundImage the background image
+     */
+    public void setBackgroundImage(BufferedImage backgroundImage) {
+        this.backgroundImage = backgroundImage;
+    }
+            
     private void splitIntoLines(FontMetrics metrics) {
         if (this.wordWrap) {
             ArrayList<String> l = new ArrayList();
@@ -89,7 +143,7 @@ public class GuiText extends GuiElement {
             String currentLine = "";
             for (int word = 0; word < splitText.length; word++) {
                 wordLength = metrics.stringWidth(splitText[word]);
-                if ( wordLength + lineWidth > getWidth() ) {
+                if ( wordLength + lineWidth > getWidth()-(getPadding()*2) ) {
                     l.add(currentLine);
                     lineWidth = (spaceWidth + wordLength);
                     currentLine = (splitText[word] + ' ');
@@ -142,8 +196,9 @@ public class GuiText extends GuiElement {
         g.setFont(font);
         g.setColor(textColor);
         FontMetrics fm = g.getFontMetrics();
-        int xLoc = getX();
-        int yLoc = getY() + fm.getHeight();
+        int xLoc = getX() + getPadding();
+        int yLoc = getY() + fm.getHeight() + getPadding();
+        g.drawImage(backgroundImage, getX(), getY(), getWidth(), getHeight(), null);
         if (wordWrap) {
             if (lines == null) {
                 splitIntoLines(fm);

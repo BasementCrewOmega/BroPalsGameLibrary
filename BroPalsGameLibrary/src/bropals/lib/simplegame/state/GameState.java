@@ -1,7 +1,26 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/**
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Jonathon Prehn and Kevin Prehn
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ **/
 package bropals.lib.simplegame.state;
 
 import bropals.lib.simplegame.GameStateRunner;
@@ -9,6 +28,7 @@ import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.util.AssetBank;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 /**
  * A class that is meant to hold code for a state in the game.
@@ -58,6 +78,27 @@ public abstract class GameState implements KeyListener, MouseListener {
      */
     public void setAssetBank(AssetBank bank) {
         assetBank = bank;
+    }
+    
+    /**
+     * Gets the image with the specified key from this GameState's AssetBank.
+     * This is the same thing as doing 
+     * <code>getAssetBank().getImage(key)</code>
+     * @param key the image key
+     * @return the image with the given key if it exists.
+     */
+    public BufferedImage getImage(String key) {
+        return getAssetBank().getImage(key);
+    }
+    
+    /**
+     * Convenience method for playing a sound effect from this GameState's
+     * AssetBank. This is the same as doing 
+     * <code>getAssetBank().getSoundEffect(key).play()</code>
+     * @param key 
+     */
+    public void playSoundEffect(String key) {
+        getAssetBank().getSoundEffect(key).play();
     }
     
     /**
