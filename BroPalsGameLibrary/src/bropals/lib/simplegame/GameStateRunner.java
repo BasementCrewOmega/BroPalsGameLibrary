@@ -54,8 +54,7 @@ public class GameStateRunner implements KeyListener, MouseListener {
         startTime = 0;
         millisBetweenFrames = 40;
         currentWindow = window;
-        currentWindow.getCanvas().addKeyListener(this);
-        currentWindow.getCanvas().addMouseListener(this);
+        currentWindow.giveGameStateRunner(this);
         assetBank = new AssetBank();
     }
     
@@ -98,10 +97,7 @@ public class GameStateRunner implements KeyListener, MouseListener {
      * So we can extend and change how we render in other GameStates
      */
     protected void renderState(GameState state) {
-        BufferStrategy bs = currentWindow.getCanvas().getBufferStrategy();
-        Graphics g = bs.getDrawGraphics();
-        state.render((Object)g);
-        bs.show();
+        
     }
     
     /**

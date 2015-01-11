@@ -65,9 +65,9 @@ public abstract class GameState implements KeyListener, MouseListener {
     
     /**
      * Returns a reference to the GameWindow used by the GameStateRunner 
-     * that is running this GameState.
+ that is running this GameState.
      * @return a reference to the GameWindow used by the GameStateRunner 
-     * that is running this GameState.
+ that is running this GameState.
      */
     public GameWindow getWindow() {
         return window;

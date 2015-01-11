@@ -63,8 +63,8 @@ public class TestState extends GameState {
     public void render(Object graphicsObj) {
         Graphics2D g2 = (Graphics2D)graphicsObj;
         g2.setColor(Color.WHITE);
-        g2.fillRect(0, 0, (int)getWindow().getWidth(), 
-                (int)getWindow().getHeight());
+        g2.fillRect(0, 0, (int)getWindow().getScreenWidth(), 
+                (int)getWindow().getScreenHeight());
         
         g2.setColor(Color.BLACK);
         for (VertexShape vs : world.getEntities()) {

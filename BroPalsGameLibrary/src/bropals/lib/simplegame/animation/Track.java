@@ -68,7 +68,7 @@ public class Track {
      * @param height The height of each sub-image
      */
     public Track(BufferedImage img, int width, int height) {
-        BufferedImage[] images = null;
+        this(null);
         int rows = img.getHeight() / height;
         int cols = img.getWidth() / width;
         images = new BufferedImage[rows * cols];
