@@ -324,7 +324,8 @@ public class GameWindow {
      */
     private void applyScreenResolution() {
         if (isWindowed()) {
-            if (!screenResolution.equals(nativeResolution)) {
+            if (device.getFullScreenWindow()!=null && 
+                    !screenResolution.equals(nativeResolution)) {
                 device.setDisplayMode(convertScreenResolution(nativeResolution));
             }
             device.setFullScreenWindow(null);
