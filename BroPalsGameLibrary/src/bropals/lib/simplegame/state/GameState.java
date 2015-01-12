@@ -26,7 +26,9 @@ package bropals.lib.simplegame.state;
 import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.util.AssetBank;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
@@ -38,7 +40,7 @@ import java.awt.image.BufferedImage;
  * To run the game state, 
  * @author Kevin Prehn
  */
-public abstract class GameState implements KeyListener, MouseListener {
+public abstract class GameState {
     
     /**
      * A reference to the Window being used by the GameStateRunner running
@@ -147,4 +149,22 @@ public abstract class GameState implements KeyListener, MouseListener {
      * with a different game state.
      */
     public abstract void onExit();
+    
+    /**
+     * Called when the game gets key input.
+     * @param e the key event.
+     * @param pressed whether or not the key was pressed or released. 
+     * <code>true</code> for pressed, <code>false</code> for released.
+     */
+    public abstract void key(KeyEvent e, boolean pressed);
+    
+    /**
+     * Called when the game gets mouse button input.
+     * @param e the mouse event.
+     * @param pressed whether or not the mouse button was pressed or
+     * released. <code>true</code> for pressed, <code>false</code> for
+     * released.
+     */
+    public abstract void mouse(MouseEvent e, boolean pressed);
+
 }

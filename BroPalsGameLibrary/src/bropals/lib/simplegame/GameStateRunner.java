@@ -37,7 +37,7 @@ import java.awt.image.BufferStrategy;
  * Continuously runs the update and render loop of a GameState object.
  * @author Kevin Prehn
  */
-public class GameStateRunner implements KeyListener, MouseListener {
+public class GameStateRunner {
     
     private AssetBank assetBank;
     private GameState currentState;
@@ -97,7 +97,11 @@ public class GameStateRunner implements KeyListener, MouseListener {
      * So we can extend and change how we render in other GameStates
      */
     protected void renderState(GameState state) {
-        
+        Graphics g = currentWindow.getDrawGraphics();
+        if (currentState != null) {
+            currentState.render(g);
+        }
+        currentWindow.swapBuffers(g);
     }
     
     /**
@@ -107,12 +111,16 @@ public class GameStateRunner implements KeyListener, MouseListener {
     public void loop() {
         boolean running = true;
         while(running) {
-            if (currentState == null || currentWindow == null)
+            if (currentState == null || currentWindow == null || 
+                    currentWindow.isRequestingToClose()) {
                 running = false;
+                continue;
+            }
             
             startTime = System.currentTimeMillis();
             GameState runState = currentState; // in case the state is changed
-                                               // in the middle of the loop
+                                              // in the middle of the loop
+            currentWindow.flushInput();
             runState.update();
             renderState(runState);
             diff = System.currentTimeMillis() - startTime;
@@ -122,57 +130,30 @@ public class GameStateRunner implements KeyListener, MouseListener {
                 } catch(Exception e) {}
             }
         }
+        currentWindow.destroy();
     }
 
     
     // applying a level of indirection with the event methods...
-    
-    @Override
-    public void keyTyped(KeyEvent e) {
-        if (currentState != null)
-            currentState.keyTyped(e);
-    }
 
-    @Override
     public void keyPressed(KeyEvent e) {
         if (currentState != null)
-            currentState.keyPressed(e);
+            currentState.key(e, true);
     }
 
-    @Override
     public void keyReleased(KeyEvent e) {
          if (currentState != null)
-            currentState.keyReleased(e);
+            currentState.key(e, false);
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (currentState != null)
-            currentState.mouseClicked(e);
-    }
-
-    @Override
+    
     public void mousePressed(MouseEvent e) {
         if (currentState != null)
-            currentState.mousePressed(e);
+            currentState.mouse(e, true);
     }
 
-    @Override
     public void mouseReleased(MouseEvent e) {
         if (currentState != null)
-            currentState.mouseReleased(e);
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        if (currentState != null)
-            currentState.mouseEntered(e);
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        if (currentState != null)
-            currentState.mouseExited(e);
+            currentState.mouse(e, false);
     }
     
     public AssetBank getAssetBank() {

@@ -91,51 +91,13 @@ public class TestState extends GameState {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-    private void setKey(int keyCode, boolean pressed) {
-        switch(keyCode) {
-            case KeyEvent.VK_LEFT: left = pressed; break;
-            case KeyEvent.VK_RIGHT: right = pressed; break;
-            case KeyEvent.VK_UP: up = pressed; break;
-        }
-    }
-    
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyCode());
-        if (e.getKeyCode() == KeyEvent.VK_U) {
-            getGameStateRunner().setState(new TestState());
-        }
+    public void key(KeyEvent e, boolean pressed) {
         
-        setKey(e.getKeyCode(), true);
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-        setKey(e.getKeyCode(), false);
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        System.out.println(e.getPoint());
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouse(MouseEvent e, boolean pressed) {
+        
     }
     
 }

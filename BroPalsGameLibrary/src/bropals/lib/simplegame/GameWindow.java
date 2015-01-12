@@ -24,6 +24,7 @@
  */
 package bropals.lib.simplegame;
 
+import bropals.lib.simplegame.util.Queue;
 import java.awt.Cursor;
 import java.awt.DisplayMode;
 import java.awt.Frame;
@@ -59,6 +60,10 @@ public class GameWindow {
     private boolean requestToClose = false;
     private GameCursor gameCursor = null;
     private Cursor invisibleCursor = null; //For implementing GameCursor
+    private final Queue<MouseEvent> mouseEventDownQueue = new Queue<>();
+    private final Queue<KeyEvent> keyEventUpQueue = new Queue<>();
+    private final Queue<MouseEvent> mouseEventUpQueue = new Queue<>();
+    private final Queue<KeyEvent> keyEventDownQueue = new Queue<>();
     
     /**
      * Creates a visible GameWindow with the supplied parameters.
@@ -406,7 +411,9 @@ public class GameWindow {
         if (frame.getBufferStrategy() == null) {
             frame.createBufferStrategy(2);
         }
-        return frame.getBufferStrategy().getDrawGraphics();
+        Graphics g = frame.getBufferStrategy().getDrawGraphics();
+        g.translate(getInsetsLeft(), getInsetsTop());
+        return g;
     }
 
     /**
@@ -436,6 +443,10 @@ public class GameWindow {
      */
     public void destroy() {
         if (frame != null) {
+            if (isFullscreen()) {
+                device.setDisplayMode(convertScreenResolution(nativeResolution));
+                device.setFullScreenWindow(null);
+            }
             frame.dispose();
         }
     }
@@ -459,7 +470,7 @@ public class GameWindow {
     }
 
     public void requestToClose() {
-        this.requestToClose = false;
+        this.requestToClose = true;
     }
 
     /**
@@ -480,8 +491,8 @@ public class GameWindow {
     public Point getMousePosition() {
         try {
             Point p = frame.getMousePosition();
-            p.x += getInsetsLeft();
-            p.y += getInsetsTop();
+            p.x -= getInsetsLeft();
+            p.y -= getInsetsTop();
             return p;
         } catch(NullPointerException e) {
             return new Point(-1, -1);
@@ -496,6 +507,27 @@ public class GameWindow {
         this.runner = runner;
     }
     
+        
+    /**
+     * Process all input that has occurred since the last frame.
+     */
+    public void flushInput() {
+        KeyEvent ke;
+        while ( (ke = keyEventDownQueue.next()) != null ) {
+            runner.keyPressed(ke);
+        }
+        while ( (ke = keyEventUpQueue.next()) != null ) {
+            runner.keyReleased(ke);
+        }
+        MouseEvent me;
+        while ( (me = mouseEventDownQueue.next()) != null ) {
+            runner.mousePressed(me);
+        }
+        while ( (me = mouseEventUpQueue.next()) != null ) {
+            runner.mouseReleased(me);
+        }
+    }
+    
     /**
      * The internal key handler for GameWindow.
      */
@@ -503,23 +535,16 @@ public class GameWindow {
 
         @Override
         public void keyTyped(KeyEvent e) {
-            if (runner!=null) {
-                runner.keyTyped(e);
-            }
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if (runner!=null) {
-                runner.keyPressed(e);
-            }
+            keyEventDownQueue.addToQueue(e);
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            if (runner!=null) {
-                runner.keyReleased(e);
-            }
+            keyEventUpQueue.addToQueue(e);
         }
         
     }
@@ -534,47 +559,31 @@ public class GameWindow {
          * @param e the mouse event to transform
          */
         private void translateMouseEvent(MouseEvent e) {
-            e.translatePoint(getInsetsLeft(), getInsetsTop());
+            e.translatePoint(-getInsetsLeft(), -getInsetsTop());
         }
         
         @Override
         public void mouseClicked(MouseEvent e) {
-            if (runner!=null) {
-                translateMouseEvent(e);
-                runner.mouseClicked(e);
-            }
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-            if (runner!=null) {
-                translateMouseEvent(e);
-                runner.mousePressed(e);
-            }
+            translateMouseEvent(e);
+            mouseEventDownQueue.addToQueue(e);
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if (runner!=null) {
-                translateMouseEvent(e);
-                runner.mouseReleased(e);
-            }
+            translateMouseEvent(e);
+            mouseEventUpQueue.addToQueue(e);
         }
 
         @Override
         public void mouseEntered(MouseEvent e) {
-            if (runner!=null) {
-                translateMouseEvent(e);
-                runner.mouseEntered(e);
-            }
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            if (runner!=null) {
-                translateMouseEvent(e);
-                runner.mouseExited(e);
-            }
         }
     }
 }
