@@ -66,6 +66,7 @@ public class Client extends Thread {
         running = false;
         try {
             fromServer.close();
+            toServer.flush();
             toServer.close();
             socket.close();
         } catch(IOException e) {
@@ -78,6 +79,7 @@ public class Client extends Thread {
      * will start a new thread.
      */
     public void listenToServer() {
+        running = true;
         start();
     }
     
@@ -93,7 +95,7 @@ public class Client extends Thread {
     public void run() {
         try {
             String str;
-            while ( (str = fromServer.readLine()) != null ) {
+            while (running && (str = fromServer.readLine()) != null ) {
                 messageHandler.handleMessage(this, str);
             }
         } catch(IOException e) {

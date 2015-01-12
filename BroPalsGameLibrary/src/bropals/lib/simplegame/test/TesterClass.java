@@ -44,7 +44,11 @@ public class TesterClass {
         try {
             Server server = new Server(17373, new TestServerMessageHandler());
             server.startServer();
-        } catch(IOException e) {
+            System.out.println("Started server");
+            Thread.sleep(15000); // wait 15 seconds
+            server.stopServer();
+            System.out.println("Closed server");
+        } catch(Exception e) {
             ErrorLogger.println("Error while making server: " + e);
         }
         /* 
