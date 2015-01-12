@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Groups together GuiGroups. Each GuiGroup will have a name that it is
@@ -80,6 +81,25 @@ public class Gui {
      */
     public void disable(String key) {
         setEnabled(key, false);
+    }
+    
+    /**
+     * Disables all the GuiGroups in this Gui except for the specified ones.
+     * @param dontDisable the GuiGroups that shouldn't be disabled.
+     */
+    public void disableAllBut(String ... dontDisable) {
+        Set<String> keys = groups.keySet();
+        for (String key : keys) {
+            boolean ok = true;
+            for (String str : dontDisable) {
+                if (key.equals(str)) {
+                    ok = false;
+                }
+            }
+            if (ok) {
+                disable(key);
+            }
+        }
     }
     
     /**

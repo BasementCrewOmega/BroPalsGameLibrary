@@ -152,6 +152,7 @@ public class GuiText extends GuiElement {
                     currentLine += (splitText[word] + ' ');
                 }
             }
+            l.add(currentLine);
             lines = (String[])l.toArray(new String[0]);
         }
     }
