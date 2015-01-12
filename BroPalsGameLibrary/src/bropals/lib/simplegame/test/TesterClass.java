@@ -27,6 +27,7 @@ import bropals.lib.simplegame.*;
 import bropals.lib.simplegame.io.PropertiesReader;
 import bropals.lib.simplegame.logger.ErrorLogger;
 import bropals.lib.simplegame.logger.InfoLogger;
+import bropals.lib.simplegame.math.Vector2D;
 import bropals.lib.simplegame.networking.Server;
 import bropals.lib.simplegame.util.AssetBank;
 import bropals.lib.simplegame.util.AssetLoader;
@@ -40,6 +41,7 @@ import java.io.IOException;
 public class TesterClass {
 
     public static void main(String[] args) {
+
         //Test the server
         try {
             Server server = new Server(17373, new TestServerMessageHandler());
@@ -62,5 +64,6 @@ public class TesterClass {
         // begin looping the game!
         runner.loop();
         */
+
     }
 }

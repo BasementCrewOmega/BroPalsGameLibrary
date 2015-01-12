@@ -18,30 +18,20 @@
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- **/
-package bropals.lib.simplegame.test;
-
-import bropals.lib.simplegame.logger.ErrorLogger;
-import bropals.lib.simplegame.networking.Client;
-import java.io.IOException;
-import java.net.InetAddress;
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+package bropals.lib.simplegame.util;
 
 /**
- *
+ * Interface for the function that is used in Counter.
  * @author Jonathon
  */
-public class TesterClassClient {
-
-    public static void main(String[] args) {
-        //Test the client
-        try {
-            Client client = new Client(InetAddress.getByName("192.168.1.73"), 17373, new TestClientMessageHandler());
-            client.listenToServer();
-            client.sendMessageToServer("Message");
-        } catch (IOException e) {
-            ErrorLogger.println("Error while making server: " + e);
-        }
-    }
+public interface CounterFunction {
+    
+    /**
+     * Called when the counter has reached its target number.
+     */
+    void countFinished();
 }

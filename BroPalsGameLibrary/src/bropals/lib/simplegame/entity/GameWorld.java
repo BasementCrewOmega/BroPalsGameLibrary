@@ -39,7 +39,7 @@ public class GameWorld<T extends BaseEntity> {
     private final List<T> entities;
     
     public GameWorld() {
-        entities = Collections.synchronizedList(new ArrayList<T>());
+        entities = new ArrayList<T>();
     }
     
     /**
