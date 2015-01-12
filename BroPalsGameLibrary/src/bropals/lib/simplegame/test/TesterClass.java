@@ -41,6 +41,29 @@ import java.io.IOException;
 public class TesterClass {
 
     public static void main(String[] args) {
-        
+
+        //Test the server
+        try {
+            Server server = new Server(17373, new TestServerMessageHandler());
+            server.startServer();
+            System.out.println("Started server");
+            Thread.sleep(15000); // wait 15 seconds
+            server.stopServer();
+            System.out.println("Closed server");
+        } catch(Exception e) {
+            ErrorLogger.println("Error while making server: " + e);
+        }
+        /* 
+        // make a window
+        GameWindow window = new GameWindow("Super cool", 500, 350);
+
+        // make a GameStateRunner that is using the newly made window with
+        // an inital GameState.
+        GameStateRunner runner = new GameStateRunner(window, new TestState());
+
+        // begin looping the game!
+        runner.loop();
+        */
+
     }
 }

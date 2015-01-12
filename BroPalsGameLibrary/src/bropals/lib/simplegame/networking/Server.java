@@ -113,4 +113,20 @@ public class Server {
         clientHandlers.remove(handler);
         InfoLogger.println("Server now has " + clientHandlers.size() + " clients");
     }
+
+    /**
+     * Closes the server so the Server doesn't accept any more clients.
+     * This method is called after startServer() is called to stop
+     * the server.
+     */
+    public void stopServer() {
+        if (runningServer) {
+            try {
+                serverSocket.close();
+                runningServer = false;
+            } catch(Exception e) {
+                System.out.println("Exception while closing the server");
+            }
+        }
+    }
 }
