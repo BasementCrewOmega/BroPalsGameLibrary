@@ -24,16 +24,19 @@
  */
 package bropals.lib.simplegame;
 
+import java.awt.Cursor;
 import java.awt.DisplayMode;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import static java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -54,7 +57,9 @@ public class GameWindow {
     private int refreshRate;
     private GraphicsDevice device;
     private boolean requestToClose = false;
-
+    private GameCursor gameCursor = null;
+    private Cursor invisibleCursor = null; //For implementing GameCursor
+    
     /**
      * Creates a visible GameWindow with the supplied parameters.
      *
@@ -317,6 +322,38 @@ public class GameWindow {
                 bitDepth, refreshRate
         );
     }
+
+    /**
+     * Gets the current game cursor. If <code>null</code> then the default
+     * system cursor is used.
+     * @return the game cursor
+     */
+    public GameCursor getGameCursor() {
+        return gameCursor;
+    }
+
+    /**
+     * Sets the game cursor. If <code>null</code> then the default
+     * system cursor is used.
+     * @param gameCursor the game cursor
+     */
+    public void setGameCursor(GameCursor gameCursor) {
+        this.gameCursor = gameCursor;
+        if (this.gameCursor != null) {
+            if (invisibleCursor==null) {
+                BufferedImage invisible = new BufferedImage(1, 1, 
+                        BufferedImage.TYPE_4BYTE_ABGR);
+                invisible.getRaster().setPixel(0, 0, new int[]{0, 0, 0, 0});
+                this.invisibleCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+                        invisible, new Point(
+                                gameCursor.getOffsetX(), gameCursor.getOffsetY()), 
+                        "invisible");
+            }
+            frame.setCursor(invisibleCursor);
+        } else {
+            frame.setCursor(Cursor.getDefaultCursor());
+        }
+    }  
     
     /**
      * Sets the size of the window when in windowed mode, and sets the
@@ -373,11 +410,23 @@ public class GameWindow {
     }
 
     /**
-     * Swaps the buffers
+     * Swaps the buffers. Need to pass the graphics object that was just
+     * used to draw to GameWindow.
      *
      * @param g the graphics that was used to draw to the GameWindow
      */
     public void swapBuffers(Graphics g) {
+        if (gameCursor!=null) {
+            Point mp = getMousePosition();
+            if (mp.x > 0 && mp.y > 0) {
+                g.drawImage(
+                    gameCursor.getImage(),
+                    mp.x+gameCursor.getOffsetX(),
+                    mp.y+gameCursor.getOffsetY(),
+                    null
+                );
+            }
+        }
         g.dispose();
         frame.getBufferStrategy().show();
     }

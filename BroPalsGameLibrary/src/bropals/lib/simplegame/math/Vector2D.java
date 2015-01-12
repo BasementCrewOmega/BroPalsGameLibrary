@@ -30,7 +30,7 @@ package bropals.lib.simplegame.math;
  * getter and setter methods taking doubles.
  * @author Kevin Prehn
  */
-public class Vector2D {
+public final class Vector2D {
     
     private float x, y;
     
@@ -184,5 +184,10 @@ public class Vector2D {
                    getY() == ((Vector2D)other).getY();
         }
         return false;
+    }
+    
+    @Override
+    public String toString() {
+        return "[ " + getX() + ", " + getY() + " ]";
     }
 }
