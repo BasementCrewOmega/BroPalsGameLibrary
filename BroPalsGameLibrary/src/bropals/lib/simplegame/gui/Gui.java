@@ -103,6 +103,26 @@ public class Gui {
     }
     
     /**
+     * Disables all the GuiGroups, and then enables the ones in the 
+     * <code>enable</code> list.
+     * @param enable the list of GuiGroups to enable
+     */
+    public void enableOnly(String ... enable) {
+        Set<String> keys = groups.keySet();
+        for (String key : keys) {
+            boolean ok = false;
+            for (String str : enable) {
+                if (key.equals(str)) {
+                    ok = true;
+                }
+            }
+            if (ok) {
+                enable(key);
+            }
+        }
+    }
+    
+    /**
      * Enables one GuiGroup while disabling another.
      * @param on the key of the GuiGroup to enable.
      * @param off the key of the GuiGroup to disable.

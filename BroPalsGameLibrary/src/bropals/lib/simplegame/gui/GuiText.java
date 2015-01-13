@@ -66,6 +66,61 @@ public class GuiText extends GuiElement {
     }
     
     /**
+     * Creates a GuiText object to display text. Word wrap mode is on
+     * by default; default color is Color.BLACK.
+     * @param text the text to display
+     * @param x the top-left corner's X position of the GuiText's box
+     * @param y the top-left corner's Y position of the GuiText's box
+     * @param w the width of the GuiText box
+     * @param h the height of the GuiText
+     * @param font the font that this GuiText will use
+     */
+    public GuiText(String text, int x, int y, int w, int h, Font font) {
+        super(x, y, w, h);
+        setText(text);
+        this.font=font;
+        wordWrap = true;
+        textColor = Color.BLACK;
+    }
+    
+    /**
+     * Creates a GuiText object to display text. Word wrap mode is on
+     * by default; default color is Color.BLACK.
+     * @param text the text to display
+     * @param x the top-left corner's X position of the GuiText's box
+     * @param y the top-left corner's Y position of the GuiText's box
+     * @param w the width of the GuiText box
+     * @param h the height of the GuiText
+     * @param wordWrap the initial word wrap state of this GuiText
+     */
+    public GuiText(String text, int x, int y, int w, int h, boolean wordWrap) {
+        super(x, y, w, h);
+        setText(text);
+        this.font=font;
+        this.wordWrap = wordWrap;
+        textColor = Color.BLACK;
+    }
+    
+    /**
+     * Creates a GuiText object to display text. Word wrap mode is on
+     * by default; default color is Color.BLACK.
+     * @param text the text to display
+     * @param x the top-left corner's X position of the GuiText's box
+     * @param y the top-left corner's Y position of the GuiText's box
+     * @param w the width of the GuiText box
+     * @param h the height of the GuiText
+     * @param font the font that this GuiText will use
+     * @param textColor the text color that this GuiText will use
+     */
+    public GuiText(String text, int x, int y, int w, int h, Font font, Color textColor) {
+        super(x, y, w, h);
+        setText(text);
+        this.font=font;
+        wordWrap = true;
+        this.textColor = textColor;
+    }
+    
+    /**
      * Sets the color of this GuiText's text.
      * @param color the color of this GuiText's text.
      */
