@@ -65,9 +65,6 @@ public class Client extends Thread {
     public void closeClient() {
         running = false;
         try {
-            fromServer.close();
-            toServer.flush();
-            toServer.close();
             socket.close();
         } catch(IOException e) {
             ErrorLogger.println("Unable to close client: " + e);
@@ -89,6 +86,10 @@ public class Client extends Thread {
      */
     public void sendMessageToServer(String message) {
         toServer.println(message);
+    }
+    
+    public InetAddress getAddress() {
+        return socket.getInetAddress();
     }
     
     @Override
