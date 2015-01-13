@@ -23,16 +23,12 @@
  **/
 package bropals.lib.simplegame.test;
 
-import bropals.lib.simplegame.*;
-import bropals.lib.simplegame.io.PropertiesReader;
-import bropals.lib.simplegame.logger.ErrorLogger;
 import bropals.lib.simplegame.logger.InfoLogger;
-import bropals.lib.simplegame.math.Vector2D;
-import bropals.lib.simplegame.networking.Server;
-import bropals.lib.simplegame.util.AssetBank;
 import bropals.lib.simplegame.util.AssetLoader;
-import java.io.File;
+import bropals.lib.simplegame.util.DataTable;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -41,29 +37,17 @@ import java.io.IOException;
 public class TesterClass {
 
     public static void main(String[] args) {
-
-        //Test the server
+        AssetLoader ldr = new AssetLoader();
+        DataTable data = null;
+        
         try {
-            Server server = new Server(17373, new TestServerMessageHandler());
-            server.startServer();
-            System.out.println("Started server");
-            Thread.sleep(15000); // wait 15 seconds
-            server.stopServer();
-            System.out.println("Closed server");
-        } catch(Exception e) {
-            ErrorLogger.println("Error while making server: " + e);
+            data = ldr.loadDataTable("test_files/data.txt", new Class[] { Integer.class, Boolean.class }, 1);
+        } catch (IOException | IllegalStateException ex) {
+            InfoLogger.println("Could not read data table: " + ex);
         }
-        /* 
-        // make a window
-        GameWindow window = new GameWindow("Super cool", 500, 350);
-
-        // make a GameStateRunner that is using the newly made window with
-        // an inital GameState.
-        GameStateRunner runner = new GameStateRunner(window, new TestState());
-
-        // begin looping the game!
-        runner.loop();
-        */
-
+        for (int i=0; i<data.getRowCount(); i++) {
+            Object[] row = data.getRow(i);
+            InfoLogger.println("" + (int)data.getElement(i, 0) + ", " + (boolean)data.getElement(i, 1));
+        }
     }
 }

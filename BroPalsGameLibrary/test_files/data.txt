@@ -1,0 +1,5 @@
+Test file for reading data tables
+MACHINE_NUMBER WORKS
+0              true
+1              false
+2              true

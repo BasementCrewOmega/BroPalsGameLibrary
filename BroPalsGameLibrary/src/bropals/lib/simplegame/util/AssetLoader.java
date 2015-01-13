@@ -18,9 +18,10 @@
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- **/
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
 package bropals.lib.simplegame.util;
 
 import bropals.lib.simplegame.logger.ErrorLogger;
@@ -29,11 +30,11 @@ import bropals.lib.simplegame.sound.SoundEffect;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
@@ -50,7 +51,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * @author Kevin Prehn
  */
 public class AssetLoader {
-
+    
     private File root;
 
     /**
@@ -101,8 +102,8 @@ public class AssetLoader {
      *
      * @param dir the directory that will have its contents loaded.
      * @param bank the bank to load the images into.
-     * @param readSubDirectories if true, this will read all of the given directory's
-     * subdirectories, their subdirectories and so on.
+     * @param readSubDirectories if true, this will read all of the given
+     * directory's subdirectories, their subdirectories and so on.
      */
     public void loadBufferedImagesInDirectory(String dir, AssetBank bank, boolean readSubDirectories) {
         File directory = getFile(dir);
@@ -137,10 +138,10 @@ public class AssetLoader {
      *
      * @param dir the directory that will have its contents loaded
      * @param bank the bank to load the images into.
-     * @param readSubDirectories if true, this will read all of the given directory's
-     * subdirectories, their subdirectories and so on.
+     * @param readSubDirectories if true, this will read all of the given
+     * directory's subdirectories, their subdirectories and so on.
      */
-    public void loadSoundEffectsInDirectory(String dir, AssetBank bank,  boolean readSubDirectories) {
+    public void loadSoundEffectsInDirectory(String dir, AssetBank bank, boolean readSubDirectories) {
         File directory = getFile(dir);
         if (directory.isDirectory()) {
             File[] files = directory.listFiles();
@@ -261,6 +262,202 @@ public class AssetLoader {
         return sourceBuilder.toString();
     }
 
+    /**
+     * Loads all the text from a URL. This method keeps all white space
+     * including new lines.
+     *
+     * @param url the URL to load the source from
+     * @return the source contained in the file.
+     * @throws java.io.IOException if there is an error in reading the URL
+     */
+    public static String loadSourceFromURL(URL url) throws IOException {
+        //Arbitrary string builder initial capacity
+        StringBuilder sourceBuilder = new StringBuilder(500);
+        BufferedReader rdr = new BufferedReader(new InputStreamReader(url.openStream()));
+        int cur;
+        while ((cur = rdr.read()) != -1) {
+            sourceBuilder.append((char) cur);
+        }
+        rdr.close();
+        return sourceBuilder.toString();
+    }
+
+    /**
+     * Loads all of the lines in a text file at the specified URL.
+     *
+     * @param url the URL to load the lines from
+     * @return the lines in the file organized in an ArrayList.
+     * @throws java.io.IOException if there is an error in reading the URL
+     */
+    public static ArrayList<String> loadLinesFromURL(URL url) throws IOException {
+        ArrayList<String> lines = new ArrayList<>();
+        BufferedReader rdr = new BufferedReader(new InputStreamReader(url.openStream()));
+        String line;
+        while ((line = rdr.readLine()) != null) {
+            lines.add(line);
+        }
+        rdr.close();
+        return lines;
+    }
+
+    /**
+     * Loads tabular data. The first row is expected to be the one that defines
+     * the column names. If the type of data in a column is not one of the eight
+     * primitives or a <code>String</code>, then it is expected to have a
+     * default constructor for the function to build it out of.
+     * <p>
+     * The format of the data is space separated columns, and line separated
+     * rows.
+     *
+     * @param loc the relative path to the file that holds the tabular data
+     * @param types the data types
+     * @param skipLines the lines to skip
+     * @return the data put into a data table.
+     * @throws java.io.IOException if an error occurs with reading the file
+     * @throws java.lang.IllegalStateException if the data is incorrectly
+     * formatted
+     */
+    public DataTable loadDataTable(String loc, Class[] types, int skipLines) throws IOException, IllegalStateException {
+        BufferedReader rdr = new BufferedReader(new FileReader(getFile(loc)));
+        return loadDataTable(rdr, types, skipLines);
+    }
+
+    /**
+     * Loads tabular data. The first row is expected to be the one that defines
+     * the column names. If the type of data in a column is not one of the eight
+     * primitives or a <code>String</code>, then it is expected to have a
+     * default constructor for the function to build it out of.
+     * <p>
+     * The format of the data is space separated columns, and line separated
+     * rows.
+     *
+     * @param url the URL to load the tabular data from.
+     * @param types the data types
+     * @param skipLines the lines to skip
+     * @return the data put into a data table.
+     * @throws java.io.IOException if an error occurs with reading the file
+     * @throws java.lang.IllegalStateException if the data is incorrectly
+     * formatted
+     */
+    public static DataTable loadDataTableFromURL(URL url, Class[] types, int skipLines) throws IOException, IllegalStateException {
+        BufferedReader rdr = new BufferedReader(new InputStreamReader(url.openStream()));
+        return loadDataTable(rdr, types, skipLines);
+    }
+    
+    /**
+     * Generified load data table function
+     * @param rdr
+     * @param types
+     * @param skipLines
+     * @return
+     * @throws IOException
+     * @throws IllegalStateException 
+     */
+    private static DataTable loadDataTable(BufferedReader rdr, Class[] types, int skipLines) throws IOException, IllegalStateException {
+        ArrayList<Object[]> rows = new ArrayList<>();
+        String line;
+        String spaceLiteral = Pattern.quote(" ");
+        String newLineLiteral = Pattern.quote(System.getProperty("line.separator"));
+        /* Skip some lines */
+        for (int i = 0; i < skipLines; i++) {
+            rdr.readLine();
+        }
+        line = rdr.readLine(); //Read the column
+        String[] columnNames = line.split(spaceLiteral); //Now you have column names
+        //Reality checking
+        if (columnNames.length != types.length) {
+            throw new IllegalStateException("The column length "
+                    + "of the types array needs to match "
+                    + "the number of columns in the data table!");
+        }
+        //Now read the data
+        int row = 1;
+        Object[] rowData;
+        String[] split;
+        Class curType;
+        
+        while ((line = rdr.readLine()) != null) {
+            rowData = new Object[columnNames.length];
+            split = simpleSplit(line, columnNames.length);
+            if (split.length != columnNames.length) {
+                throw new IllegalStateException("The column length of row "
+                        + row + " does not match the column header length of "
+                        + columnNames.length + "! (it is " + split.length + " columns)");
+            }
+            //Interpret the file
+            for (int i = 0; i < columnNames.length; i++) {
+                curType = types[i];
+                try {
+                    if (curType == Integer.class) {
+                        rowData[i] = Integer.parseInt(split[i]);
+                    } else if (curType == Long.class) {
+                        rowData[i] = Long.parseLong(split[i]);
+                    } else if (curType == Boolean.class) {
+                        if (split[i].equals("true")) {
+                            rowData[i] = true;
+                        } else if (split[i].equals("false")) {
+                            rowData[i] = false;
+                        } else {
+                            throw new NumberFormatException("Boolean is not true or false");
+                        }
+                    } else if (curType == Float.class) {
+                        rowData[i] = Float.parseFloat(split[i]);
+                    } else if (curType == Byte.class) {
+                        rowData[i] = Byte.parseByte(split[i]);
+                    } else if (curType == Short.class) {
+                        rowData[i] = Short.parseShort(split[i]);
+                    } else if (curType == Character.class) {
+                        rowData[i] = split[i].charAt(0);
+                    } else if (curType == Double.class) {
+                        rowData[i] = Double.parseDouble(split[i]);
+                    } else if (curType == String.class) {
+                        rowData[i] = split[i];
+                    } else {
+                        try {
+                            Class cl = Class.forName(split[i]);
+                            rowData[i] = cl.newInstance();
+                        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ie) {
+                            throw new IllegalStateException("Invalid"
+                                    + " data at row " + row + " column " + i + ", "
+                                    + ": " + ie);
+                        }
+                    }
+                } catch (NumberFormatException nfe) {
+                    throw new IllegalStateException("Invalid"
+                            + " data at row " + row + " column " + i + ", "
+                            + ": " + nfe);
+                }
+            }
+            rows.add(rowData);
+            row++;
+        }
+        rdr.close();
+        return new DataTable(types, columnNames, rows);
+    }
+    
+    private static String[] simpleSplit(String str, int amount) {
+        String[] split = new String[amount];
+        char[] c = str.toCharArray();
+        String buf = "";
+        int splitIndex = 0;
+        boolean makeNew = false;
+        for (int i=0; i<c.length; i++) {
+            if (c[i] == ' ') {
+                makeNew = true;
+            } else {
+                if (makeNew) {
+                    split[splitIndex] = buf;
+                    buf = "";
+                    splitIndex++;
+                    makeNew = false;
+                }
+                buf += c[i];
+            }
+        }
+        split[splitIndex] = buf;
+        return split;
+    }
+    
     private File getFile(String loc) {
         return new File(root.getAbsolutePath() + System.getProperty("file.separator") + loc);
     }
