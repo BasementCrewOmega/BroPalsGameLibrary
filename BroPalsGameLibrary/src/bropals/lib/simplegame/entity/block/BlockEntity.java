@@ -132,7 +132,6 @@ public class BlockEntity extends BaseEntity {
                 } else {
                     setY(other.getY() + other.getHeight());
                 }
-                collideWith(other);
                 velocity.setY(0);
             } else {
                 if (getX() < other.getX()) {
@@ -140,9 +139,10 @@ public class BlockEntity extends BaseEntity {
                 } else {
                     setX(other.getX() + other.getWidth());
                 }
-                collideWith(other);
                 velocity.setX(0);
             }
+            collideWith(other);
+            other.collideWith(this);
             return true;
         }
         // no collision
