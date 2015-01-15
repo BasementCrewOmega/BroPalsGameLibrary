@@ -164,9 +164,18 @@ public class LevelEditorUtil {
      * Values will be changed for an object by typing in valid input and
      * pressing Enter. If the type is a primitive, then it will be parsed from
      * the text and set in the currently edited object, if it is a
-     * <code>String</code> then the field will be set as is, finally, if the
-     * type is an object with a default constructor, then the class path to the
-     * implemented version of that object type is expected to be supplied.
+     * <code>String</code> then the field will be set as is.
+     * 
+     * <p>
+     * For object types, the field will be split into a list of inputs, using
+     * spaces as the separators; the first input is expected to the be
+     * class path of an object implementation of the abstract class or
+     * interface, and the inputs afterward are used as parameters to calling
+     * the object's constructor. Problems may occur if an object has more than
+     * one constructor with the same length. (These constructors must only
+     * have primitives or <code>String</code> types as their arguments; if 
+     * there is a constructor that contains something else, then it is
+     * ignored)
      *
      * @param <T> the class that the property panel is being generated for.
      * @param c the type to generate the property panel to for.

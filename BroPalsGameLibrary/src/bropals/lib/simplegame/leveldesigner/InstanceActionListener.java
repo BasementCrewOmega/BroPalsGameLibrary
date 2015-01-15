@@ -27,7 +27,9 @@ package bropals.lib.simplegame.leveldesigner;
 import bropals.lib.simplegame.logger.ErrorLogger;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.regex.Pattern;
 import javax.swing.JTextField;
 
 /**
@@ -50,9 +52,45 @@ public class InstanceActionListener implements ActionListener {
             try {
                 JTextField f = (JTextField) e.getSource();
                 try {
-                    String text = f.getText();
-                    Class c = Class.forName(text);
-                    Object obj = c.newInstance();
+                    String[] text = f.getText().split(Pattern.quote(" "));
+                    String className = text[0];
+                    String[] params = new String[text.length-1];
+                        for (int i=1; i<text.length; i++) {
+                            params[i-1] = text[i];
+                        }
+                    Class c = Class.forName(className);
+                    Object obj = null;
+                    
+                    Constructor[] constructors = c.getConstructors();
+                    //Guess which constructor is being used
+                    Constructor using = null;
+                    for (Constructor constructor : constructors) {
+                        if (constructor.getParameterTypes().length == params.length) {
+                            //Use the first one found
+                            Class[] typesCheck = constructor.getParameterTypes();
+                            for (Class clas : typesCheck) {
+                                if ( !(clas.isPrimitive() || clas == String.class) ) {
+                                    continue; //Don't use this
+                                }
+                            }
+                            using = constructor;
+                            break;
+                        }
+                    }
+                    if (using == null) {
+                        throw new IllegalArgumentException("No constructor with " + params.length + " arguments exist!");
+                    }
+                    Class[] paramTypes = using.getParameterTypes();
+                    Object[] paramValues = new Object[paramTypes.length];
+                    for (int i=0; i<paramTypes.length; i++) {
+                        if (paramTypes[i].isPrimitive()) {
+                            paramValues[i] = TypeUtil.parsePrimitive(params[i], paramTypes[i]);
+                        } else if (paramTypes[i] == String.class) {
+                            paramValues[i] = params[i];
+                        }
+                    }
+                    //Now use the paramValues to create the object
+                    obj = using.newInstance(paramValues);
                     field.set(panel.getEditing(), obj);
                 } catch(ClassNotFoundException | InstantiationException cnfe) {
                     Object obj = field.get(panel.getEditing());
