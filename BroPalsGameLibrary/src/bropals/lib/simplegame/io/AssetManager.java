@@ -200,6 +200,17 @@ public class AssetManager {
     }
     
     /**
+     * Checks to see if this AssetManager as an AssetLoader for this type
+     * of asset.
+     * @param assetType the type of asset the asset loader loads.
+     * @return <code>true</code> if this AssetManager has an AssetLoader for
+     * the given asset type, <code>false</code> otherwise.
+     */
+    public boolean hasAssetLoader(Class assetType) {
+        return loaders.get(assetType)!=null;
+    }
+    
+    /**
      * Gets a file from a path relative to this AssetManager's root.
      * @param loc the relative location
      * @return the file at that location

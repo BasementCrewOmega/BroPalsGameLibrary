@@ -108,8 +108,8 @@ public class BlockEntity extends BaseEntity {
      * @return Whether or not this object collided with the other object.
      */
     public boolean handleCollide(BlockEntity other) {
-        if (!other.isCollidable() || !isCollidable()) // return false if any of the two can't collide
-        {
+        if (!other.isCollidable() || !isCollidable()) { // return false if any of the two can't collide
+            System.out.println("Can't collide because one is not collidable");
             return false;
         }
 
