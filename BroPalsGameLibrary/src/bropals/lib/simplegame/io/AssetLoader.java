@@ -26,6 +26,7 @@ package bropals.lib.simplegame.io;
 
 import bropals.lib.simplegame.logger.ErrorLogger;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -76,9 +77,7 @@ public abstract class AssetLoader<T> {
      */
     public void loadAsset(String key, File file) {
         try {
-            loadAsset(key,
-                    Files.newInputStream(file.toPath())
-            );
+            loadAsset(key, new FileInputStream(file));
         } catch (IOException ex) {
             ErrorLogger.println("Could not open InputStream with file: " + 
                     file.toString() + ": " + ex);
