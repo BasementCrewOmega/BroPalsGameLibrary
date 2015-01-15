@@ -22,22 +22,44 @@
  * SOFTWARE.
  *
  */
-package bropals.lib.simplegame.test;
+package bropals.lib.simplegame.leveldesigner;
 
-import bropals.lib.simplegame.leveldesigner.LevelEditorUtil;
-import bropals.lib.simplegame.leveldesigner.PropertyPanel;
 import bropals.lib.simplegame.logger.ErrorLogger;
-import bropals.lib.simplegame.util.Counter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.reflect.Field;
+import javax.swing.JTextField;
 
 /**
+ * Byte ActionListener for PropertyPanel.
  *
- * @author Owner
+ * @author Jonathon
  */
-public class TesterClass {
+class ByteActionListener implements ActionListener {
 
-    public static void main(String[] args) {
+    private final PropertyPanel panel;
+    private Field field;
 
-        PropertyPanel<Counter> ppc = LevelEditorUtil.generatePropertyPanel(Counter.class, "looping", "function", "targetNumber");
-        
+    public ByteActionListener(PropertyPanel panel, Field field) {
+        this.panel = panel;
+        this.field=field;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (panel.getEditing() != null) {
+            try {
+                JTextField f = (JTextField) e.getSource();
+                String text = f.getText();
+                try {
+                    byte b = Byte.parseByte(text);
+                    field.set(panel.getEditing(), b);
+                } catch(NumberFormatException nfe) {
+                    f.setText("" + field.getByte(panel.getEditing()));
+                }
+            } catch(Exception except) {
+                ErrorLogger.println("Could not set valid for field for some reason: " + except);
+            }
+        }
     }
 }

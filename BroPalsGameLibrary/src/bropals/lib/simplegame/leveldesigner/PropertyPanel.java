@@ -22,22 +22,34 @@
  * SOFTWARE.
  *
  */
-package bropals.lib.simplegame.test;
+package bropals.lib.simplegame.leveldesigner;
 
-import bropals.lib.simplegame.leveldesigner.LevelEditorUtil;
-import bropals.lib.simplegame.leveldesigner.PropertyPanel;
-import bropals.lib.simplegame.logger.ErrorLogger;
-import bropals.lib.simplegame.util.Counter;
+import javax.swing.JPanel;
 
 /**
- *
- * @author Owner
+ * An extended JPanel to handle property editing with JTextFields.
+ * @author Jonathon
+ * @param <T> the type of object that this PropertyPanel is editing.
  */
-public class TesterClass {
+public class PropertyPanel<T> extends JPanel {
+    
+    private T editing = null;
 
-    public static void main(String[] args) {
-
-        PropertyPanel<Counter> ppc = LevelEditorUtil.generatePropertyPanel(Counter.class, "looping", "function", "targetNumber");
-        
+    /**
+     * Gets the object that this PropertyPanel is currently editing.
+     * @return the object that this PropertyPanel is editing.
+     */
+    public T getEditing() {
+        return editing;
     }
+
+    /**
+     * Sets the object that this PropertyPanel will edit.
+     * @param editing the object for this PropertyPanel to edit.
+     */
+    public void setEditing(T editing) {
+        this.editing = editing;
+    }
+    
+    
 }

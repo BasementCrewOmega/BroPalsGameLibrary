@@ -22,22 +22,44 @@
  * SOFTWARE.
  *
  */
-package bropals.lib.simplegame.test;
+package bropals.lib.simplegame.leveldesigner;
 
-import bropals.lib.simplegame.leveldesigner.LevelEditorUtil;
-import bropals.lib.simplegame.leveldesigner.PropertyPanel;
 import bropals.lib.simplegame.logger.ErrorLogger;
-import bropals.lib.simplegame.util.Counter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.reflect.Field;
+import javax.swing.JTextField;
 
 /**
- *
- * @author Owner
+ * Boolean action listener.
+ * @author Jonathon
  */
-public class TesterClass {
+class BooleanActionListener implements ActionListener {
+    
+    private final PropertyPanel panel;
+    private Field field;
+    
+    public BooleanActionListener(PropertyPanel panel, Field field) {
+        this.panel = panel;
+        this.field = field;
+    }
 
-    public static void main(String[] args) {
-
-        PropertyPanel<Counter> ppc = LevelEditorUtil.generatePropertyPanel(Counter.class, "looping", "function", "targetNumber");
-        
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (panel.getEditing() != null) {
+            try {
+                JTextField f = (JTextField) e.getSource();
+                String text = f.getText();
+                if (text.equals("true")) {
+                    this.field.set(panel.getEditing(), true);
+                } else if (text.equals("false")) {
+                    this.field.set(panel.getEditing(), false);
+                } else {
+                    f.setText("" + this.field.getBoolean(panel.getEditing()));
+                }
+            } catch(Exception except) {
+                ErrorLogger.println("Could not set valid for field for some reason: " + except);
+            }
+        }
     }
 }
