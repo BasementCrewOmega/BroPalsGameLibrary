@@ -35,7 +35,7 @@ import javax.imageio.ImageIO;
  * Loads BufferedImages.
  * @author Jonathon
  */
-public class BufferedImageLoader extends AssetLoader {
+public class BufferedImageLoader extends AssetLoader<BufferedImage> {
 
     @Override
     public void loadAsset(String key, InputStream inputStream) {
