@@ -22,22 +22,43 @@
  * SOFTWARE.
  *
  */
-package bropals.lib.simplegame.test;
+package bropals.lib.simplegame.leveldesigner;
 
-import bropals.lib.simplegame.leveldesigner.LevelEditorUtil;
-import bropals.lib.simplegame.leveldesigner.PropertyPanel;
 import bropals.lib.simplegame.logger.ErrorLogger;
-import bropals.lib.simplegame.util.Counter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.reflect.Field;
+import javax.swing.JTextField;
 
 /**
  *
- * @author Owner
+ * @author Jonathon
  */
-public class TesterClass {
+class CharacterActionListener implements ActionListener {
+    
+    private final PropertyPanel panel;
+    private Field field;
 
-    public static void main(String[] args) {
+    public CharacterActionListener(PropertyPanel panel, Field field) {
+        this.panel = panel;
+        this.field = field;
+    }
 
-        PropertyPanel<Counter> ppc = LevelEditorUtil.generatePropertyPanel(Counter.class, "looping", "function", "targetNumber");
-        
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (panel.getEditing() != null) {
+            try {
+                JTextField f = (JTextField) e.getSource();
+                try {
+                    String text = f.getText();
+                    char c = text.toCharArray()[0];
+                    field.set(panel.getEditing(), c);
+                } catch(ArrayIndexOutOfBoundsException aioobe) {
+                    f.setText("" + field.getChar(panel.getEditing()));
+                }
+            } catch(Exception except) {
+                ErrorLogger.println("Could not set valid for field for some reason: " + except);
+            }
+        }
     }
 }
