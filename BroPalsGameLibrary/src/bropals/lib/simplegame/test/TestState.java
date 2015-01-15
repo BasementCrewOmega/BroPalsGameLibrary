@@ -74,7 +74,7 @@ public class TestState extends GameState {
     
     @Override
     public void onEnter() {
-        world = new GameWorld<>();
+        world = new GameWorld<>(this);
        
         world.addEntity(new VertexShape(world, 
             new float[]{40,50, 

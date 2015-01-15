@@ -188,6 +188,14 @@ public class BlockEntity extends BaseEntity {
     }
 
     /**
+     * Get the x part of the block's center position
+     * @return The x part of the block's center position
+     */
+    public float getCenterX() {
+        return x + (width/2);
+    }
+    
+    /**
      * Return the block's y position.
      *
      * @return the block's y position
@@ -205,6 +213,14 @@ public class BlockEntity extends BaseEntity {
         this.y = y;
     }
 
+     /**
+     * Get the y part of the block's center position
+     * @return The y part of the block's center position
+     */
+    public float getCenterY() {
+        return y + (height/2);
+    }
+    
     /**
      * Return the block's width.
      *

@@ -23,6 +23,7 @@
  **/
 package bropals.lib.simplegame.entity;
 
+import bropals.lib.simplegame.state.GameState;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,8 +38,10 @@ import java.util.List;
 public class GameWorld<T extends BaseEntity> {
     
     private final List<T> entities;
+    private GameState stateInside;
     
-    public GameWorld() {
+    public GameWorld(GameState stateIn) {
+        stateInside = stateIn;
         entities = new ArrayList<T>();
     }
     
@@ -77,5 +80,9 @@ public class GameWorld<T extends BaseEntity> {
             entities.add(entity);
             entity.setParent(this);
         }
+    }
+    
+    public GameState getState() {
+        return stateInside;
     }
 }

@@ -36,7 +36,7 @@ import java.awt.event.MouseEvent;
  */
 public class EntityState extends GameState {
 
-    private final GameWorld<BaseEntity> gameWorld = new GameWorld();
+    private final GameWorld<BaseEntity> gameWorld = new GameWorld(this);
 
     /**
      * Gets this EntityState's GameWorld.

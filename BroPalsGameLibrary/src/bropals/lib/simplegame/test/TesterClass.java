@@ -41,7 +41,8 @@ import java.io.IOException;
 public class TesterClass {
 
     public static void main(String[] args) {
-
+        System.out.println("Tester class is empty right now...");
+        /*
         //Test the server
         try {
             Server server = new Server(17373, new TestServerMessageHandler());
@@ -53,6 +54,8 @@ public class TesterClass {
         } catch(Exception e) {
             ErrorLogger.println("Error while making server: " + e);
         }
+        */
+        
         /* 
         // make a window
         GameWindow window = new GameWindow("Super cool", 500, 350);
