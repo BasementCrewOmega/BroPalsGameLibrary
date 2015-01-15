@@ -24,6 +24,8 @@
  */
 package bropals.lib.simplegame.test;
 
+import bropals.lib.simplegame.GameStateRunner;
+import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.leveldesigner.LevelEditorUtil;
 import bropals.lib.simplegame.leveldesigner.PropertyPanel;
 import bropals.lib.simplegame.logger.ErrorLogger;
@@ -36,8 +38,6 @@ import bropals.lib.simplegame.util.Counter;
 public class TesterClass {
 
     public static void main(String[] args) {
-
-        PropertyPanel<Counter> ppc = LevelEditorUtil.generatePropertyPanel(Counter.class, "looping", "function", "targetNumber");
-        
+        GameWindow window = new GameWindow("Test", 640, 480);
     }
 }

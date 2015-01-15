@@ -25,6 +25,7 @@
 package bropals.lib.simplegame.io;
 
 import bropals.lib.simplegame.logger.ErrorLogger;
+import bropals.lib.simplegame.logger.InfoLogger;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +41,7 @@ public class BufferedImageLoader extends AssetLoader {
     public void loadAsset(String key, InputStream inputStream) {
         try {
             add(key, (BufferedImage)ImageIO.read(inputStream));
+            InfoLogger.println("Loaded an image with the key " + key);
         } catch(IOException e) {
             ErrorLogger.println("Could not load image " + key + ": " + e);
         }
