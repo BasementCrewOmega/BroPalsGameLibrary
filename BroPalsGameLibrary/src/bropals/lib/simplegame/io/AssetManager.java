@@ -24,9 +24,16 @@
  */
 package bropals.lib.simplegame.io;
 
+import bropals.lib.simplegame.logger.ErrorLogger;
 import bropals.lib.simplegame.sound.SoundEffect;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -162,7 +169,7 @@ public class AssetManager {
                 String name = extractNameWithoutExtension(f);
                 String path = loc + System.getProperty("file.separator") + f.getName();
                 if (f.isFile()) {
-                    loadAsset(loc, name, assetType);
+                    loadAsset(path, name, assetType);
                 } else if (f.isDirectory() && recursive) {
                     loadAssetsInDirectories(path, assetType, true);
                 }
@@ -199,5 +206,54 @@ public class AssetManager {
      */
     private File getFile(String loc) {
         return new File(root.getAbsolutePath() + System.getProperty("file.separator") + loc);
+    }
+    
+    /**
+     * Loads the source from a file.
+     * @param loc the relative location of the file.
+     * @return the source from the file.
+     */
+    public String loadSource(String loc) {
+        try {
+            return loadSource(new FileInputStream(getFile(loc)));
+        } catch (FileNotFoundException ex) {
+            ErrorLogger.println("Could not find file: " + loc);
+            return null;
+        }
+    }
+    
+    /**
+     * Loads source from an input stream.
+     * @param inputStream the input stream where the source is located
+     * @return the source
+     */
+    private String loadSource(InputStream inputStream) {
+        try {
+            String source = "";
+            InputStreamReader rdr = new InputStreamReader(inputStream);
+            int c;
+            while ( ( c = rdr.read() ) != -1) {
+                source += (char)c;
+            }
+            rdr.close();
+            return source;
+        } catch(IOException ioe) {
+            ErrorLogger.println("Could not load source from input stream");
+            return null;
+        }
+    }
+    
+    /**
+     * Loads a source file at a URL.
+     * @param url the URL of where the source is.
+     * @return the loaded source
+\     */
+    public String loadSourceFromURL(URL url) {
+        try {
+            return loadSource(url.openStream());
+        } catch (IOException ex) {
+            ErrorLogger.println("Could not load source from URL");
+            return null;
+        }
     }
 }
