@@ -27,6 +27,7 @@ package bropals.lib.simplegame.entity.block;
 import bropals.lib.simplegame.entity.BaseEntity;
 import bropals.lib.simplegame.entity.GameWorld;
 import bropals.lib.simplegame.math.Vector2D;
+import bropals.lib.simplegame.math.Vector2DCapped;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -264,6 +265,16 @@ public class BlockEntity extends BaseEntity {
      */
     public Vector2D getVelocity() {
         return velocity;
+    }
+    
+    /**
+     * Make the velocity a Vector2DCapped object, to limit the velocity.
+     * @param xLimit The limit of the velocity on the x axis
+     * @param yLimit The limit of the velocity on the y axis
+     */
+    public void setCappedVelocity(float xLimit, float yLimit) {
+        velocity = new Vector2DCapped(velocity.getX(), velocity.getY(), 
+                xLimit, yLimit);
     }
 
     /**
