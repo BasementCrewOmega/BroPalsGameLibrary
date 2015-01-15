@@ -44,20 +44,68 @@ public abstract class GuiElement {
         rectangle = new Rectangle(x, y, w, h);
     }
     
+    /**
+     * Gets the X position of this GuiElement
+     * @return the X position of this GuiElement
+     */
     public int getX() {
         return rectangle.x;
     }
     
+    /**
+     * Gets the Y position of this GuiElement
+     * @return the Y position of this GuiElement
+     */
     public int getY() {
         return rectangle.y;
     }
     
+    /**
+     * Gets the width of this GuiElement
+     * @return the width of this GuiElement
+     */
     public int getWidth() {
         return rectangle.width;
     }
     
+    /**
+     * Gets the height of this GuiElement
+     * @return the height of this GuiElement
+     */
     public int getHeight() {
         return rectangle.height;
+    }
+    
+    /**
+     * Sets the X position of this GuiElement
+     * @param x the X position of this GuiElement
+     */
+    public void setX(int x) {
+        rectangle.x=x;
+    }
+    
+    /**
+     * Sets the Y position of this GuiElement
+     * @param y the Y position of this GuiElement
+     */
+    public void setY(int y) {
+        rectangle.y=y;
+    }
+    
+    /**
+     * Sets the width of this GuiElement
+     * @param width the width of this GuiElement
+     */
+    public void setWidth(int width) {
+        rectangle.width=width;
+    }
+    
+    /**
+     * Sets the height of this GuiElement
+     * @param height the height of this GuiElement
+     */
+    public void setHeight(int height) {
+        rectangle.height=height;
     }
     
     /**

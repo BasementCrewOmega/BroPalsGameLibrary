@@ -154,6 +154,12 @@ public class GuiText extends GuiElement {
         lines = null;
     }
 
+    @Override
+    public void setWidth(int width) {
+        super.setWidth(width);
+        lines = null;
+    }    
+
     /**
      * Gets the text padding. This is similar to the CSS text padding..
      * @return the text padding
