@@ -25,7 +25,8 @@ package bropals.lib.simplegame.state;
 
 import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
-import bropals.lib.simplegame.util.AssetBank;
+import bropals.lib.simplegame.io.AssetManager;
+import bropals.lib.simplegame.sound.SoundEffect;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -48,10 +49,10 @@ public abstract class GameState {
      */
     private GameWindow window;
     /**
-     * A reference to the AssetBank in the GameStateRunner running
+     * A reference to the AssetManager in the GameStateRunner running
      * this game state.
      */
-    private AssetBank assetBank;
+    private AssetManager assetManager;
     
     /**
      * A reference to the GameStateRunner that is running this GameState.
@@ -78,29 +79,29 @@ public abstract class GameState {
     /**
      * For internal use.
      */
-    public void setAssetBank(AssetBank bank) {
-        assetBank = bank;
+    public void setAssetManager(AssetManager assetManager) {
+        this.assetManager = assetManager;
     }
     
     /**
      * Gets the image with the specified key from this GameState's AssetBank.
      * This is the same thing as doing 
-     * <code>getAssetBank().getImage(key)</code>
+     * <code>getAssetManager().getAsset(key, BufferedImage.class)</code>
      * @param key the image key
      * @return the image with the given key if it exists.
      */
     public BufferedImage getImage(String key) {
-        return getAssetBank().getImage(key);
+        return getAssetManager().getAsset(key, BufferedImage.class);
     }
     
     /**
      * Convenience method for playing a sound effect from this GameState's
      * AssetBank. This is the same as doing 
-     * <code>getAssetBank().getSoundEffect(key).play()</code>
+     * <code>getAssetManager().getAsset(key, SoundEffect.class).play()</code>
      * @param key 
      */
     public void playSoundEffect(String key) {
-        getAssetBank().getSoundEffect(key).play();
+        getAssetManager().getAsset(key, SoundEffect.class).play();
     }
     
     /**
@@ -109,8 +110,8 @@ public abstract class GameState {
      * @return a reference to the AssetBank used by the GameStateRunner 
      * that is running this GameState.
      */
-    public AssetBank getAssetBank() {
-        return assetBank;
+    public AssetManager getAssetManager() {
+        return assetManager;
     }
 
     /**

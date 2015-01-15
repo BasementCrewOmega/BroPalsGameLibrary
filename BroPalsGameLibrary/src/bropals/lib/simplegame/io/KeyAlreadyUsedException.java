@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  **/
-package bropals.lib.simplegame.util;
+package bropals.lib.simplegame.io;
 
 /**
  * An exception used by AssetLoader

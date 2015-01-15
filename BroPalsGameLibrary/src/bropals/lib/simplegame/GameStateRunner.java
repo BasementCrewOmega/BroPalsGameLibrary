@@ -23,15 +23,11 @@
  **/
 package bropals.lib.simplegame;
 
+import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.state.GameState;
-import bropals.lib.simplegame.util.AssetBank;
-import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferStrategy;
 
 /**
  * Continuously runs the update and render loop of a GameState object.
@@ -39,7 +35,7 @@ import java.awt.image.BufferStrategy;
  */
 public class GameStateRunner {
     
-    private AssetBank assetBank;
+    private AssetManager assetManager;
     private GameState currentState;
     private GameWindow currentWindow;
     private long startTime, diff;
@@ -55,7 +51,7 @@ public class GameStateRunner {
         millisBetweenFrames = 40;
         currentWindow = window;
         currentWindow.giveGameStateRunner(this);
-        assetBank = new AssetBank();
+        assetManager = new AssetManager();
     }
     
     /**
@@ -88,7 +84,7 @@ public class GameStateRunner {
         
         currentState = state;
         state.setWindow(currentWindow);
-        state.setAssetBank(assetBank);
+        state.setAssetManager(assetManager);
         state.setGameStateRunner(this);
         state.onEnter();
     }
@@ -156,7 +152,7 @@ public class GameStateRunner {
             currentState.mouse(e, false);
     }
     
-    public AssetBank getAssetBank() {
-        return assetBank;
+    public AssetManager getAssetManager() {
+        return assetManager;
     }
 }
