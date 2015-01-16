@@ -34,12 +34,14 @@ public class Animation {
     
     ArrayList<Track> tracks;
     Track currentTrack;
+    int currentTrackIndex;
     
     /**
      * Create a new Animation object with the given tracks.
      * @param tracks The initial tracks in this Animation object.
      */
     public Animation(ArrayList<Track> tracks) {
+        this();
         this.tracks = tracks;
     }
     
@@ -59,6 +61,19 @@ public class Animation {
         }
     }
     
+    /**
+     * Get the index of the currently active track. 
+     * @return The index of the currently active track. Returns -1 if
+     *  there is no active track.
+     */
+    public int getCurrentTrackIndex() {
+        return currentTrackIndex;
+    }
+    
+    /**
+     * Get the current image from the current track.
+     * @return The current image from the current track.
+     */
     public BufferedImage getCurrentImage() {
         return currentTrack.getCurrentImage();
     }
