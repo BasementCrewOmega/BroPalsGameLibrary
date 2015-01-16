@@ -108,10 +108,8 @@ public class BlockEntity extends BaseEntity {
      * @return Whether or not this object collided with the other object.
      */
     public boolean handleCollide(BlockEntity other) {
-        if (!other.isCollidable() || !isCollidable()) { // return false if any of the two can't collide
-            System.out.println("Can't collide because one is not collidable");
+        if (other == this) // can't collide with self
             return false;
-        }
 
         float smallestMaxX = other.getX() + other.getWidth()
                 < getX() + getWidth() ? other.getX() + other.getWidth()
@@ -127,20 +125,23 @@ public class BlockEntity extends BaseEntity {
         float penY = largestMinY - smallestMaxY;
 
         if (penX < 0 && penY < 0) {
-            if (penY > penX) { // if y is closer to 0 than x is
-                if (getY() < other.getY()) {
-                    setY(other.getY() - getHeight());
+            if (isCollidable() && other.isCollidable()) {
+                // only fix the collision if you can collide with the other block
+                if (penY > penX) { // if y is closer to 0 than x is
+                    if (getY() < other.getY()) {
+                        setY(other.getY() - getHeight());
+                    } else {
+                        setY(other.getY() + other.getHeight());
+                    }
+                    velocity.setY(0);
                 } else {
-                    setY(other.getY() + other.getHeight());
+                    if (getX() < other.getX()) {
+                        setX(other.getX() - getWidth());
+                    } else {
+                        setX(other.getX() + other.getWidth());
+                    }
+                    velocity.setX(0);
                 }
-                velocity.setY(0);
-            } else {
-                if (getX() < other.getX()) {
-                    setX(other.getX() - getWidth());
-                } else {
-                    setX(other.getX() + other.getWidth());
-                }
-                velocity.setX(0);
             }
             collideWith(other);
             other.collideWith(this);
@@ -316,10 +317,10 @@ public class BlockEntity extends BaseEntity {
     /**
      * Set this BlockEntity to collidable or not.
      *
-     * @param anchored The BlockEntity's new collidable value.
+     * @param coll The BlockEntity's new collidable value.
      */
-    public void setCollidable(boolean anchored) {
-        this.collidable = collidable;
+    public void setCollidable(boolean coll) {
+        this.collidable = coll;
     }
 
 }
