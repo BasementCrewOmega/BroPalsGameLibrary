@@ -137,7 +137,7 @@ public class AssetManager {
     public <T> T getAsset(String key, Class<T> assetType) {
         return (T) loaders.get(assetType).getAsset(key);
     }
-    
+        
     /**
      * Loads an asset and stores it as the given key.
      * @param <T> the type of the asset that is being loaded
@@ -147,6 +147,16 @@ public class AssetManager {
      */
     public <T> void loadAsset(String loc, String key, Class<T> assetType) {
         loaders.get(assetType).loadAsset(key, getFile(loc));
+    }
+    
+    /**
+     * Removes an asset from memory.
+     * @param <T> the type of the asset to unload
+     * @param key the key of the asset to unload
+     * @param assetType the type of the asset to unload
+     */
+    public <T> void unloadAsset(String key, Class<T> assetType) {
+        loaders.get(assetType).unload(key);
     }
     
     /**
@@ -208,6 +218,16 @@ public class AssetManager {
      */
     public boolean hasAssetLoader(Class assetType) {
         return loaders.get(assetType)!=null;
+    }
+    
+    /**
+     * Gets the asset loader that loads the specified type.
+     * @param <T> the type of asset loader to get
+     * @param assetType the type of asset the loader can load
+     * @return the asset requested loader
+     */
+    public <T> AssetLoader<T> getAssetLoader(Class<T> assetType) {
+        return loaders.get(assetType);
     }
     
     /**

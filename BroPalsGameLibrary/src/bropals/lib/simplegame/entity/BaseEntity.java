@@ -41,8 +41,12 @@ public abstract class BaseEntity {
      * @param par The parent of this new entity.
      */
     public BaseEntity(GameWorld par) {
-        parent = par;
-        parent.addEntity(this);
+        if (par!=null) {
+            parent = par;
+            parent.addEntity(this);
+        } else {
+            parent = null;
+        }
     }
 
     /**

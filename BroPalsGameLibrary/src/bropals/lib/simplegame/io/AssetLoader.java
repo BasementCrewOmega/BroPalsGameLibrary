@@ -99,4 +99,12 @@ public abstract class AssetLoader<T> {
                     url.toString() + ": " + ex);
         }
     }
+    
+    /**
+     * Removes the asset with the specified key from memory.
+     * @param key the key of the asset to remove
+     */
+    public void unload(String key) {
+        assets.remove(key);
+    }
 }
