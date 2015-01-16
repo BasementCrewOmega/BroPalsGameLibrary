@@ -138,4 +138,11 @@ public class Track {
         this.frameWaitOn = 0; // reset counter
     }
 
+    /**
+     * Get the raw array of BufferedImages from this Track object.
+     * @return The raw array of BufferedImages.
+     */
+    public BufferedImage[] getImages() {
+        return images;
+    }
 }

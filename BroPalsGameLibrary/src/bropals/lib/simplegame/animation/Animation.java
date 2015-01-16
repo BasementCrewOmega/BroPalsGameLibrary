@@ -81,4 +81,12 @@ public class Animation {
     public void setTrack(int index) {
         currentTrack = tracks.get(index);
     }
+    
+    /**
+     * Get the current track.
+     * @return The currently active track
+     */
+    public Track getTrackOn() {
+        return currentTrack;
+    }
 }
