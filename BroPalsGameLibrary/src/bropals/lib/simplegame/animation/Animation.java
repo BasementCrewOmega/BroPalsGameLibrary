@@ -95,6 +95,7 @@ public class Animation {
      */
     public void setTrack(int index) {
         currentTrack = tracks.get(index);
+        currentTrackIndex = tracks.indexOf(currentTrack);
     }
     
     /**
