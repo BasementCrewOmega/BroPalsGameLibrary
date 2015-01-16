@@ -26,6 +26,7 @@ package bropals.lib.simplegame.io;
 
 import bropals.lib.simplegame.logger.ErrorLogger;
 import bropals.lib.simplegame.sound.SoundEffect;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -85,6 +86,22 @@ public class AssetManager {
      */
     public void loadSoundEffectsInDirectories(String loc, boolean recursive) {
         loadAssetsInDirectories(loc, SoundEffect.class, true);
+    }
+    
+    /**
+     * Creates a copy of the image already loaded that is flipped horizontally.
+     * @param key The key of the image.
+     * @param oldImage the image to make a flipped copy of
+     */
+    public void createHorizontialFlipCopy(BufferedImage oldImage, String key) {
+        BufferedImage newImage = new BufferedImage(oldImage.getWidth(), 
+                oldImage.getHeight(), BufferedImage.TRANSLUCENT);
+        Graphics2D g2 = (Graphics2D) newImage.getGraphics();
+        for (int x=0; x<newImage.getWidth(); x++) {
+            g2.drawImage(oldImage.getSubimage(oldImage.getWidth() - x - 1, 0, 1, 
+                    oldImage.getHeight()), x, 0, null);
+        }
+        loaders.get(BufferedImage.class).add(key, newImage);
     }
     
     /**

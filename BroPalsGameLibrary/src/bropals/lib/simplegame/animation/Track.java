@@ -75,7 +75,7 @@ public class Track {
         
         for (int r=0; r<rows; r++) {
             for (int c=0; c<cols; c++) {
-                images[(r * c) + c] = img.getSubimage(c * width, r * height, 
+                images[(r * cols) + c] = img.getSubimage(c * width, r * height, 
                         width, height);
             }
         }
