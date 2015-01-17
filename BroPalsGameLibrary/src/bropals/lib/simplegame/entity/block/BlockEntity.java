@@ -156,12 +156,10 @@ public class BlockEntity extends BaseEntity {
      * BlockEntity's GameWorld.
      */
     public void checkCollisions() {
-        List<BaseEntity> entities = getParent().getEntities();
-        synchronized (entities) {
-            for (BaseEntity entity : entities) {
-                if (this != entity && entity instanceof BlockEntity) {
-                    handleCollide((BlockEntity) entity);
-                }
+        for (int i=0; i<getParent().getEntities().size(); i++) {
+            BaseEntity entity = (BaseEntity)getParent().getEntities().get(i);
+            if (this != entity && entity instanceof BlockEntity) {
+                handleCollide((BlockEntity) entity);
             }
         }
     }
