@@ -50,16 +50,14 @@ public class GameWorld<T extends BaseEntity> {
      * will also remove any entity whose parent is not this GameWorld or null.
      */
     public void updateEntities() {
-        synchronized (entities) {
-            for (int i=0; i<entities.size(); i++) {
-                // remove the entity from this game world if it doesn't belong
-                // here or if it's been removed
-                if (entities.get(i).getParent() != this) {
-                    entities.remove(i);
-                    continue;
-                }
-                entities.get(i).update();
+        for (int i=0; i<entities.size(); i++) {
+            // remove the entity from this game world if it doesn't belong
+            // here or if it's been removed
+            if (entities.get(i).getParent() != this) {
+                entities.remove(i);
+                continue;
             }
+            entities.get(i).update();
         }
     }
     
