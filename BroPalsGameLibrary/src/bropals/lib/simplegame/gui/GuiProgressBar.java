@@ -58,9 +58,9 @@ public class GuiProgressBar extends GuiElement {
         Graphics g = (Graphics)graphicsObject;
         int progDraw = (int)((double)value/(double)maxValue * (double)getWidth());
         g.setColor(getProgressBarColor());
-        g.fillRect(0, 0, progDraw, getHeight());
+        g.fillRect(getX(), getY(), progDraw, getHeight());
         g.setColor(getBackgroundColor());
-        g.fillRect(progDraw, 0, getWidth()-progDraw, getHeight());
+        g.fillRect(getX() + progDraw, getY(), getWidth()-progDraw, getHeight());
     }
 
     /**
@@ -136,10 +136,21 @@ public class GuiProgressBar extends GuiElement {
     }
     
     /**
-     * Increase the progress.
+     * Increase the progress. If the progress is over the max value, then
+     * it is clamped down to match the max value.
      * @param progress the amount to increase the progress value by.
      */
     public void increaseProgress(int progress) {
         setValue(getValue()+progress);
+        if (getValue() > getMaxValue()) {
+            setValue(getMaxValue());
+        }
+    }
+    
+    /**
+     * Sets the progress back to zero
+     */
+    public void resetProgress() {
+        setValue(0);
     }
 }
