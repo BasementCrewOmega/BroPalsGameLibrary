@@ -26,6 +26,7 @@ package bropals.lib.simplegame.entity.block;
 
 import bropals.lib.simplegame.entity.BaseEntity;
 import bropals.lib.simplegame.entity.GameWorld;
+import bropals.lib.simplegame.logger.InfoLogger;
 import bropals.lib.simplegame.math.Vector2D;
 import bropals.lib.simplegame.math.Vector2DCapped;
 import java.util.ArrayList;
@@ -156,10 +157,13 @@ public class BlockEntity extends BaseEntity {
      * BlockEntity's GameWorld.
      */
     public void checkCollisions() {
-        for (int i=0; i<getParent().getEntities().size(); i++) {
-            BaseEntity entity = (BaseEntity)getParent().getEntities().get(i);
-            if (this != entity && entity instanceof BlockEntity) {
-                handleCollide((BlockEntity) entity);
+        List<BaseEntity> entities = getParent().getEntities();
+        synchronized (entities) {
+            for (int i=0; i<entities.size(); i++) {
+                BaseEntity entity = entities.get(i);
+                if (this != entity && entity instanceof BlockEntity) {
+                    handleCollide((BlockEntity) entity);
+                }
             }
         }
     }
