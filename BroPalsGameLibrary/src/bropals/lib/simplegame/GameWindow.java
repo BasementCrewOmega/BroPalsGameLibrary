@@ -78,10 +78,10 @@ public class GameWindow {
             boolean fullscreen, GraphicsDevice device) {
         this.title = title;
         this.fullscreen = fullscreen;
-        setScreenResolution(new ScreenResolution(screenWidth, screenHeight));
         this.device = device;
         initNativeScreenResolution(device);
         this.resolutions = getSupportedScreenResolutionList(device);
+        setScreenResolution(new ScreenResolution(screenWidth, screenHeight));
         applyGraphicsConfiguration();
     }
     
@@ -304,13 +304,18 @@ public class GameWindow {
      * replacing it with a new Graphics object.
      */
     public final void applyGraphicsConfiguration() {
-        if (frame == null) {
-            frame = new Frame(title);
-            frame.setIgnoreRepaint(true);
-            frame.setResizable(false);
-            frame.setVisible(true);
-            setupInput();
+        if (frame!=null) {
+            frame.dispose();
+            frame = null;
         }
+        frame = new Frame(title);
+        if (fullscreen) {
+            frame.setUndecorated(true);
+        }
+        frame.setIgnoreRepaint(true);
+        frame.setResizable(false);
+        frame.setVisible(true);
+        setupInput();
         applyScreenResolution();
         createBuffers();
     }
