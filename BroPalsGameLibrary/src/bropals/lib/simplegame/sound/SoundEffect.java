@@ -49,6 +49,7 @@ public class SoundEffect {
      * Plays this sound effect once.
      */
     public void play() {
+        clip.stop();
         clip.setFramePosition(0);
         clip.start();
     }

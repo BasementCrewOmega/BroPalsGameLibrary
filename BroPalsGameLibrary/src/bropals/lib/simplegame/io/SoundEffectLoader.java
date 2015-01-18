@@ -27,10 +27,9 @@ package bropals.lib.simplegame.io;
 import bropals.lib.simplegame.logger.ErrorLogger;
 import bropals.lib.simplegame.logger.InfoLogger;
 import bropals.lib.simplegame.sound.SoundEffect;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -49,7 +48,7 @@ public class SoundEffectLoader extends AssetLoader<SoundEffect> {
     public void loadAsset(String key, InputStream inputStream) {
         try {
             AudioInputStream ais
-                    = AudioSystem.getAudioInputStream(inputStream);
+                    = AudioSystem.getAudioInputStream(new BufferedInputStream(inputStream));
 
             AudioFormat format = ais.getFormat();
 
@@ -85,7 +84,7 @@ public class SoundEffectLoader extends AssetLoader<SoundEffect> {
             add(key, sfx);
             InfoLogger.println("Loaded a sound effect with the key " + key);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-            ErrorLogger.println("Could not load SoundEffect with key " + key);
+            ErrorLogger.println("Could not load SoundEffect with key " + key + "; " +  ex);
         }
     }
 }
