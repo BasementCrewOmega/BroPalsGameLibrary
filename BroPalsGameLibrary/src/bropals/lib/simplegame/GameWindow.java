@@ -101,6 +101,14 @@ public class GameWindow {
     }
 
     /**
+     * Sets the image icon.
+     * @param icon the image icon
+     */
+    public void setIcon(BufferedImage icon) {
+        frame.setIconImage(icon);
+    }
+    
+    /**
      * Creates a visible GameWindow with the supplied parameters. Uses the
      * default screen device; starts in windowed mode.
      *
