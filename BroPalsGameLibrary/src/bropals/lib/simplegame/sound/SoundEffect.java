@@ -53,4 +53,12 @@ public class SoundEffect {
         clip.setFramePosition(0);
         clip.start();
     }
+    
+    /**
+     * Gets the Clip that this SoundEffect is made of.
+     * @return the clip this sound is made of.
+     */
+    public Clip getRaw() {
+        return clip;
+    }
 }
