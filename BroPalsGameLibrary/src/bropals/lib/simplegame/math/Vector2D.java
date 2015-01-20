@@ -23,6 +23,8 @@
  **/
 package bropals.lib.simplegame.math;
 
+import java.awt.Graphics;
+
 /**
  * A Vector with 2 components to it.
  * 
@@ -175,6 +177,36 @@ public class Vector2D {
      */
     public void setY(double y) {
         this.y = (float)y;
+    }
+    
+    /**
+     * Creates a vector that has its direction rotated by the given angle.
+     * @param angle the angle to offset from this vector, in radians.
+     * @return the vector with the angle offset given.
+     */
+    public Vector2D vectorFromAngleOffset(float angle) {
+        float cos = (float)Math.cos(angle);
+        return new Vector2D(getX()*cos, getY()*cos);
+    }
+    
+    /**
+     * Sets this vector to a vector that has its direction rotated by the given
+     * angle.
+     * @param angle the angle to offset from this vector, in radians.
+     */
+    public void vectorFromAngleOffsetLocal(float angle) {
+        float cos = (float)Math.cos(angle);
+        setValues(getX()*cos, getY()*cos);
+    }
+    
+    /**
+     * Draws this Vector2D for debugging purposes.
+     * @param g the graphics used to draw this vector
+     * @param offsetX the X offset of the origin
+     * @param offsetY the y offset of the origin
+     */
+    public void drawVector(Graphics g, float offsetX, float offsetY) {
+        g.drawLine((int)offsetX, (int)offsetY, (int)(offsetX+getX()), (int)(offsetY+getY()));
     }
     
     @Override
