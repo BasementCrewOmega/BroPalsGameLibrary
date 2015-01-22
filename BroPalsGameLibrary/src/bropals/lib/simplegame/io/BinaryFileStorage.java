@@ -90,7 +90,7 @@ public abstract class BinaryFileStorage<T> {
             output = new DataOutputStream(
                     Files.newOutputStream(file.toPath(),
                             StandardOpenOption.WRITE,
-                            append ? StandardOpenOption.APPEND : StandardOpenOption.CREATE_NEW )
+                            append ? StandardOpenOption.APPEND : StandardOpenOption.WRITE)
                     );
         } catch(Exception e) {
             println("Unable to open binary output steam with " + file + ": " + e);
