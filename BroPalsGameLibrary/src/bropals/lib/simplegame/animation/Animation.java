@@ -105,4 +105,13 @@ public class Animation {
     public Track getTrackOn() {
         return currentTrack;
     }
+    
+    @Override
+    public Animation clone() {
+        ArrayList<Track> tracks = new ArrayList<>();
+        for (int i=0; i<this.tracks.size(); i++) {
+            tracks.add(this.tracks.get(i).clone());
+        }
+        return new Animation(tracks);
+    }
 }

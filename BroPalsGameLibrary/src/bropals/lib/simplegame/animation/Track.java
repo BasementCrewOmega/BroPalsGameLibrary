@@ -145,4 +145,9 @@ public class Track {
     public BufferedImage[] getImages() {
         return images;
     }
+    
+    @Override
+    public Track clone() {
+        return new Track(images, framesBetweenImages);
+    }
 }
