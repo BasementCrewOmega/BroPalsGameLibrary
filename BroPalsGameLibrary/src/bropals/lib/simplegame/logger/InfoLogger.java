@@ -78,8 +78,10 @@ public class InfoLogger {
      * @param str the string to print to the info stream.
      */
     public static void print(String str) {
-        getInfo().print(str);
-        getInfo().flush();
+        if (!silent) {
+            getInfo().print(str);
+            getInfo().flush();
+        }
     }
     
     /**
@@ -87,8 +89,10 @@ public class InfoLogger {
      * @param str the string to print to the info stream.
      */
     public static void println(String str) {
-        getInfo().println(str);
-        getInfo().flush();
+        if (!silent) {
+            getInfo().println(str);
+            getInfo().flush();
+        }
     }
     
     /**
@@ -96,6 +100,8 @@ public class InfoLogger {
      * @param obj the object to print to the info stream.
      */
     public static void println(Object obj) {
-        println(obj.toString());
+        if (!silent) {
+            println(obj.toString());
+        }
     }
 }

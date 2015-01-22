@@ -49,7 +49,8 @@ public class GuiImage extends GuiElement {
     
     @Override
     public void render(Object graphicsObject) {
-        ((Graphics)graphicsObject).drawImage(image, getX(), getY(), getWidth(), getHeight(), null);
+        if (isEnabled())
+            ((Graphics)graphicsObject).drawImage(image, getX(), getY(), getWidth(), getHeight(), null);
     }
     
 }

@@ -212,6 +212,19 @@ public class AssetManager {
      */
     public <T> void addAssetLoader(AssetLoader<T> loader, Class<T> type) {
         loaders.put(type, loader);
+        loader.setAssetManager(this);
+    }
+    
+    /**
+     * Removes an AssetLoader from this AssetManager.
+     * @param <T> the type of asset the AssetLoader to remove  loads
+     * @param type the type of assets the AssetLoader to remove loads
+     */
+    public <T> void removeAssetLoader(Class<T> type) {
+        if (getAssetLoader(type) != null) {
+            getAssetLoader(type).setAssetManager(null);
+            loaders.remove(type);
+        }
     }
     
     private String extractNameWithoutExtension(File file) {

@@ -1,0 +1,4 @@
+* Change the PropertyPanel to be more flexible (Only compatible with Java swing at the moment)
+* Fix the GameWindow (Fullscreen mode is wonky)
+* Test the packages (Need to test all of the functions in all the classes so a library bug doesn't ruin someone's project)
+* Change the object that count down (Counter, Animation, etc.) to use milliseconds instead of frames.

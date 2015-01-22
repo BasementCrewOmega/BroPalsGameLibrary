@@ -83,4 +83,10 @@ public class GameWorld<T extends BaseEntity> {
     public GameState getState() {
         return stateInside;
     }
+
+    public void setStateInside(GameState stateInside) {
+        this.stateInside = stateInside;
+    }
+    
+    
 }

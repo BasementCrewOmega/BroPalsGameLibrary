@@ -254,22 +254,24 @@ public class GuiText extends GuiElement {
     @Override
     public void render(Object graphicsObject) {
         Graphics g = (Graphics)graphicsObject;
-        g.setFont(font);
-        g.setColor(textColor);
-        FontMetrics fm = g.getFontMetrics();
-        int xLoc = getX() + getPadding();
-        int yLoc = getY() + fm.getHeight() + getPadding();
-        g.drawImage(backgroundImage, getX(), getY(), getWidth(), getHeight(), null);
-        if (wordWrap) {
-            if (lines == null) {
-                splitIntoLines(fm);
+        if (isEnabled()) {
+            g.setFont(font);
+            g.setColor(textColor);
+            FontMetrics fm = g.getFontMetrics();
+            int xLoc = getX() + getPadding();
+            int yLoc = getY() + fm.getHeight() + getPadding();
+            g.drawImage(backgroundImage, getX(), getY(), getWidth(), getHeight(), null);
+            if (wordWrap) {
+                if (lines == null) {
+                    splitIntoLines(fm);
+                }
+                for (String line : lines) {
+                    g.drawString(line, xLoc, yLoc);
+                    yLoc += fm.getHeight();
+                }
+            } else {
+                g.drawString(getText(), xLoc, yLoc);
             }
-            for (String line : lines) {
-                g.drawString(line, xLoc, yLoc);
-                yLoc += fm.getHeight();
-            }
-        } else {
-            g.drawString(getText(), xLoc, yLoc);
         }
     }
 }

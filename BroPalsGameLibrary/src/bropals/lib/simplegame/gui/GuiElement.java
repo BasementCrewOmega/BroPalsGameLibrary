@@ -32,6 +32,7 @@ import java.awt.Rectangle;
 public abstract class GuiElement {
     
     private Rectangle rectangle;
+    private boolean enabled = true;
     
     /**
      * Creates a GUI element with the specified size and position.
@@ -43,8 +44,24 @@ public abstract class GuiElement {
     public GuiElement(int x, int y, int w, int h) {
         rectangle = new Rectangle(x, y, w, h);
     }
-    
+
     /**
+     * Gets the enabled state of this element.
+     * @return gets the element state.
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Sets the enabled state of this GuiElement.
+     * @param enabled the new enabled state
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+    
+        /**
      * Gets the X position of this GuiElement
      * @return the X position of this GuiElement
      */
@@ -114,7 +131,7 @@ public abstract class GuiElement {
      * @param y the y mouse position
      */
     public void mouseInput(int x, int y) {
-        if (rectangle.contains(x, y))
+        if (enabled && rectangle.contains(x, y))
             onMousePress();
     }
     

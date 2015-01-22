@@ -42,6 +42,10 @@ import java.util.HashMap;
 public abstract class AssetLoader<T> {
     
     private final HashMap<String, T> assets = new HashMap<>();
+    /**
+     * The asset manager this asset loader is inside.
+     */
+    private AssetManager assetManager;
         
     /**
      * Puts an asset into this AssetLoader's assets cache.
@@ -59,6 +63,18 @@ public abstract class AssetLoader<T> {
      */
     public T getAsset(String key) {
         return assets.get(key);
+    }
+    
+    void setAssetManager(AssetManager assetManager) {
+        this.assetManager = assetManager;
+    }
+    
+    /**
+     * Gets the AssetManager that this AssetLoader is inside.
+     * @return the AssetManager that this AssetLoader is inside.
+     */
+    public AssetManager getAssetManager() {
+        return assetManager;
     }
     
     /**
