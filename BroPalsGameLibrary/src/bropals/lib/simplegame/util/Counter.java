@@ -31,56 +31,57 @@ package bropals.lib.simplegame.util;
  */
 public class Counter {
     
-    private int targetNumber;
+    private int waitTime;
     private boolean looping;
     private CounterFunction function;
-    private int counter = 0;
+    private long startTime;
     
     /**
      * Creates a counter with the specified target number. Does not loop.
-     * @param targetNumber the number of <code>update()</code> calls between
+     * @param waitTime the number of milliseconds between
      * each function call.
      * @param function the function to call whenever the Counter is done
      * counting.
      */
-    public Counter(int targetNumber, CounterFunction function) {
-        this.targetNumber = targetNumber;
+    public Counter(int waitTime, CounterFunction function) {
+        this.waitTime = waitTime;
         looping = false;
         this.function=function;
     }
     
     /**
      * Creates a counter with the specified target number and loop preference.
-     * @param targetNumber the number of <code>update()</code> calls between
+     * @param waitTime the number of milliseconds between
      * each function call.
      * @param looping sets the loop preference of this Counter.
      * @param function the function to call whenever the Counter is done
      * counting.
      */
-    public Counter(int targetNumber, boolean looping, CounterFunction function) {
-        this.targetNumber = targetNumber;
+    public Counter(int waitTime, boolean looping, CounterFunction function) {
+        this.waitTime = waitTime;
         this.looping = looping;
         this.function = function;
+        startTime = System.currentTimeMillis();
     }
 
     /**
-     * Gets the number of <code>update()</code> calls it takes to complete
+     * Gets the number of milliseconds it takes to complete
      * a counter cycle.
-     * @return the number of <code>update()</code> calls it takes to complete
+     * @return the number of milliseconds it takes to complete
      * a counter cycle.
      */
-    public int getTargetNumber() {
-        return targetNumber;
+    public int getWaitTime() {
+        return waitTime;
     }
 
     /**
-     * Sets the number of <code>update()</code> calls it takes to complete
+     * Sets the number of milliseconds it takes to complete
      * a counter cycle.
-     * @param targetNumber the new number of <code>update()</code> calls it takes 
-     * to complete a counter cycle.
+     * @param waitTime the number of milliseconds between
+     * each function call.
      */
-    public void setTargetNumber(int targetNumber) {
-        this.targetNumber = targetNumber;
+    public void setWaitTime(int waitTime) {
+        this.waitTime = waitTime;
     }
 
     /**
@@ -121,10 +122,9 @@ public class Counter {
      * its counting.
      */
     public void update() {
-        counter++;
-        if (counter > targetNumber) {
+        if (System.currentTimeMillis() > startTime + waitTime) {
             if (looping) {
-                counter = 0;
+                startTime = System.currentTimeMillis();
             }
             function.countFinished();
         }
@@ -134,6 +134,6 @@ public class Counter {
      * Resets this Counter's counting.
      */
     public void reset() {
-        counter = 0;
+        startTime = System.currentTimeMillis();
     }
 }

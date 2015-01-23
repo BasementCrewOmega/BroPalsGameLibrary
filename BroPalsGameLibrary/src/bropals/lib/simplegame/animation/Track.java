@@ -32,7 +32,8 @@ import java.awt.image.BufferedImage;
 public class Track {
     
     private BufferedImage[] images;
-    private int framesBetweenImages, frameWaitOn, imageOn;
+    private int millisBetweenImages, imageOn;
+    private long startTime;
     
     /**
      * Creates a new Track
@@ -40,21 +41,21 @@ public class Track {
      */
     public Track(BufferedImage[] imgs) {
         images = imgs;
-        framesBetweenImages = 4;
-        frameWaitOn = 0;
+        millisBetweenImages = 120;
         imageOn = 0;
+        startTime = System.currentTimeMillis();
     }
     
     /**
      * Create a new Track object with the given images while setting how
      * many update cycles pass before switching the image
      * @param imgs The images in the track
-     * @param updatesBetweenImages The amount of update cycles between an
+     * @param millisBetweenImages The amount of milliseconds between an
      * image switch.
      */
-    public Track(BufferedImage[] imgs, int updatesBetweenImages) {
+    public Track(BufferedImage[] imgs, int millisBetweenImages) {
         this(imgs);
-        this.framesBetweenImages = updatesBetweenImages;
+        this.millisBetweenImages = millisBetweenImages;
     }
     
     
@@ -90,25 +91,24 @@ public class Track {
      * @param img The image to be split up
      * @param width The width of each sub-image
      * @param height The height of each sub-image
-     * @param updatesBetweenImages The amount of update cycles between an
+     * @param millisBetweenImages The amount of milliseconds between an
      * image switch.
      */
-    public Track(BufferedImage img, int width, int height, int updatesBetweenImages) {
+    public Track(BufferedImage img, int width, int height, int millisBetweenImages) {
         this(img, width, height);
-        this.framesBetweenImages = updatesBetweenImages;
+        this.millisBetweenImages = millisBetweenImages;
     }
     
     /**
      * Updates the Track object.
      */
     public void update() {
-        frameWaitOn++;
-        if (frameWaitOn >= framesBetweenImages) {
+        if (System.currentTimeMillis() >= startTime + millisBetweenImages) {
             imageOn++;
             if (imageOn >= images.length) {
                 imageOn = 0;
             }
-            frameWaitOn = 0;
+            startTime = System.currentTimeMillis();
         }
     }
     
@@ -116,7 +116,7 @@ public class Track {
      * Reset the counters in the Track object.
      */
     public void resetCounter() {
-        frameWaitOn = 0;
+        startTime = System.currentTimeMillis();
         imageOn = 0;
     }
     
@@ -129,13 +129,13 @@ public class Track {
     }
 
     /**
-     * Set how many update cycles need to pass in GameStateRunner before
+     * Set how milliseconds need to pass in GameStateRunner before
      * it switches to the next image in the track.
-     * @param framesBetweenImages The new amount of frames.
+     * @param millisBetweenImages The new amount of milliseconds
      */
-    public void setFramesBetweenImages(int framesBetweenImages) {
-        this.framesBetweenImages = framesBetweenImages;
-        this.frameWaitOn = 0; // reset counter
+    public void setMillisBetweenImages(int millisBetweenImages) {
+        this.millisBetweenImages = millisBetweenImages;
+        startTime = System.currentTimeMillis(); // reset counter
     }
 
     /**
@@ -148,6 +148,6 @@ public class Track {
     
     @Override
     public Track clone() {
-        return new Track(images, framesBetweenImages);
+        return new Track(images, millisBetweenImages);
     }
 }
