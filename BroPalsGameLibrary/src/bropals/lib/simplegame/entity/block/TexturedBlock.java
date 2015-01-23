@@ -36,13 +36,17 @@ import java.awt.image.BufferedImage;
  * If there is both an image and an animation, it will draw with the animation. 
  * If there is no image nor animation, it will draw a block with a black border
  * and dark gray center.
+ * 
+ * Setting tileImage to true makes it repeat the given image for the width 
+ * and height of the entity. It doesn't cut off the final row and column of 
+ * the image to make it fit exactly.
  * @author Kevin Prehn
  */
 public class TexturedBlock extends BlockEntity {
 
     private Animation animation;
-    private BufferedImage originalImage;
     private BufferedImage image;
+    private boolean tileImage;
     
     /**
      * Create a TexturedBlock object, a subclass of BlockEntity. The 
@@ -58,26 +62,7 @@ public class TexturedBlock extends BlockEntity {
         super(parent, x, y, width, height, true);
         animation = null;
         image = null;
-        originalImage = null;
-    }
-    
-    /**
-     * Rebuilds the image used to texture this.
-     */
-    private void rebuildImage() {
-        if (originalImage == null)
-            return;
-                    
-        image = new BufferedImage((int)getWidth(), (int)getHeight(), 
-            BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2OfImage = (Graphics2D) image.getGraphics();
-        for (int x=0; x<image.getWidth() + originalImage.getWidth(); 
-                x += originalImage.getWidth()) {
-            for (int y=0; y<image.getHeight() + originalImage.getHeight(); 
-                    y += originalImage.getHeight()) {
-                g2OfImage.drawImage(originalImage, x, y, null);
-            }
-        }   
+        tileImage = false;
     }
     
     public void setAnimation(Animation a) {
@@ -85,13 +70,21 @@ public class TexturedBlock extends BlockEntity {
     }
     
     /**
-     * Set the image for this block. The block's texture will become 
-     * the given image as a repeating tiled texture.
+     * Set the image for this block.
      * @param bi The image that will become the texture of this image.
      */
     public void setImage(BufferedImage bi) {
-        this.originalImage = bi;
-        rebuildImage();
+        this.image = bi;
+        this.tileImage = false;
+    }
+    
+    /**
+     * Set the image for this block and set if this image will be tiled.
+     * @param tile Whether or not the image should repeat itself for the size
+     * of the entity when being drawn
+     */
+    public void setTileImage(boolean tile) {
+        this.tileImage = tile;
     }
     
     @Override
@@ -107,11 +100,17 @@ public class TexturedBlock extends BlockEntity {
         Graphics2D g2 = (Graphics2D) graphicsObj;
         if (animation != null) {
             g2.drawImage(animation.getCurrentImage(), (int)getX(), (int)getY(), null);
-        } else if (originalImage != null) {
-            if (image == null)
-                rebuildImage();
-            
-            g2.drawImage(image, (int)getX(), (int)getY(), null);
+        } else if (image != null) {
+            if (tileImage) {
+                for (int x=0; x<getWidth(); x+=image.getWidth()) {
+                    for (int y=0; y<getHeight(); y+=image.getHeight()) {
+                        g2.drawImage(image, (int)(getX() + x), 
+                                (int)(getY() + y), null);
+                    }
+                }
+            } else {
+                g2.drawImage(image, (int)getX(), (int)getY(), null);
+            }
         } else {
             g2.setColor(Color.BLACK);
             g2.fillRect((int)getX(), (int)getY(), (int)getWidth(), (int)getHeight());
@@ -120,16 +119,5 @@ public class TexturedBlock extends BlockEntity {
                     (int)getHeight() - 4);
         }
     }
-    
-    @Override
-    public void setHeight(float height) {
-        super.setHeight(height);
-        rebuildImage();
-    }
-    
-    @Override
-    public void setWidth(float width) {
-        super.setWidth(width);
-        rebuildImage();
-    }
+
 }
