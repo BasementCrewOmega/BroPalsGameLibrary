@@ -22,19 +22,41 @@
  * SOFTWARE.
  *
  */
-package bropals.lib.simplegame.test;
+package bropals.lib.simplegame.sound;
 
-import bropals.lib.simplegame.GameStateRunner;
-import bropals.lib.simplegame.LWJGLGameWindow;
-import bropals.lib.simplegame.io.AssetManager;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
 
 /**
+ * Has convenience methods for doing stuff with sound.
  *
- * @author Owner
+ * @author Jonathon
  */
-public class TesterClass {
+public class SoundUtil {
 
-    public static void main(String[] args) {
-        
+    /**
+     * Converts the given audio format to PCM_SIGNED if it is encoded in
+     * ULAW or ALAW.
+     * <p>
+     * Credit to "Killer Game Programming in Java" by Andrew Davidson for the
+     * audio format conversion code
+     * @param format the input format.
+     * @return the converted audio format.
+     */
+    public static AudioFormat convertToPCMSigned(AudioFormat format) {
+        if ((format.getEncoding() == AudioFormat.Encoding.ULAW)
+                || (format.getEncoding() == AudioFormat.Encoding.ALAW)) {
+            AudioFormat newFormat = new AudioFormat(
+                    AudioFormat.Encoding.PCM_SIGNED,
+                    format.getSampleRate(),
+                    format.getSampleSizeInBits() * 2,
+                    format.getChannels(),
+                    format.getFrameSize() * 2,
+                    format.getFrameRate(),
+                    true
+            );
+            format = newFormat;
+        }
+        return format;
     }
 }

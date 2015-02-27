@@ -25,6 +25,7 @@
 package bropals.lib.simplegame.io;
 
 import bropals.lib.simplegame.logger.ErrorLogger;
+import bropals.lib.simplegame.sound.Music;
 import bropals.lib.simplegame.sound.SoundEffect;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -53,18 +54,25 @@ public class AssetManager {
      * where all locations will be made relative to.
      *
      * @param root the direction to use when looking for assets.
+     * @param addDefaultLoaders specify whether or not AssetManager should
+     * add SoundEffectLoader, BufferedImageLoader, and MusicLoader to itself.
      */
-    public AssetManager(File root) {
+    public AssetManager(File root, boolean addDefaultLoaders) {
         this.root = root;
-        addAssetLoader(new SoundEffectLoader(), SoundEffect.class);
-        addAssetLoader(new BufferedImageLoader(), BufferedImage.class);
+        if (addDefaultLoaders) {
+            addAssetLoader(new SoundEffectLoader(), SoundEffect.class);
+            addAssetLoader(new BufferedImageLoader(), BufferedImage.class);
+            addAssetLoader(new MusicLoader(), Music.class);
+        }
     }
 
     /**
      * Makes an AssetManager whose root is the default relative directory.
+     * @param addDefaultLoaders specify whether or not AssetManager should
+     * add SoundEffectLoader, BufferedImageLoader, and MusicLoader to itself.
      */
-    public AssetManager() {
-        this(new File(""));
+    public AssetManager(boolean addDefaultLoaders) {
+        this(new File(""), addDefaultLoaders);
     }
     
     /**

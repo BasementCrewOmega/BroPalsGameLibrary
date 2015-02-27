@@ -28,9 +28,7 @@ import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.sound.SoundEffect;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 /**
@@ -67,9 +65,9 @@ public abstract class GameState {
     }
     
     /**
-     * Returns a reference to the GameWindow used by the GameStateRunner 
+     * Returns a reference to the AWTGameWindow used by the GameStateRunner 
  that is running this GameState.
-     * @return a reference to the GameWindow used by the GameStateRunner 
+     * @return a reference to the AWTGameWindow used by the GameStateRunner 
  that is running this GameState.
      */
     public GameWindow getWindow() {
@@ -153,19 +151,21 @@ public abstract class GameState {
     
     /**
      * Called when the game gets key input.
-     * @param e the key event.
+     * @param keycode the key code. Use {@link bropals.lib.simplegame.KeyCode KeyCode}
      * @param pressed whether or not the key was pressed or released. 
      * <code>true</code> for pressed, <code>false</code> for released.
      */
-    public abstract void key(KeyEvent e, boolean pressed);
+    public abstract void key(int keycode, boolean pressed);
     
     /**
      * Called when the game gets mouse button input.
-     * @param e the mouse event.
+     * @param mousebutton the mouse button. Use {@link bropals.lib.simplegame.MouseButton MouseButton}
+     * @param x the x position the mouse pressed
+     * @param y the y position the mouse pressed
      * @param pressed whether or not the mouse button was pressed or
      * released. <code>true</code> for pressed, <code>false</code> for
      * released.
      */
-    public abstract void mouse(MouseEvent e, boolean pressed);
+    public abstract void mouse(int mousebutton, int x, int y, boolean pressed);
 
 }

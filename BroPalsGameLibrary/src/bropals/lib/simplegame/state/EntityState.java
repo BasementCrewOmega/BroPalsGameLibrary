@@ -75,10 +75,10 @@ public class EntityState extends GameState {
     }
 
     @Override
-    public void key(KeyEvent e, boolean pressed) {
+    public void key(int keycode, boolean pressed) {
     }
 
     @Override
-    public void mouse(MouseEvent e, boolean pressed) {
+    public void mouse(int mousebutton, int x, int y, boolean pressed) {
     }
 }

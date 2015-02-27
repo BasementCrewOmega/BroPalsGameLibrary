@@ -42,25 +42,27 @@ public class GameStateRunner {
     private int millisBetweenFrames;
     
     /**
-     * Creates a GameStateRunner with a GameWindow.
+     * Creates a GameStateRunner with a AWTGameWindow.
      * @param window The window that will be drawn to for this GameStateRunner
+     * @param assetManager the asset manager to use for this GameStateRunner
      */
-    public GameStateRunner(GameWindow window) {
+    public GameStateRunner(GameWindow window, AssetManager assetManager) {
         currentState = null;
         startTime = 0;
         millisBetweenFrames = 40;
         currentWindow = window;
         currentWindow.giveGameStateRunner(this);
-        assetManager = new AssetManager();
+        this.assetManager = assetManager;
     }
     
     /**
      * Creates a GameStateRunner with an initial GameState.
      * @param window The window that will be draw to for this GameStateRunner.
+     * @param assetManager the asset manager to use for this GameStateRunner
      * @param initialState The initial state in this GameStateRunner.
      */
-    public GameStateRunner(GameWindow window, GameState initialState) {
-        this(window);
+    public GameStateRunner(GameWindow window, AssetManager assetManager, GameState initialState) {
+        this(window, assetManager);
         setState(initialState);
     }
     
@@ -90,14 +92,10 @@ public class GameStateRunner {
     }
     
     /**
-     * So we can extend and change how we render in other GameStates
+     * So we can extend and change how we render in other GameStates.
      */
     protected void renderState(GameState state) {
-        Graphics g = currentWindow.getDrawGraphics();
-        if (currentState != null) {
-            currentState.render(g);
-        }
-        currentWindow.swapBuffers(g);
+        currentWindow.renderState(state);
     }
     
     /**
@@ -132,24 +130,24 @@ public class GameStateRunner {
     
     // applying a level of indirection with the event methods...
 
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(int keycode) {
         if (currentState != null)
-            currentState.key(e, true);
+            currentState.key(keycode, true);
     }
 
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(int keycode) {
          if (currentState != null)
-            currentState.key(e, false);
+            currentState.key(keycode, false);
     }
     
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(int mousebutton, int x, int y) {
         if (currentState != null)
-            currentState.mouse(e, true);
+            currentState.mouse(mousebutton, x, y, true);
     }
 
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(int mousebutton, int x, int y) {
         if (currentState != null)
-            currentState.mouse(e, false);
+            currentState.mouse(mousebutton, x, y, false);
     }
     
     public AssetManager getAssetManager() {

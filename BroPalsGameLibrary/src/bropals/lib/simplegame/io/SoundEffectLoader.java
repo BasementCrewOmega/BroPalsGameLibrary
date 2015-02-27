@@ -27,6 +27,7 @@ package bropals.lib.simplegame.io;
 import bropals.lib.simplegame.logger.ErrorLogger;
 import bropals.lib.simplegame.logger.InfoLogger;
 import bropals.lib.simplegame.sound.SoundEffect;
+import bropals.lib.simplegame.sound.SoundUtil;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,15 +61,7 @@ public class SoundEffectLoader extends AssetLoader<SoundEffect> {
              */
             if ((format.getEncoding() == AudioFormat.Encoding.ULAW)
                     || (format.getEncoding() == AudioFormat.Encoding.ALAW)) {
-                AudioFormat newFormat = new AudioFormat(
-                        AudioFormat.Encoding.PCM_SIGNED,
-                        format.getSampleRate(),
-                        format.getSampleSizeInBits() * 2,
-                        format.getChannels(),
-                        format.getFrameSize() * 2,
-                        format.getFrameRate(),
-                        true
-                );
+                AudioFormat newFormat = SoundUtil.convertToPCMSigned(format);
                 ais = AudioSystem.getAudioInputStream(newFormat, ais);
                 format = newFormat;
             }

@@ -24,115 +24,30 @@
  */
 package bropals.lib.simplegame;
 
-import bropals.lib.simplegame.util.Queue;
-import java.awt.Cursor;
-import java.awt.DisplayMode;
-import java.awt.Frame;
-import java.awt.Graphics;
+import bropals.lib.simplegame.state.GameState;
 import java.awt.GraphicsDevice;
-import static java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment;
 import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 /**
- * Represents the drawing area.
- *
- * @author Kevin Prehn
+ * Represents the drawing window. Can be implemented by multiple types of
+ * drawing.
+ * @author Jonathon
  */
-public class GameWindow {
-
-    private Frame frame;
-    private boolean fullscreen;
-    private String title;
-    private ScreenResolution screenResolution;
-    private ScreenResolution nativeResolution;
-    private GameStateRunner runner = null;
-    private ScreenResolution[] resolutions;
-    private int bitDepth;
-    private int refreshRate;
-    private GraphicsDevice device;
-    private boolean requestToClose = false;
-    private GameCursor gameCursor = null;
-    private Cursor invisibleCursor = null; //For implementing GameCursor
-    private final Queue<MouseEvent> mouseEventDownQueue = new Queue<>();
-    private final Queue<KeyEvent> keyEventUpQueue = new Queue<>();
-    private final Queue<MouseEvent> mouseEventUpQueue = new Queue<>();
-    private final Queue<KeyEvent> keyEventDownQueue = new Queue<>();
-    
+public interface GameWindow {
     /**
-     * Creates a visible GameWindow with the supplied parameters.
-     *
-     * @param title the title of the window.
-     * @param screenWidth the screen resolution width.
-     * @param screenHeight the screen resolution height.
-     * @param fullscreen the fullscreen state of the GameWindow.
-     * @param device the GraphicsDevice to use for this GameWindow.
+     * Sets the image icon of this GameWindow.
+     * @param icon the icon to set it to.
      */
-    public GameWindow(String title, int screenWidth, int screenHeight, 
-            boolean fullscreen, GraphicsDevice device) {
-        this.title = title;
-        this.fullscreen = fullscreen;
-        this.device = device;
-        initNativeScreenResolution(device);
-        this.resolutions = getSupportedScreenResolutionList(device);
-        setScreenResolution(new ScreenResolution(screenWidth, screenHeight));
-        applyGraphicsConfiguration();
-    }
-    
-    /**
-     * Creates a visible GameWindow with the supplied parameters. Uses the
-     * default screen device.
-     *
-     * @param title the title of the window.
-     * @param screenWidth the screen resolution width.
-     * @param screenHeight the screen resolution height.
-     * @param fullscreen the fullscreen state of the GameWindow.
-     */
-    public GameWindow(String title, int screenWidth, int screenHeight, 
-            boolean fullscreen) {
-        this(title, screenWidth, screenHeight, fullscreen, 
-                getLocalGraphicsEnvironment().getDefaultScreenDevice());
-    }
-
-    /**
-     * Sets the image icon.
-     * @param icon the image icon
-     */
-    public void setIcon(BufferedImage icon) {
-        frame.setIconImage(icon);
-    }
-    
-    /**
-     * Creates a visible GameWindow with the supplied parameters. Uses the
-     * default screen device; starts in windowed mode.
-     *
-     * @param title the title of the window.
-     * @param screenWidth the screen resolution width.
-     * @param screenHeight the screen resolution height.
-     */
-    public GameWindow(String title, int screenWidth, int screenHeight) {
-        this(title, screenWidth, screenHeight, false, 
-                getLocalGraphicsEnvironment().getDefaultScreenDevice());
-    }
-    
+    public void setIcon(BufferedImage icon);
     /**
      * Checks to see if the full screen resolution is supported. If the size
      * does not work for fullscreen, it will still work for a window.
-     *
-     * @param width the screen width to check
-     * @param height the screen height to check
+     * @param screenWidth the screen width to check
+     * @param screenHeight the screen height to check
      * @return if the resolution is supported
      */
-    public boolean supportsResolution(int width, int height) {
-        return supportsResolution(new ScreenResolution(width, height));
-    }
-
+    public boolean supportsResolution(int screenWidth, int screenHeight);
     /**
      * Checks to see if the full screen resolution is supported. If the size
      * does not work for fullscreen, it will still work for a window.
@@ -140,15 +55,7 @@ public class GameWindow {
      * @param resolution the screen resolution to check
      * @return if the resolution is supported
      */
-    public boolean supportsResolution(ScreenResolution resolution) {
-        for (ScreenResolution s : resolutions) {
-            if (s.equals(resolution)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    public boolean supportsResolution(ScreenResolution resolution);
     /**
      * Makes a list of ScreenResolutions that the given graphics device
      * supports.
@@ -156,138 +63,41 @@ public class GameWindow {
      * @param device the graphics device
      * @return the list of supported screen resolutions
      */
-    public final ScreenResolution[] getSupportedScreenResolutionList(GraphicsDevice device) {
-        this.device = device;
-        DisplayMode current = this.device.getDisplayMode();
-        this.bitDepth = current.getBitDepth();
-        this.refreshRate = current.getRefreshRate();
-        DisplayMode[] list = this.device.getDisplayModes();
-        ArrayList<ScreenResolution> collected = new ArrayList<>();
-        ScreenResolution res;
-        for (DisplayMode dm : list) {
-            res = new ScreenResolution(dm.getWidth(), dm.getHeight());
-            if (!collected.contains(res)) {
-                collected.add(res);
-            }
-        }
-        return (ScreenResolution[]) collected.toArray(new ScreenResolution[0]);
-    }
-
+    public ScreenResolution[] getSupportedScreenResolutionList(GraphicsDevice device);
     /**
-     * Sets this GameWindow's native screen resolution with the native
-     * resolution of the given device.
-     *
-     * @param device the graphics device that will have its screen resolution be
-     * called the native resolution.
-     */
-    private void initNativeScreenResolution(GraphicsDevice device) {
-        nativeResolution = new ScreenResolution(
-                device.getDisplayMode().getWidth(),
-                device.getDisplayMode().getHeight()
-        );
-    }
-
-    /**
-     * Checks to see if the GameWindow is requesting to close.
+     * Checks to see if the AWTGameWindow is requesting to close.
      *
      * @return the request to close state.
      */
-    public boolean isRequestingToClose() {
-        return requestToClose;
-    }
-
+    public boolean isRequestingToClose();
     /**
-     * Gets the left insets of the window.
-     *
-     * @return the left insets of the window.
-     */
-    private int getInsetsLeft() {
-        if (!fullscreen) {
-            return frame.getInsets().left;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Gets the top insets of the window.
-     *
-     * @return the top insets of the window.
-     */
-    private int getInsetsTop() {
-        if (!fullscreen) {
-            return frame.getInsets().top;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Gets the bottom insets of the window.
-     *
-     * @return the bottom insets of the window.
-     */
-    private int getInsetsBottom() {
-        if (!fullscreen) {
-            return frame.getInsets().bottom;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Gets the right insets of the window.
-     *
-     * @return the right insets of the window.
-     */
-    private int getInsetsRight() {
-        if (!fullscreen) {
-            return frame.getInsets().right;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Checks to see if the GameWindow is in fullscreen.
+     * Checks to see if the AWTGameWindow is in fullscreen.
      *
      * @return the fullscreen state of the window.
      */
-    public boolean isFullscreen() {
-        return fullscreen;
-    }
-    
+    public boolean isFullscreen();
     /**
-     * Checks to see if the GameWindow is in windowed mode.
+     * Checks to see if the AWTGameWindow is in windowed mode.
      *
      * @return the windowed state of the window.
      */
-    public boolean isWindowed() {
-        return !fullscreen;
-    }
-
+    public boolean isWindowed();
     /**
-     * Sets the fullscreen state of the GameWindow. Call
+     * Sets the fullscreen state of the AWTGameWindow. Call
      * <code>applyGraphicsConfiguration()</code> to update the fullscreen state.
      *
      * @param fullscreen the new fullscreen state.
      */
-    public void setFullscreen(boolean fullscreen) {
-        this.fullscreen = fullscreen;
-    }
-    
+    public void setFullscreen(boolean fullscreen);
     /**
-     * Sets the windowed state of the GameWindow. Call
+     * Sets the windowed state of the AWTGameWindow. Call
      * <code>applyGraphicsConfiguration()</code> to update the windowed state.
      *
      * @param windowed the new windowed state.
      */
-    public void setWindowed(boolean windowed) {
-        this.fullscreen = !windowed;
-    }
-
+    public void setWindowed(boolean windowed);
     /**
-     * Sets the screen resolution of the GameWindow. Call
+     * Sets the screen resolution of the AWTGameWindow. Call
      * <code>applyGraphicsConfiguration()</code> to update the fullscreen state.
      * If the screen resolution is not supported, this method returns
      * <code>false</code>.
@@ -295,308 +105,62 @@ public class GameWindow {
      * @param screenResolution the new screen resolution.
      * @return if the screen change was successful.
      */
-    public boolean setScreenResolution(ScreenResolution screenResolution) {
-        if (isFullscreen()) {
-            if (!supportsResolution(screenResolution)) {
-                return false;
-            }
-        }
-        this.screenResolution = screenResolution;
-        return true;
-    }
-
-    /**
-     * Has the GameWindow update its window to match the configuration it was
-     * given. The Graphics object obtained from <code>getDrawGraphics()</code>
-     * is now invalid, and need to have <code>dispose()</code> called it, 
-     * replacing it with a new Graphics object.
-     */
-    public final void applyGraphicsConfiguration() {
-        if (frame!=null) {
-            frame.dispose();
-            frame = null;
-        }
-        frame = new Frame(title);
-        if (fullscreen) {
-            frame.setUndecorated(true);
-        }
-        frame.setIgnoreRepaint(true);
-        frame.setResizable(false);
-        frame.setVisible(true);
-        setupInput();
-        applyScreenResolution();
-        createBuffers();
-    }
-
-    /**
-     * Converts a screen resolution into a display mode.
-     * @param screenResolution the screen resolution to convert.
-     * @return the display mode that is the converted screen resolution.
-     */
-    private DisplayMode convertScreenResolution(ScreenResolution screenResolution) {
-        return new DisplayMode(
-                screenResolution.getScreenWidth(),
-                screenResolution.getScreenHeight(),
-                bitDepth, refreshRate
-        );
-    }
-
+    public boolean setScreenResolution(ScreenResolution screenResolution);
     /**
      * Gets the current game cursor. If <code>null</code> then the default
      * system cursor is used.
      * @return the game cursor
      */
-    public GameCursor getGameCursor() {
-        return gameCursor;
-    }
-
+    public GameCursor getGameCursor();
     /**
      * Sets the game cursor. If <code>null</code> then the default
      * system cursor is used.
      * @param gameCursor the game cursor
      */
-    public void setGameCursor(GameCursor gameCursor) {
-        this.gameCursor = gameCursor;
-        if (this.gameCursor != null) {
-            if (invisibleCursor==null) {
-                BufferedImage invisible = new BufferedImage(1, 1, 
-                        BufferedImage.TYPE_4BYTE_ABGR);
-                invisible.getRaster().setPixel(0, 0, new int[]{0, 0, 0, 0});
-                this.invisibleCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-                        invisible, new Point(
-                                gameCursor.getOffsetX(), gameCursor.getOffsetY()), 
-                        "invisible");
-            }
-            frame.setCursor(invisibleCursor);
-        } else {
-            frame.setCursor(Cursor.getDefaultCursor());
-        }
-    }  
-    
-    /**
-     * Sets the size of the window when in windowed mode, and sets the
-     * display mode of the current graphics device when in fullscreen mode.
-     */
-    private void applyScreenResolution() {
-        if (isWindowed()) {
-            if (device.getFullScreenWindow()!=null && 
-                    !screenResolution.equals(nativeResolution)) {
-                device.setDisplayMode(convertScreenResolution(nativeResolution));
-            }
-            device.setFullScreenWindow(null);
-            int w = getScreenWidth() + getInsetsLeft() + getInsetsRight();
-            int h = getScreenHeight() + getInsetsTop() + getInsetsBottom();
-            frame.setBounds(
-                    (nativeResolution.getScreenWidth() / 2) - (w / 2),
-                    (nativeResolution.getScreenHeight() / 2) - (h / 2),
-                    w, h
-            );
-        } else {
-            device.setFullScreenWindow(frame);
-            device.setDisplayMode(convertScreenResolution(screenResolution));
-        }
-    }
-    
-    /**
-     * Sets up the input handling for the window.
-     */
-    private void setupInput() {
-        frame.addKeyListener(new KeyHandler());
-        frame.addMouseListener(new MouseHandler());
-    }
-    
-    /**
-     * Creates the buffers for double buffered drawing.
-     */
-    private void createBuffers() {
-        if (frame.getBufferStrategy()!=null) {
-            frame.getBufferStrategy().dispose();
-        }
-        frame.createBufferStrategy(2);
-    }
-
-    /**
-     * Gets the Graphics object to draw to the screen.
-     *
-     * @return the graphics object to draw on the screen
-     */
-    public Graphics getDrawGraphics() {
-        if (frame.getBufferStrategy() == null) {
-            frame.createBufferStrategy(2);
-        }
-        Graphics g = frame.getBufferStrategy().getDrawGraphics();
-        g.translate(getInsetsLeft(), getInsetsTop());
-        return g;
-    }
-
-    /**
-     * Swaps the buffers. Need to pass the graphics object that was just
-     * used to draw to GameWindow.
-     *
-     * @param g the graphics that was used to draw to the GameWindow
-     */
-    public void swapBuffers(Graphics g) {
-        if (gameCursor!=null) {
-            Point mp = getMousePosition();
-            if (mp.x > 0 && mp.y > 0) {
-                g.drawImage(
-                    gameCursor.getImage(),
-                    mp.x+gameCursor.getOffsetX(),
-                    mp.y+gameCursor.getOffsetY(),
-                    null
-                );
-            }
-        }
-        g.dispose();
-        frame.getBufferStrategy().show();
-    }
-
+    public void setGameCursor(GameCursor gameCursor);
     /**
      * Destroys the window and all of its used resources.
      */
-    public void destroy() {
-        if (frame != null) {
-            if (isFullscreen()) {
-                device.setDisplayMode(convertScreenResolution(nativeResolution));
-                device.setFullScreenWindow(null);
-            }
-            frame.dispose();
-        }
-    }
-
+    public void destroy();
     /**
      * Gets the screen width in pixels.
      *
      * @return the screen width in pixels.
      */
-    public int getScreenWidth() {
-        return screenResolution.getScreenWidth();
-    }
-
+    public int getScreenWidth();
     /**
      * Gets the screen height in pixels.
      *
      * @return the screen height in pixels.
      */
-    public int getScreenHeight() {
-        return screenResolution.getScreenHeight();
-    }
-
-    public void requestToClose() {
-        this.requestToClose = true;
-    }
-
+    public int getScreenHeight();
+    
+    public void requestToClose();
     /**
      * Gets the screen resolution.
      *
      * @return the screen resolution.
      */
-    public ScreenResolution getScreenResolution() {
-        return screenResolution;
-    }
-
+    public ScreenResolution getScreenResolution();
+    /**
+     * Process all input that has occurred since the last frame.
+     */
+    public void flushInput();
+    /**
+     * For internal use only
+     * @param runner 
+     */
+    public void giveGameStateRunner(GameStateRunner runner);
+    /**
+     * Renders the given game state.
+     * @param state the state to render.
+     */
+    public void renderState(GameState state);
     /**
      * Gets the mouse position in the screen's coordinate space.
      * Returns (-1, -1) if the mouse
      * position is not on the screen.
      * @return the mouse position.
      */
-    public Point getMousePosition() {
-        try {
-            Point p = frame.getMousePosition();
-            p.x -= getInsetsLeft();
-            p.y -= getInsetsTop();
-            return p;
-        } catch(NullPointerException e) {
-            return new Point(-1, -1);
-        }
-    }
-    
-    /**
-     * For internal use only
-     * @param runner 
-     */
-    void giveGameStateRunner(GameStateRunner runner) {
-        this.runner = runner;
-    }
-    
-        
-    /**
-     * Process all input that has occurred since the last frame.
-     */
-    public void flushInput() {
-        KeyEvent ke;
-        while ( (ke = keyEventDownQueue.next()) != null ) {
-            runner.keyPressed(ke);
-        }
-        while ( (ke = keyEventUpQueue.next()) != null ) {
-            runner.keyReleased(ke);
-        }
-        MouseEvent me;
-        while ( (me = mouseEventDownQueue.next()) != null ) {
-            runner.mousePressed(me);
-        }
-        while ( (me = mouseEventUpQueue.next()) != null ) {
-            runner.mouseReleased(me);
-        }
-    }
-    
-    /**
-     * The internal key handler for GameWindow.
-     */
-    class KeyHandler implements KeyListener {
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            keyEventDownQueue.addToQueue(e);
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            keyEventUpQueue.addToQueue(e);
-        }
-        
-    }
-    
-    /**
-     * The internal mouse handler for GameWindow.
-     */
-    class MouseHandler implements MouseListener {
-
-        /**
-         * Translates the coordinates to the correct space.
-         * @param e the mouse event to transform
-         */
-        private void translateMouseEvent(MouseEvent e) {
-            e.translatePoint(-getInsetsLeft(), -getInsetsTop());
-        }
-        
-        @Override
-        public void mouseClicked(MouseEvent e) {
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            translateMouseEvent(e);
-            mouseEventDownQueue.addToQueue(e);
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            translateMouseEvent(e);
-            mouseEventUpQueue.addToQueue(e);
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-        }
-    }
+    public Point getMousePosition();
 }
