@@ -26,10 +26,9 @@ package bropals.lib.simplegame.io;
 
 import bropals.lib.simplegame.sound.Music;
 import bropals.lib.simplegame.sound.SoundUtil;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -46,7 +45,7 @@ public class MusicLoader extends AssetLoader {
     @Override
     public void loadAsset(String key, InputStream inputStream) {
         try {
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(inputStream);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(inputStream));
             AudioFormat format = SoundUtil.convertToPCMSigned(audioStream.getFormat());
             SourceDataLine sourceDataLine = AudioSystem.getSourceDataLine(format);
             Music music = new Music(sourceDataLine, audioStream);
@@ -54,6 +53,7 @@ public class MusicLoader extends AssetLoader {
             add(key, music);
         } catch(IOException e) {
             System.err.println("Could not load music with key: " + key);
+            e.printStackTrace();
         } catch (UnsupportedAudioFileException ex) {
             System.err.println("The audio format for this music key is not supported: " + key);
         } catch (LineUnavailableException ex) {

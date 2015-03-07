@@ -185,7 +185,7 @@ public class Vector2D {
      * @return the vector with the angle offset given.
      */
     public Vector2D vectorFromAngleOffset(float angle) {
-        float cos = (float)Math.cos(angle);
+        float cos = (float)ApproximatedMath.cos(angle);
         return new Vector2D(getX()*cos, getY()*cos);
     }
     
@@ -195,7 +195,7 @@ public class Vector2D {
      * @param angle the angle to offset from this vector, in radians.
      */
     public void vectorFromAngleOffsetLocal(float angle) {
-        float cos = (float)Math.cos(angle);
+        float cos = (float)ApproximatedMath.cos(angle);
         setValues(getX()*cos, getY()*cos);
     }
     

@@ -42,12 +42,16 @@ import java.util.regex.Pattern;
 /**
  * Loads and keeps track of assets. Contans the SoundEffectLoader and the
  * BufferedImageLoader by default.
+ * <p>
+ * AssetManager loads assets relative to the root of a jar file, a file outside
+ * of the jar file, or a URL, depending on which constructor is used.
  * @author Jonathon
  */
 public class AssetManager {
     
     private final File localRoot;
     private final URL urlRoot;
+    private final Class jarRoot;
     private final HashMap<Class, AssetLoader> loaders = new HashMap<>();
 
     /**
@@ -62,6 +66,7 @@ public class AssetManager {
     public AssetManager(URL url, boolean addDefaultLoaders) {
         this.urlRoot = url;
         this.localRoot = null;
+        this.jarRoot = null;
         if (addDefaultLoaders) {
             addAssetLoader(new SoundEffectLoader(), SoundEffect.class);
             addAssetLoader(new BufferedImageLoader(), BufferedImage.class);
@@ -80,6 +85,7 @@ public class AssetManager {
     public AssetManager(File root, boolean addDefaultLoaders) {
         this.localRoot = root;
         this.urlRoot = null;
+        this.jarRoot = null;
         if (addDefaultLoaders) {
             addAssetLoader(new SoundEffectLoader(), SoundEffect.class);
             addAssetLoader(new BufferedImageLoader(), BufferedImage.class);
@@ -88,12 +94,21 @@ public class AssetManager {
     }
 
     /**
-     * Makes an AssetManager whose root is the default relative directory.
+     * Makes an AssetManager whose root is the root of the jar file the given class
+     * is in.
+     * @param assetClass the class that is in the jar file where the assets are located.
      * @param addDefaultLoaders specify whether or not AssetManager should
      * add SoundEffectLoader, BufferedImageLoader, and MusicLoader to itself.
      */
-    public AssetManager(boolean addDefaultLoaders) {
-        this(new File(""), addDefaultLoaders);
+    public AssetManager(Class assetClass, boolean addDefaultLoaders) {
+        this.localRoot = null;
+        this.urlRoot = null;
+        this.jarRoot = assetClass;
+        if (addDefaultLoaders) {
+            addAssetLoader(new SoundEffectLoader(), SoundEffect.class);
+            addAssetLoader(new BufferedImageLoader(), BufferedImage.class);
+            addAssetLoader(new MusicLoader(), Music.class);
+        }
     }
     
     /**
@@ -203,18 +218,25 @@ public class AssetManager {
     }
         
     /**
-     * Loads an asset and stores it as the given key.
+     * Loads an asset and stores it as the given key. This method is used
+     * for relative asset locating, as it uses the root directory.
      * @param <T> the type of the asset that is being loaded
      * @param loc the relative location of the asset that is being loaded
      * @param key the key to store the asset as
      * @param assetType the type of the asset that is being loaded
      */
     public <T> void loadAsset(String loc, String key, Class<T> assetType) {
-        loaders.get(assetType).loadAsset(key, getFile(loc));
+        if (!isJarRoot()) {
+            loaders.get(assetType).loadAsset(key, getFile(loc));
+        } else {
+            loaders.get(assetType).loadAsset(key, getInputStream(loc));
+        }
     }
     
     /**
-     * Loads an asset from a specific URL and stores it as the given key.
+     * Loads an asset from a specific URL and stores it as the given key. This
+     * method is used for absolute asset locating, so it does not use
+     * the root directory at all.
      * @param <T> the type of the asset that is being loaded
      * @param url the URL location of the asset that is being loaded
      * @param key the key to store the asset as
@@ -232,6 +254,35 @@ public class AssetManager {
      */
     public <T> void unloadAsset(String key, Class<T> assetType) {
         loaders.get(assetType).unload(key);
+    }
+    
+    /**
+     * Returns <code>true</code> if this AssetManager is loading assets 
+     * relative to a local file.
+     * @return if this AssetManager is loading assets relative to a local
+     * file.
+     */
+    public boolean isLocalRoot() {
+        return localRoot != null;
+    }
+    
+    /**
+     * Returns <code>true</code> if this AssetManager is loading assets
+     * relative to a URL.
+     * @return if this AssetManager is loading assets relative to a URL.
+     */
+    public boolean isURLRoot() {
+        return urlRoot != null;
+    }
+    
+    /**
+     * Returns <code>true</code> if this AssetManager is loading assets relative
+     * to the root of a jar file, specified by a given class.
+     * @return if this AssetManager is loading assets relative to a jar file's
+     * root.
+     */
+    public boolean isJarRoot() {
+        return jarRoot != null;
     }
     
     /**
@@ -318,8 +369,13 @@ public class AssetManager {
         return loaders.get(assetType);
     }
     
+    
+    
     /**
      * Gets a file from a path relative to this AssetManager's root.
+     * Will be from a local file if the root is a local file, will be from a
+     * URL if the root is a URL. This method does not return a file for if
+     * it was from a jar file.
      * @param loc the relative location
      * @return the file at that location
      */
@@ -331,6 +387,16 @@ public class AssetManager {
         } else {
             return null;
         }
+    }
+    
+    /**
+     * Gets an input stream relative to the root of the jar file. Should
+     * only be called if the root class is not <code>null</code>
+     * @param loc the relative location from the root.
+     * @return the input stream to the resource.
+     */
+    private InputStream getInputStream(String loc) {
+        return this.jarRoot.getResourceAsStream("/" + loc);
     }
     
     /**

@@ -24,10 +24,19 @@
  */
 package bropals.lib.simplegame.test;
 
+import bropals.lib.simplegame.AWTGameWindow;
+import bropals.lib.simplegame.GameStateRunner;
+import bropals.lib.simplegame.io.AssetManager;
+import bropals.lib.simplegame.logger.ErrorLogger;
 import bropals.lib.simplegame.logger.InfoLogger;
+import bropals.lib.simplegame.math.Matrix3D;
+import bropals.lib.simplegame.sound.Music;
 import bropals.lib.simplegame.state.GameState;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  *
@@ -39,7 +48,19 @@ public class TestClass extends GameState {
     private int vel = 1;
     
     public static void main(String[] ars) {
+        Matrix3D mat3 = new Matrix3D(
+            3, 4, 5,
+            1, 2, 3,
+            10, 12, 21
+        );
+        InfoLogger.println(mat3.determinant());
+        mat3.inverse().printMatrix();
         
+        GameStateRunner runner = new GameStateRunner(new AWTGameWindow("Game", 640, 480), 
+            new AssetManager(new File("test_files"), true));
+        runner.getAssetManager().loadAsset("now-we-wait.wav", "music", Music.class);
+        Music music = runner.getAssetManager().getAsset("music", Music.class);
+        music.play(false);
     }
     
     @Override

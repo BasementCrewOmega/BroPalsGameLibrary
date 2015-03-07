@@ -24,10 +24,9 @@
  */
 package bropals.lib.simplegame.sound;
 
+import bropals.lib.simplegame.logger.InfoLogger;
 import java.io.IOException;
 import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
 import javax.sound.sampled.SourceDataLine;
 
 /**
@@ -78,7 +77,7 @@ public class Music {
     public void play(boolean loop) {
         if (!line.isRunning()) {
             looping = loop;
-            if (musicPlaybackThread.isAlive()) {
+            if (musicPlaybackThread != null && musicPlaybackThread.isAlive()) {
                 musicPlaybackThread.interrupt();
             }
             musicPlaybackThread = new Thread(new MusicPlayback());
@@ -98,9 +97,10 @@ public class Music {
     class MusicPlayback implements Runnable {
         @Override
         public void run() {
-            while (looping) {
+            do {
+                InfoLogger.println("RUNNING MUSIC");
                 int status = 0;
-                while (status != -1 && line.available() < line.getBufferSize()/2) {
+                while (status != -1) {
                     try {
                         status = stream.read(buffer);
                     } catch(IOException e) {
@@ -113,7 +113,7 @@ public class Music {
                 } catch(IOException e) {
                         System.err.println("Error while resetting the audio data stream after the music track has been finished: " + e);
                 }
-            }
+            } while(looping);
         }
     }
  }
