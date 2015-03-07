@@ -134,7 +134,7 @@ public class KeyCode {
         KEY_HOME = 97
     ;
     
-    protected static int convertLWJGLCodeToBroPalsCode(int lwjglKeyCode) {
+    public static int convertLWJGLCodeToBroPalsCode(int lwjglKeyCode) {
         switch(lwjglKeyCode) {
             case GLFW_KEY_0:
                 return KEY_0;
@@ -291,7 +291,7 @@ public class KeyCode {
         return -1;
     }
     
-    protected static int convertAWTCodeToBroPalsCode(int awtKeyCode) {
+    public static int convertAWTCodeToBroPalsCode(int awtKeyCode) {
         switch(awtKeyCode) {
             case VK_0: return KEY_0;
             case VK_1: return KEY_1;

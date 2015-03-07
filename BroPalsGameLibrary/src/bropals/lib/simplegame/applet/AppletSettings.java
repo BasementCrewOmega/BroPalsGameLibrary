@@ -22,19 +22,53 @@
  * SOFTWARE.
  *
  */
-package bropals.lib.simplegame.test;
-
-import bropals.lib.simplegame.GameStateRunner;
-import bropals.lib.simplegame.LWJGLGameWindow;
-import bropals.lib.simplegame.io.AssetManager;
+package bropals.lib.simplegame.applet;
 
 /**
- *
- * @author Owner
+ * Contains information about how a GameApplet should be.
+ * @author Jonathon
  */
-public class TesterClass {
+public class AppletSettings {
+    
+    private final int width;
+    private final int height;
+    private final int framesPerSecond;
 
-    public static void main(String[] args) {
-        
+    /**
+     * Creates a new AppletSettings object.
+     * @param width the width of the applet
+     * @param height the height of the applet
+     * @param framesPerSecond the frames per second of the game in the applet
+     */
+    public AppletSettings(int width, int height, int framesPerSecond) {
+        this.width = width;
+        this.height = height;
+        this.framesPerSecond = framesPerSecond;
     }
+
+    /**
+     * Gets the width of the applet
+     * @return the width of the applet
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * Gets the height of the applet
+     * @return the height of the applet
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * Gets the frames per second to run the applet at
+     * @return the frames per second to run the applet at.
+     */
+    public int getFramesPerSecond() {
+        return framesPerSecond;
+    }
+    
+    
 }

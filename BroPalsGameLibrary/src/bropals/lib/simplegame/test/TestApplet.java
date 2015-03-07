@@ -22,40 +22,32 @@
  * SOFTWARE.
  *
  */
-package bropals.lib.simplegame;
+package bropals.lib.simplegame.test;
 
-import bropals.lib.simplegame.logger.ErrorLogger;
-import static java.awt.event.MouseEvent.*;
-import static org.lwjgl.glfw.GLFW.*;
+import bropals.lib.simplegame.applet.AppletSettings;
+import bropals.lib.simplegame.applet.GameApplet;
+import bropals.lib.simplegame.io.AssetManager;
+import bropals.lib.simplegame.state.GameState;
+import java.net.URL;
 
 /**
- * The library's mouse button codes to use.
+ *
  * @author Jonathon
  */
-public class MouseButton {
-    
-    public static final int BUTTON_LEFT=0, BUTTON_RIGHT=1, BUTTON_MIDDLE=2;
-    
-    public static int convertLWJGLCodeToBroPalsCode(int lwjglMouseButton) {
-        switch(lwjglMouseButton) {
-            case GLFW_MOUSE_BUTTON_LEFT:
-                return BUTTON_LEFT;
-            case GLFW_MOUSE_BUTTON_RIGHT:
-                return BUTTON_RIGHT;
-            case GLFW_MOUSE_BUTTON_MIDDLE:
-                return BUTTON_MIDDLE;
-        }
-        ErrorLogger.println("Could not recognize LWJGL mouse button: " + lwjglMouseButton);
-        return -1;
+public class TestApplet extends GameApplet {
+
+    @Override
+    public void loadResources(AssetManager assetManager) {
+        assetManager.loadImage("test_files/test_image.png", "test");
     }
-    
-    public static int convertAWTCodeToBroPalsCode(int awtMouseButton) {
-        switch(awtMouseButton) {
-            case BUTTON1: return BUTTON_LEFT;
-            case BUTTON2: return BUTTON_MIDDLE;
-            case BUTTON3: return BUTTON_RIGHT;
-        }
-        ErrorLogger.println("Could not recognize AWT mouse button: " + awtMouseButton);
-        return -1;
+
+    @Override
+    public GameState getInitialState() {
+        return new TestClass();
     }
+
+    @Override
+    public AppletSettings getAppletSettings() {
+        return new AppletSettings(400, 300, 30);
+    }    
 }

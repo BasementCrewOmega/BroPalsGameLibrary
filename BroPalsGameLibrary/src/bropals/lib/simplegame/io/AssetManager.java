@@ -46,9 +46,29 @@ import java.util.regex.Pattern;
  */
 public class AssetManager {
     
-    private final File root;
+    private final File localRoot;
+    private final URL urlRoot;
     private final HashMap<Class, AssetLoader> loaders = new HashMap<>();
 
+    /**
+     * Make an AssetManager for the given root directory that is a URL. 
+     * This root directory is
+     * where all locations will be made relative to.
+     *
+     * @param url the URL location to use when looking for assets.
+     * @param addDefaultLoaders specify whether or not AssetManager should
+     * add SoundEffectLoader, BufferedImageLoader, and MusicLoader to itself.
+     */
+    public AssetManager(URL url, boolean addDefaultLoaders) {
+        this.urlRoot = url;
+        this.localRoot = null;
+        if (addDefaultLoaders) {
+            addAssetLoader(new SoundEffectLoader(), SoundEffect.class);
+            addAssetLoader(new BufferedImageLoader(), BufferedImage.class);
+            addAssetLoader(new MusicLoader(), Music.class);
+        }
+    }
+    
     /**
      * Make an AssetManager for the given root directory. This root directory is
      * where all locations will be made relative to.
@@ -58,7 +78,8 @@ public class AssetManager {
      * add SoundEffectLoader, BufferedImageLoader, and MusicLoader to itself.
      */
     public AssetManager(File root, boolean addDefaultLoaders) {
-        this.root = root;
+        this.localRoot = root;
+        this.urlRoot = null;
         if (addDefaultLoaders) {
             addAssetLoader(new SoundEffectLoader(), SoundEffect.class);
             addAssetLoader(new BufferedImageLoader(), BufferedImage.class);
@@ -82,6 +103,15 @@ public class AssetManager {
      */
     public void loadImage(String loc, String key) {
         loadAsset(loc, key, BufferedImage.class);
+    }
+    
+    /**
+     * Loads an image from a URL into this AssetManager.
+     * @param url the URL location of the image
+     * @param key the key the image is stored as
+     */
+    public void loadImage(URL url, String key) {
+        loadAsset(url, key, BufferedImage.class);
     }
     
     /**
@@ -134,6 +164,15 @@ public class AssetManager {
     }
     
     /**
+     * Loads a sound effect from a URL into this AssetManager.
+     * @param url the URL location of the sound effect
+     * @param key the key the sound effect is stored as
+     */
+    public void loadSoundEffect(URL url, String key) {
+        loadAsset(url, key, SoundEffect.class);
+    }
+    
+    /**
      * Gets a loaded image.
      * @param key the key of the loaded image
      * @return the loaded image.
@@ -172,6 +211,17 @@ public class AssetManager {
      */
     public <T> void loadAsset(String loc, String key, Class<T> assetType) {
         loaders.get(assetType).loadAsset(key, getFile(loc));
+    }
+    
+    /**
+     * Loads an asset from a specific URL and stores it as the given key.
+     * @param <T> the type of the asset that is being loaded
+     * @param url the URL location of the asset that is being loaded
+     * @param key the key to store the asset as
+     * @param assetType the type of the asset that is being loaded
+     */
+    public <T> void loadAsset(URL url, String key, Class<T> assetType) {
+        loaders.get(assetType).loadAssetFromURL(key, url);
     }
     
     /**
@@ -274,7 +324,13 @@ public class AssetManager {
      * @return the file at that location
      */
     private File getFile(String loc) {
-        return new File(root.getAbsolutePath() + System.getProperty("file.separator") + loc);
+        if (localRoot != null) {
+            return new File(localRoot.getAbsolutePath() + System.getProperty("file.separator") + loc);
+        } else if (urlRoot != null) {
+            return new File(urlRoot.getRef() + "/" + loc);
+        } else {
+            return null;
+        }
     }
     
     /**

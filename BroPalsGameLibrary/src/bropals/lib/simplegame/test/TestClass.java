@@ -22,40 +22,63 @@
  * SOFTWARE.
  *
  */
-package bropals.lib.simplegame;
+package bropals.lib.simplegame.test;
 
-import bropals.lib.simplegame.logger.ErrorLogger;
-import static java.awt.event.MouseEvent.*;
-import static org.lwjgl.glfw.GLFW.*;
+import bropals.lib.simplegame.logger.InfoLogger;
+import bropals.lib.simplegame.state.GameState;
+import java.awt.Color;
+import java.awt.Graphics;
 
 /**
- * The library's mouse button codes to use.
+ *
  * @author Jonathon
  */
-public class MouseButton {
+public class TestClass extends GameState {
+
+    private int offset = 100;
+    private int vel = 1;
     
-    public static final int BUTTON_LEFT=0, BUTTON_RIGHT=1, BUTTON_MIDDLE=2;
-    
-    public static int convertLWJGLCodeToBroPalsCode(int lwjglMouseButton) {
-        switch(lwjglMouseButton) {
-            case GLFW_MOUSE_BUTTON_LEFT:
-                return BUTTON_LEFT;
-            case GLFW_MOUSE_BUTTON_RIGHT:
-                return BUTTON_RIGHT;
-            case GLFW_MOUSE_BUTTON_MIDDLE:
-                return BUTTON_MIDDLE;
-        }
-        ErrorLogger.println("Could not recognize LWJGL mouse button: " + lwjglMouseButton);
-        return -1;
+    public static void main(String[] ars) {
+        
     }
     
-    public static int convertAWTCodeToBroPalsCode(int awtMouseButton) {
-        switch(awtMouseButton) {
-            case BUTTON1: return BUTTON_LEFT;
-            case BUTTON2: return BUTTON_MIDDLE;
-            case BUTTON3: return BUTTON_RIGHT;
+    @Override
+    public void update() {
+        offset += vel;
+        if (offset > 300) {
+            vel = -1;
         }
-        ErrorLogger.println("Could not recognize AWT mouse button: " + awtMouseButton);
-        return -1;
+        if (offset < 100) {
+            vel = 1;
+        }
+    }
+
+    @Override
+    public void render(Object graphicsObj) {
+        Graphics g = (Graphics)graphicsObj;
+        g.setColor(Color.BLUE);
+        g.fillRect(0, 0, getWindow().getScreenWidth(), getWindow().getScreenHeight());
+        g.setColor(Color.RED);
+        g.drawImage(getImage("test"), 100, 0, offset, getWindow().getScreenHeight(), null);
+    }
+
+    @Override
+    public void onEnter() {
+    }
+
+    @Override
+    public void onExit() {
+    }
+
+    @Override
+    public void key(int keycode, boolean pressed) {
+        
+    }
+
+    @Override
+    public void mouse(int mousebutton, int x, int y, boolean pressed) {
+        if (pressed) {
+            InfoLogger.println("" + x + ", " + y);
+        }
     }
 }
