@@ -76,9 +76,11 @@ public class EntityState extends GameState {
 
     @Override
     public void key(int keycode, boolean pressed) {
+        super.key(keycode, pressed);
     }
 
     @Override
     public void mouse(int mousebutton, int x, int y, boolean pressed) {
+        super.mouse(mousebutton, x, y, pressed);
     }
 }

@@ -25,11 +25,14 @@ package bropals.lib.simplegame.state;
 
 import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
+import bropals.lib.simplegame.KeyListener;
+import bropals.lib.simplegame.MouseListener;
+import bropals.lib.simplegame.controls.Controller;
 import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.sound.SoundEffect;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class that is meant to hold code for a state in the game.
@@ -39,7 +42,7 @@ import java.awt.image.BufferedImage;
  * To run the game state, 
  * @author Kevin Prehn
  */
-public abstract class GameState {
+public abstract class GameState implements MouseListener, KeyListener {
     
     /**
      * A reference to the Window being used by the GameStateRunner running
@@ -56,6 +59,11 @@ public abstract class GameState {
      * A reference to the GameStateRunner that is running this GameState.
      */
     private GameStateRunner runner;
+    
+    /**
+     * A list of controllers that is being used for this state.
+     */
+    private List<Controller> controllers = new ArrayList<>();
     
     /**
      * For internal use.
@@ -148,24 +156,37 @@ public abstract class GameState {
      * with a different game state.
      */
     public abstract void onExit();
-    
-    /**
-     * Called when the game gets key input.
-     * @param keycode the key code. Use {@link bropals.lib.simplegame.KeyCode KeyCode}
-     * @param pressed whether or not the key was pressed or released. 
-     * <code>true</code> for pressed, <code>false</code> for released.
-     */
-    public abstract void key(int keycode, boolean pressed);
-    
-    /**
-     * Called when the game gets mouse button input.
-     * @param mousebutton the mouse button. Use {@link bropals.lib.simplegame.MouseButton MouseButton}
-     * @param x the x position the mouse pressed
-     * @param y the y position the mouse pressed
-     * @param pressed whether or not the mouse button was pressed or
-     * released. <code>true</code> for pressed, <code>false</code> for
-     * released.
-     */
-    public abstract void mouse(int mousebutton, int x, int y, boolean pressed);
 
+    /**
+     * Adds a controller to this GameState. Need to call <code>super</code> to
+     * the key and mouse input functions to make Controllers work.
+     * @param controller the controller to add.
+     */
+    public void addController(Controller controller) {
+        controllers.add(controller);
+    }
+    
+    /**
+     * Removes a controller from this GameState. Need to call <code>super</code> to
+     * the key and mouse input functions to make Controllers work.
+     * @param controller the controller to add.
+     */
+    public void removeController(Controller controller) {
+        controllers.remove(controller);
+    }
+
+    @Override
+    public void key(int keycode, boolean pressed) {
+        for (Controller controller : controllers) {
+            controller.key(keycode, pressed);
+        }
+    }
+
+    @Override
+    public void mouse(int mousebutton, int x, int y, boolean pressed) {
+        for (Controller controller : controllers) {
+            controller.mouse(mousebutton,x,y, pressed);
+        }
+    }
+    
 }
