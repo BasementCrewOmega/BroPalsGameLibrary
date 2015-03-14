@@ -187,7 +187,7 @@ public class Matrix3D {
      * @return if the matrix has an inverse
      */
     public boolean hasInverse() {
-        return determinant()==0;
+        return determinant()!=0;
     }
     
     /**
@@ -247,6 +247,18 @@ public class Matrix3D {
                            0, 0, 1);
     }
 
+    /**
+     * Gets the float array version of these values.
+     * @return the float array version.
+     */
+    public float[] toFloatArray() {
+        return new float[] { 
+            m00, m01, m02,
+            m10, m11, m12,
+            m20, m21, m22
+        };
+    }
+    
     /**
      * Prints this matrix to the InfoLogger.
      */

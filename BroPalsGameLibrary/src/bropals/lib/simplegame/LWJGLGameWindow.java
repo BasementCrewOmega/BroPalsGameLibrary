@@ -25,6 +25,7 @@
 package bropals.lib.simplegame;
 
 import bropals.lib.simplegame.logger.ErrorLogger;
+import bropals.lib.simplegame.lwjgl.LWJGLContext;
 import bropals.lib.simplegame.state.GameState;
 import java.awt.GraphicsDevice;
 import java.awt.Point;
@@ -39,12 +40,13 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glFlush;
 import org.lwjgl.opengl.GLContext;
+import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
  * Not yet working.
  * 
  * The LWJGL Game window implementation. Instead of the given render object
- * being a Graphics object, it is this LWJGLGameWindow object.
+ * being a Graphics object, it is a LWJGLContext object.
  * 
  * @author Jonathon
  */
@@ -58,10 +60,10 @@ public class LWJGLGameWindow implements GameWindow {
     private GLFWMouseButtonCallback mouseButtonCallback;
     private GLFWErrorCallback errorCallback;
     private ScreenResolution resolution;
-    private ByteBuffer buffer1, buffer2;
-    private Point point;
+    private Point storedMousePosition;
     private GameStateRunner runner;
     private boolean requestingToClose = false;
+    private LWJGLContext context;
     
     /**
      * Creates a new LWJGL Game window with the specified properties.
@@ -80,16 +82,15 @@ public class LWJGLGameWindow implements GameWindow {
             throw new UnsupportedOperationException("The current version of LWJGLGameWindow does not support fullscreen");
         } else {
             window = glfwCreateWindow(screenWidth, screenHeight, 
-                    title, 0, 0);
+                    title, NULL, NULL);
             glfwMakeContextCurrent(window);
             glfwShowWindow(window);
         }
         setupInputHandling();
         GLContext.createFromCurrent();
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        buffer1 = ByteBuffer.allocate(Double.SIZE/8);
-        buffer2 = ByteBuffer.allocate(Double.SIZE/8);
-        point = new Point();
+        storedMousePosition = new Point();
+        context = new LWJGLContext(this);
     }
     
     /**
@@ -137,7 +138,7 @@ public class LWJGLGameWindow implements GameWindow {
 
     @Override
     public boolean isRequestingToClose() {
-        return requestingToClose;
+        return glfwWindowShouldClose(window) == GL_TRUE || requestingToClose;
     }
 
     @Override
@@ -224,16 +225,14 @@ public class LWJGLGameWindow implements GameWindow {
     @Override
     public void renderState(GameState state) {
         glClear(GL_COLOR_BUFFER_BIT);
-        state.render(this);
+        state.render(context);
         glFlush();
         glfwSwapBuffers(window);
     }
 
     @Override
     public Point getMousePosition() {
-        glfwGetCursorPos(window, buffer1, buffer2);
-        point.setLocation(buffer1.getDouble(0), buffer2.getDouble(0));
-        return point;
+        return storedMousePosition;
     }
     
     /**
@@ -261,6 +260,13 @@ public class LWJGLGameWindow implements GameWindow {
                 }
             }
         });
+        glfwSetCursorPosCallback(window, new GLFWCursorPosCallback() {
+            @Override
+            public void invoke(long window, double mouseX, double mouseY) {
+                storedMousePosition.setLocation(mouseX, mouseY
+                );
+            }
+        });
         glfwSetMouseButtonCallback(window, new GLFWMouseButtonCallback() {
             @Override
             public void invoke(long window, int button, int action, int mods) {
@@ -273,5 +279,13 @@ public class LWJGLGameWindow implements GameWindow {
                 }
             }
         });
+    }
+    
+    /**
+     * Gets the context to load textures and draws with OpenGL graphics.
+     * @return the context to draw.
+     */
+    public LWJGLContext getContext() {
+        return context;
     }
 }
