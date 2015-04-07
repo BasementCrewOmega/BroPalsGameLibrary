@@ -31,6 +31,8 @@ import java.awt.Graphics2D;
 
 /**
  * A shape that is made up of Vertices
+ * 
+ * THIS DOES NOT WORK RIGHT NOW
  * @author Kevin Prehn
  */
 public class VertexShape extends BaseEntity {
