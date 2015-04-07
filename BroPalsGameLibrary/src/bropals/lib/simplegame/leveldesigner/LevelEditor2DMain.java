@@ -135,7 +135,10 @@ public abstract class LevelEditor2DMain extends JFrame {
             } else {
                 try {
                     OutputStream out = null;
-                    currentLevel.saveLevel(out = Files.newOutputStream(saveLocation.toPath(), StandardOpenOption.WRITE));
+                    if (saveLocation.exists()) {
+                        Files.delete(saveLocation.toPath());
+                    }
+                    currentLevel.saveLevel(out = Files.newOutputStream(saveLocation.toPath(), StandardOpenOption.CREATE));
                     out.close();
                 } catch(IOException e) {
                     System.err.println("Could not save level: " + e);
@@ -157,7 +160,6 @@ public abstract class LevelEditor2DMain extends JFrame {
                 InputStream in = null;
                 currentLevel.loadLevel(in = Files.newInputStream(saveLocation.toPath(), StandardOpenOption.READ));
                 in.close();
-                
             } catch(IOException e) {
                 System.err.println("Could not open level: " + e);
             }
