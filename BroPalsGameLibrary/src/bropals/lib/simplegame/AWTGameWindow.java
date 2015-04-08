@@ -532,6 +532,14 @@ public class AWTGameWindow implements GameWindow {
     }
     
     /**
+     * Get the raw frame object.
+     * @return The raw frame.
+     */
+    public Frame getRawFrame() {
+        return frame;
+    }
+
+    /**
      * The internal key handler for AWTGameWindow.
      */
     class KeyHandler implements KeyListener {
