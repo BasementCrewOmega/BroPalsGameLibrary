@@ -88,6 +88,7 @@ public class LWJGLGameWindow implements GameWindow {
         }
         setupInputHandling();
         GLContext.createFromCurrent();
+        glfwSwapInterval(1);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         storedMousePosition = new Point();
         context = new LWJGLContext(this);
