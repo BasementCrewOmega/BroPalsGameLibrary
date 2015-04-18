@@ -11,12 +11,6 @@ dependencies {
 	compile fileTree(dir: 'libs', include: '*.jar')
 }
 
-jar {
-	from javadoc.destinationDir
-}
-
-jar.dependsOn javadoc
-
 javadoc {
 	source = sourceSets.main.allJava
 }
@@ -26,4 +20,19 @@ if (JavaVersion.current().isJava8Compatible()) {
         // disable the crazy super-strict doclint tool in Java 8
         options.addStringOption('Xdoclint:none', '-quiet')
     }
+}
+
+task javadocJar(type: Jar) {
+	from javadoc.destinationDir
+	classifier = 'javadoc'
+}
+
+task sourcesJar(type: Jar) {
+	from sourceSets.main.java
+	classifier = 'sources'
+}
+
+artifacts {
+	archives javadocJar
+	archives sourcesJar
 }
