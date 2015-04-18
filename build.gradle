@@ -1,5 +1,8 @@
 apply plugin: 'java'
 
+group = 'bropals'
+version = '1.0'
+
 repositories {
 	mavenLocal()
 }
