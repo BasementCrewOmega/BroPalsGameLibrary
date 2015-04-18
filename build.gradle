@@ -1,0 +1,9 @@
+apply plugin: 'java'
+
+repositories {
+	mavenLocal()
+}
+
+dependencies {
+	compile fileTree(dir: 'libs', include: '*.jar')
+}
