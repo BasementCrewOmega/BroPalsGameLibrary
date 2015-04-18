@@ -150,7 +150,7 @@ public class GameStateRunner {
             currentState.mouse(mousebutton, x, y, false);
     }
     
-    protected AssetManager getAssetManager() {
+    public AssetManager getAssetManager() {
         return assetManager;
     }
 
