@@ -153,47 +153,4 @@ public class GameStateRunner {
     public AssetManager getAssetManager() {
         return assetManager;
     }
-
-    
-    protected GameState getCurrentState() {
-        return currentState;
-    }
-
-    protected void setCurrentState(GameState currentState) {
-        this.currentState = currentState;
-    }
-
-    protected GameWindow getCurrentWindow() {
-        return currentWindow;
-    }
-
-    protected void setCurrentWindow(GameWindow currentWindow) {
-        this.currentWindow = currentWindow;
-    }
-
-    protected long getStartTime() {
-        return startTime;
-    }
-
-    protected void setStartTime(long startTime) {
-        this.startTime = startTime;
-    }
-
-    protected long getDiff() {
-        return diff;
-    }
-
-    protected void setDiff(long diff) {
-        this.diff = diff;
-    }
-
-    protected int getMillisBetweenFrames() {
-        return millisBetweenFrames;
-    }
-
-    protected void setMillisBetweenFrames(int millisBetweenFrames) {
-        this.millisBetweenFrames = millisBetweenFrames;
-    }
-    
-    
 }

@@ -17,7 +17,3 @@ hs_err_pid*
 /BroPalsGameLibrary/dist/
 /BroPalsGameLibrary/build/
 /.nb-gradle/private/
-/build/
-/bin/
-/.gradle/
-/.nb-gradle/private/
