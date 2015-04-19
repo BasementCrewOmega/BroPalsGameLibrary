@@ -55,9 +55,9 @@ public class Animation {
     /**
      * Updates the animation
      */
-    public void update() {
+    public void update(int dt) {
         for (Track t : tracks) {
-            t.update();
+            t.update(dt);
         }
     }
     

@@ -32,8 +32,7 @@ import java.awt.image.BufferedImage;
 public class Track {
     
     private BufferedImage[] images;
-    private int millisBetweenImages, imageOn;
-    private long startTime;
+    private int millisBetweenImages, imageOn, frameTime;
     
     /**
      * Creates a new Track
@@ -43,7 +42,7 @@ public class Track {
         images = imgs;
         millisBetweenImages = 120;
         imageOn = 0;
-        startTime = System.currentTimeMillis();
+        frameTime = 0;
     }
     
     /**
@@ -102,13 +101,14 @@ public class Track {
     /**
      * Updates the Track object.
      */
-    public void update() {
-        if (System.currentTimeMillis() >= startTime + millisBetweenImages) {
+    public void update(int dt) {
+        frameTime += dt;
+        if (frameTime >= millisBetweenImages) {
             imageOn++;
+            frameTime = 0;
             if (imageOn >= images.length) {
                 imageOn = 0;
             }
-            startTime = System.currentTimeMillis();
         }
     }
     
@@ -116,8 +116,8 @@ public class Track {
      * Reset the counters in the Track object.
      */
     public void resetCounter() {
-        startTime = System.currentTimeMillis();
         imageOn = 0;
+        frameTime = 0;
     }
     
     /**
@@ -135,7 +135,7 @@ public class Track {
      */
     public void setMillisBetweenImages(int millisBetweenImages) {
         this.millisBetweenImages = millisBetweenImages;
-        startTime = System.currentTimeMillis(); // reset counter
+        frameTime = 0;
     }
 
     /**
@@ -145,6 +145,11 @@ public class Track {
     public BufferedImage[] getImages() {
         return images;
     }
+
+    public int getMillisBetweenImages() {
+        return millisBetweenImages;
+    }
+
     
     @Override
     public Track clone() {
