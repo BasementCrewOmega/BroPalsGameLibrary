@@ -289,4 +289,14 @@ public class LWJGLGameWindow implements GameWindow {
     public LWJGLContext getContext() {
         return context;
     }
+
+    @Override
+    public void registerQuitHandler(QuitHandler handler) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void unregisterQuitHandler(QuitHandler handler) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
