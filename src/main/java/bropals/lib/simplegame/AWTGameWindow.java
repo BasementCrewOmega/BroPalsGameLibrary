@@ -26,6 +26,7 @@ package bropals.lib.simplegame;
 
 import bropals.lib.simplegame.state.GameState;
 import bropals.lib.simplegame.util.Queue;
+import com.sun.java.accessibility.util.AWTEventMonitor;
 import java.awt.Cursor;
 import java.awt.DisplayMode;
 import java.awt.Frame;
@@ -38,6 +39,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -65,6 +68,7 @@ public class AWTGameWindow implements GameWindow {
     private final Queue<KeyEvent> keyEventUpQueue = new Queue<>();
     private final Queue<MouseEvent> mouseEventUpQueue = new Queue<>();
     private final Queue<KeyEvent> keyEventDownQueue = new Queue<>();
+    private ArrayList<QuitHandler> quitHandlers = new ArrayList<>();
     
     /**
      * Creates a visible GameWindow with the supplied parameters.
@@ -84,6 +88,15 @@ public class AWTGameWindow implements GameWindow {
         this.resolutions = getSupportedScreenResolutionList(device);
         setScreenResolution(new ScreenResolution(screenWidth, screenHeight));
         applyGraphicsConfiguration();
+        frame.addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                requestToClose = true;
+            }
+            
+            
+        });
     }
     
     /**
@@ -433,6 +446,7 @@ public class AWTGameWindow implements GameWindow {
      */
     @Override
     public void destroy() {
+        notifyQuitHandlers();
         if (frame != null) {
             if (isFullscreen()) {
                 device.setDisplayMode(convertScreenResolution(nativeResolution));
@@ -537,6 +551,22 @@ public class AWTGameWindow implements GameWindow {
      */
     public Frame getRawFrame() {
         return frame;
+    }
+
+    private void notifyQuitHandlers() {
+        for (QuitHandler handler : quitHandlers) {
+            handler.onQuit();
+        }
+    }
+    
+    @Override
+    public void registerQuitHandler(QuitHandler handler) {
+        quitHandlers.add(handler);
+    }
+
+    @Override
+    public void unregisterQuitHandler(QuitHandler handler) {
+        quitHandlers.remove(handler);
     }
 
     /**

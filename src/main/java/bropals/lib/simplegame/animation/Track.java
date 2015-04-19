@@ -155,4 +155,12 @@ public class Track {
     public Track clone() {
         return new Track(images, millisBetweenImages);
     }
+    
+    /**
+     * Gets the number of milliseconds it takes to complete this track animation.
+     * @return the number of milliseconds to complete this animation.
+     */
+    public int getTotalTrackTime() {
+        return images.length*millisBetweenImages;
+    }
 }

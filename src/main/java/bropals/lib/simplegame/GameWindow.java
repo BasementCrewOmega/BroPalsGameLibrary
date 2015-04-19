@@ -163,4 +163,14 @@ public interface GameWindow {
      * @return the mouse position.
      */
     public Point getMousePosition();
+    /**
+     * Registers a quit handler
+     * @param handler the quit handler
+     */
+    public void registerQuitHandler(QuitHandler handler);
+    /**
+     * Unregisters a quit handler
+     * @param handler the quit handler
+     */
+    public void unregisterQuitHandler(QuitHandler handler);
 }

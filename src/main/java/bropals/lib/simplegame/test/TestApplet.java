@@ -24,6 +24,7 @@
  */
 package bropals.lib.simplegame.test;
 
+import bropals.lib.simplegame.QuitHandler;
 import bropals.lib.simplegame.applet.AppletSettings;
 import bropals.lib.simplegame.applet.GameApplet;
 import bropals.lib.simplegame.io.AssetManager;
@@ -50,4 +51,14 @@ public class TestApplet extends GameApplet {
     public AppletSettings getAppletSettings() {
         return new AppletSettings(400, 300, 30);
     }    
+
+    @Override
+    public void registerQuitHandler(QuitHandler handler) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void unregisterQuitHandler(QuitHandler handler) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
