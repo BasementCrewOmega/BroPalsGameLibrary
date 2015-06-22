@@ -37,10 +37,25 @@ import java.net.Socket;
  */
 public class Client extends Thread {
     
+    /**
+     * The socket that the client is connected to.s
+     */
     private Socket socket;
+    /**
+     * The reader for the client's socket.
+     */
     private BufferedReader fromServer;
+    /**
+     * The writer for the client's socket
+     */
     private PrintStream toServer;
+    /**
+     * The message handler that is listener to messages for this client.
+     */
     private final ClientMessageHandler messageHandler;
+    /**
+     * Whether or not this client's ClientMessageHandler is listening for messages.
+     */
     private boolean running = false;
     
     /**
@@ -88,6 +103,10 @@ public class Client extends Thread {
         toServer.println(message);
     }
     
+    /**
+     * Get the address of the client's socket.
+     * @return The address of the client's socket.
+     */
     public InetAddress getAddress() {
         return socket.getInetAddress();
     }

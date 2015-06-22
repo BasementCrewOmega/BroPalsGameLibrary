@@ -10,5 +10,8 @@ package bropals.lib.simplegame;
  * @author Jonathon
  */
 public interface QuitHandler {
+    /**
+     * A method that is called when the GameWindow is closing.
+     */
     public void onQuit();
 }

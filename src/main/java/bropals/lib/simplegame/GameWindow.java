@@ -134,7 +134,9 @@ public interface GameWindow {
      * @return the screen height in pixels.
      */
     public int getScreenHeight();
-    
+    /**
+     * Request to close the game window.
+     */
     public void requestToClose();
     /**
      * Gets the screen resolution.

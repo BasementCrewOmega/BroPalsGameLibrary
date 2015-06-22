@@ -36,6 +36,11 @@ public class MouseButton {
     
     public static final int BUTTON_LEFT=0, BUTTON_RIGHT=1, BUTTON_MIDDLE=2;
     
+    /**
+     * Convert the mouse button code used by LWJGL to the BroPals game library format.
+     * @param lwjglMouseButton A mouse button code by LWJGL
+     * @return A mouse button code used by BroPals game library
+     */
     public static int convertLWJGLCodeToBroPalsCode(int lwjglMouseButton) {
         switch(lwjglMouseButton) {
             case GLFW_MOUSE_BUTTON_LEFT:
@@ -49,6 +54,11 @@ public class MouseButton {
         return -1;
     }
     
+    /**
+     * Convert the mouse button code used by java.awt to the BroPals game library format.
+     * @param awtMouseButton A mouse button code by java.awt
+     * @return A mouse button code used by BroPals game library
+     */
     public static int convertAWTCodeToBroPalsCode(int awtMouseButton) {
         switch(awtMouseButton) {
             case BUTTON1: return BUTTON_LEFT;

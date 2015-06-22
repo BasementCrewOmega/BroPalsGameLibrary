@@ -32,24 +32,48 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 /**
- * Contains the skeleton to send messages to the server by the client, and to
+ * Contains the skeleton to receive messages to the server by the client, and to
  * send messages to the client by the server.
  *
+ * This object represents a connection to a client object by the server.
+ * 
  * @author Jonathon
  */
 public class ClientHandler extends Thread {
 
+    /**
+     * The last given ID number to a client.
+     */
     private static int currentId = 0;
 
+    /**
+     * Get the next Id number. This is used to give every client a unique ID number.
+     * @return A unique ID number.
+     */
     private static int nextId() {
         currentId++;
         return currentId;
     }
 
+    /**
+     * The server that this client handler will send messages to.
+     */
     private Server server;
+    /**
+     * The socket that is the connection to the client.
+     */
     private Socket socket;
+    /**
+     * The reader that reads messages from the connected client.
+     */
     private BufferedReader fromClient;
+    /**
+     * The writer used to write messages to the connected client.
+     */
     private PrintStream toClient;
+    /**
+     * The message handler for the server.
+     */
     private ServerMessageHandler serverMessageHandler;
 
     /**
@@ -91,6 +115,10 @@ public class ClientHandler extends Thread {
         socket = null;
     }
     
+    /**
+     * Send a message to the connected client.
+     * @param message The message to send.
+     */
     public void sendMessageToClient(String message) {
         toClient.println(message);
     }

@@ -25,9 +25,6 @@ package bropals.lib.simplegame;
 
 import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.state.GameState;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 /**
  * Continuously runs the update and render loop of a GameState object.
@@ -150,46 +147,60 @@ public class GameStateRunner {
             currentState.mouse(mousebutton, x, y, false);
     }
     
+    /**
+     * Get the asset manager used by this game state runner.
+     * @return The asset manager used by this game state runner.
+     */
     public AssetManager getAssetManager() {
         return assetManager;
     }
 
+    /**
+     * Get the game state currently being looped in this game state runner.
+     * @return The game state currently being looped.
+     */
     protected GameState getCurrentState() {
         return currentState;
     }
 
+    /**
+     * Set the game state to become the newly ran game state. The states will 
+     * switch on the next update-render cycle. onExit() will be called on the
+     * old game state if it isn't null, and onEnter() will be called on the given game state.
+     * @param currentState The game state to switch to.
+     */
     protected void setCurrentState(GameState currentState) {
         this.currentState = currentState;
     }
 
+    /**
+     * Get the window the game state runner is rendering the current game state to.
+     * @return The window the game state runner is drawing the current game state to.
+     */
     protected GameWindow getCurrentWindow() {
         return currentWindow;
     }
 
+    /**
+     * Set the window the game state runner uses.
+     * @param currentWindow Set the window the game state runner uses.
+     */
     protected void setCurrentWindow(GameWindow currentWindow) {
         this.currentWindow = currentWindow;
     }
 
-    protected long getStartTime() {
-        return startTime;
-    }
-
-    protected void setStartTime(long startTime) {
-        this.startTime = startTime;
-    }
-
-    protected long getDiff() {
-        return diff;
-    }
-
-    protected void setDiff(long diff) {
-        this.diff = diff;
-    }
-
+    /**
+     * Get how many milliseconds approximately pass between frames.
+     * @return How many milliseconds approximately pass between frames.
+     */
     protected int getMillisBetweenFrames() {
         return millisBetweenFrames;
     }
 
+    /**
+     * Set how many milliseconds approximately pass between frames.
+     * @param millisBetweenFrames How many milliseconds approximately pass between frames.
+     */
     protected void setMillisBetweenFrames(int millisBetweenFrames) {
         this.millisBetweenFrames = millisBetweenFrames;
     }

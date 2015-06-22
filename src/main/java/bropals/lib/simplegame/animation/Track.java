@@ -146,6 +146,10 @@ public class Track {
         return images;
     }
 
+    /**
+     * Get how many milliseconds approximately pass between frames.
+     * @return How many milliseconds approximately pass between frames.
+     */
     public int getMillisBetweenImages() {
         return millisBetweenImages;
     }

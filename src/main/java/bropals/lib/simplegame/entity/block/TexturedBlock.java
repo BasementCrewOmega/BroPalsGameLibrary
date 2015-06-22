@@ -65,6 +65,10 @@ public class TexturedBlock extends BlockEntity {
         tileImage = false;
     }
     
+    /**
+     * Set the animation used by this textured block.
+     * @param a The animation to be used.
+     */
     public void setAnimation(Animation a) {
         this.animation = a;
     }

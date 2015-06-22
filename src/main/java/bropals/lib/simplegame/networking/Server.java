@@ -38,10 +38,22 @@ import java.util.List;
  */
 public class Server {
     
+    /**
+     * A list of all the client's handlers connected to this server.
+     */
     private final List<ClientHandler> clientHandlers =
             Collections.synchronizedList(new ArrayList<ClientHandler>());
+    /**
+     * Whether or not the server is running and listening/responding to clients.
+     */
     private boolean runningServer = false;
+    /**
+     * The socket for this server.
+     */
     private final ServerSocket serverSocket;
+    /**
+     * The message handler for this server; it handles input from the connected clients.
+     */
     private final ServerMessageHandler messageHandler;
     
     /**

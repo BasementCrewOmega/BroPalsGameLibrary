@@ -34,6 +34,9 @@ import bropals.lib.simplegame.state.GameState;
  */
 public abstract class Controller implements KeyListener, MouseListener {
     
+    /**
+     * The game state containing this controller.
+     */
     private GameState state;
 
     /**

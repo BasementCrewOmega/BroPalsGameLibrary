@@ -134,6 +134,11 @@ public class KeyCode {
         KEY_HOME = 97
     ;
     
+    /**
+     * Convert the key code used by LWJGL to the BroPals game library format.
+     * @param lwjglKeyCode A key code by LWJGL
+     * @return A key code used by BroPals game library
+     */
     public static int convertLWJGLCodeToBroPalsCode(int lwjglKeyCode) {
         switch(lwjglKeyCode) {
             case GLFW_KEY_0:
@@ -291,6 +296,11 @@ public class KeyCode {
         return -1;
     }
     
+    /**
+     * Convert the key code used by java.awt to the BroPals game library format.
+     * @param awtKeyCode A key code by java.awt
+     * @return A key code used by BroPals game library
+     */
     public static int convertAWTCodeToBroPalsCode(int awtKeyCode) {
         switch(awtKeyCode) {
             case VK_0: return KEY_0;
