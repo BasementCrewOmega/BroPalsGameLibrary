@@ -92,8 +92,8 @@ public class TexturedBlock extends BlockEntity {
     }
     
     @Override
-    public void update() {
-        super.update();
+    public void update(int mills) {
+        super.update(mills);
         
         if (animation != null)
             animation.update(animation.getTrackOn().getMillisBetweenImages());

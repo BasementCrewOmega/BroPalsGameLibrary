@@ -53,7 +53,7 @@ public class GameWorld<T extends BaseEntity> {
      * Updates all the entities in this GameWorld's list of entities. It
      * will also remove any entity whose parent is not this GameWorld or null.
      */
-    public void updateEntities() {
+    public void updateEntities(int mills) {
         for (int i=0; i<entities.size(); i++) {
             // remove the entity from this game world if it doesn't belong
             // here or if it's been removed
@@ -61,7 +61,7 @@ public class GameWorld<T extends BaseEntity> {
                 entities.remove(i);
                 continue;
             }
-            entities.get(i).update();
+            entities.get(i).update(mills);
         }
     }
     

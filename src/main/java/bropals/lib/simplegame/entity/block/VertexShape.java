@@ -97,7 +97,7 @@ public class VertexShape extends BaseEntity {
     }
     
     @Override
-    public void update() {
+    public void update(int mills) {
         float scaleX = 1.000f;
         float scaleY = 1.000f;
         float rotation = 0.4f;

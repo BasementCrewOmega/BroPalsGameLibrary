@@ -52,7 +52,7 @@ public abstract class BaseEntity {
     /**
      * Updates this entity. Meant to be overridden and implemented in a subclass.
      */
-    public abstract void update();
+    public abstract void update(int mills);
     
     /**
      * Render this entity. Meant to be overridden and implemented in a subclass.

@@ -48,9 +48,9 @@ public abstract class BaseComponentEntity extends BaseEntity {
     }
 
     @Override
-    public void update() {
+    public void update(int mills) {
         for (EntityComponent ec : components) {
-            ec.update();
+            ec.update(mills);
         }
     }
     

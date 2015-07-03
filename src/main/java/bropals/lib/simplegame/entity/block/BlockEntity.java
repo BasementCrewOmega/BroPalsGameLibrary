@@ -67,7 +67,7 @@ public class BlockEntity extends BaseEntity {
     }
 
     @Override
-    public void update() {
+    public void update(int mills) {
         if (!anchored) {
             velocity.addLocal(acceleration);
             x += velocity.getX();

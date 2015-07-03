@@ -55,5 +55,5 @@ public abstract class EntityComponent {
     /**
      * Updates this EntityComponent. Implement its behavior here.
      */
-    public abstract void update();
+    public abstract void update(int mills);
 }
