@@ -55,7 +55,7 @@ public class EntityState extends GameState {
     }
 
     @Override
-    public void update() {
+    public void update(int mills) {
         gameWorld.updateEntities();
     }
 

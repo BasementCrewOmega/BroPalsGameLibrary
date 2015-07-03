@@ -48,7 +48,7 @@ public class TestClass extends GameState {
     }
     
     @Override
-    public void update() {
+    public void update(int mills) {
         
     }
 

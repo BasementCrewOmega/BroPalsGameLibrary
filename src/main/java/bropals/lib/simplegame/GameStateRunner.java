@@ -112,7 +112,7 @@ public class GameStateRunner {
             GameState runState = currentState; // in case the state is changed
                                               // in the middle of the loop
             currentWindow.flushInput();
-            runState.update();
+            runState.update(millisBetweenFrames);
             renderState(runState);
             diff = System.currentTimeMillis() - startTime;
             if (diff < millisBetweenFrames) {

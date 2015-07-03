@@ -137,8 +137,9 @@ public abstract class GameState implements MouseListener, KeyListener {
     
     /**
      * Update this game state.
+     * @param millis The milliseconds that passed during the update cycle.
      */
-    public abstract void update();
+    public abstract void update(int mills);
     
     /**
      * Render the game state to an Object.
