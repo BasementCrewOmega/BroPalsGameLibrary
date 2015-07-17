@@ -52,5 +52,34 @@ public class GuiImage extends GuiElement {
         if (isEnabled())
             ((Graphics)graphicsObject).drawImage(image, getX(), getY(), getWidth(), getHeight(), null);
     }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    @Override
+    public int getHeight() {
+        return super.getHeight(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getWidth() {
+        return super.getWidth(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getX() {
+        return super.getX(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getY() {
+        return super.getY(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     
 }

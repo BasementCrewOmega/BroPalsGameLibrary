@@ -93,4 +93,22 @@ public class GuiButton extends GuiElement {
     public void render(Object graphicsObject) {
         ((Graphics)graphicsObject).drawImage(current, getX(), getY(), getWidth(), getHeight(), null);
     }
+
+    public void setDown(BufferedImage down) {
+        this.down = down;
+    }
+
+    public void setUp(BufferedImage up) {
+        this.up = up;
+    }
+
+    public void setHover(BufferedImage hover) {
+        this.hover = hover;
+    }
+
+    public void setGuiButtonAction(GuiButtonAction guiButtonAction) {
+        this.guiButtonAction = guiButtonAction;
+    }
+    
+    
 }

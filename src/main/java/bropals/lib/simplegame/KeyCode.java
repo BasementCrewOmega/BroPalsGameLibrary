@@ -374,4 +374,172 @@ public class KeyCode {
         ErrorLogger.println("Could not recognize AWT key code: " + awtKeyCode);
         return -1;
     }
+    
+     /**
+     * Converts the given string to its corresponding
+     * key code. Capital and lowercase versions of the same letter result
+     * in the same key code.
+     * @param str the string representation of the character
+     * @return the code of the string.
+     */
+    public static int fromString(String str) {
+        String conv = str.toLowerCase();
+        switch(conv) {
+            case "0": return KEY_0;
+            case "1": return KEY_1;
+            case "2": return KEY_2;
+            case "3": return KEY_3;
+            case "4": return KEY_4;
+            case "5": return KEY_5;
+            case "6": return KEY_6;
+            case "7": return KEY_7;
+            case "8": return KEY_8;
+            case "9": return KEY_9;
+            case "f1": return KEY_F1;
+            case "f2": return KEY_F2;
+            case "f3": return KEY_F3;
+            case "f4": return KEY_F4;
+            case "f5": return KEY_F5;
+            case "f6": return KEY_F6;
+            case "f7": return KEY_F7;
+            case "f8": return KEY_F8;
+            case "f9": return KEY_F9;
+            case "f10": return KEY_F10;
+            case "f11": return KEY_F11;
+            case "f12": return KEY_F12;
+            case "tab": return KEY_TAB;
+            case "backspace": return KEY_BACKSPACE;
+            case "q": return KEY_Q;
+            case "w": return KEY_W;
+            case "e": return KEY_E;
+            case "r": return KEY_R;
+            case "t": return KEY_T;
+            case "y": return KEY_Y;
+            case "u": return KEY_U;
+            case "i": return KEY_I;
+            case "o": return KEY_O;
+            case "p": return KEY_P;
+            case "[": return KEY_LEFT_SQUARE_BRACKET;
+            case "]": return KEY_RIGHT_SQUARE_BRACKET;
+            case "\\": return KEY_BACK_SLASH;
+            case "capslock": return KEY_CAPS_LOCK;
+            case "a": return KEY_A;
+            case "s": return KEY_S;
+            case "d": return KEY_D;
+            case "f": return KEY_F;
+            case "g": return KEY_G;
+            case "h": return KEY_H;
+            case "j": return KEY_J;
+            case "k": return KEY_K;
+            case "l": return KEY_L;
+            case ";": return KEY_SEMICOLON;
+            case "enter": return KEY_ENTER;
+            case "left_shift": return KEY_LEFT_SHIFT;
+            case "right_shift": return KEY_RIGHT_SHIFT;
+            case "z": return KEY_Z;
+            case "x": return KEY_X;
+            case "c": return KEY_C;
+            case "v": return KEY_V;
+            case "b": return KEY_B;
+            case "n": return KEY_N;
+            case "m": return KEY_M;
+            case ",": return KEY_COMMA;
+            case ".": return KEY_PERIOD;
+            case "/": return KEY_FORWARD_SLASH;
+            case "left_control": return KEY_LEFT_CONTROL;
+            case "right_control": return KEY_RIGHT_CONTROL;
+            case "alt": return KEY_ALT;
+            case "space": return KEY_SPACE;
+            case "up": return KEY_UP;
+            case "down": return KEY_DOWN;
+            case "left": return KEY_LEFT;
+            case "right": return KEY_RIGHT;
+            case "escape": return KEY_ESCAPE;
+        }
+        ErrorLogger.println("Could not recognize string: " + str);
+        return -1;
+    }
+    
+    /**
+     * Converts the given key code to its corresponding
+     * String.
+     * @param keycode the keycode to get the string version of.
+     * @return the string representation of the keycode.
+     */
+    public static String toString(int keycode) {
+        switch(keycode) {
+            case KEY_0: return "0";
+            case KEY_1: return "1";
+            case KEY_2: return "2";
+            case KEY_3: return "3";
+            case KEY_4: return "4";
+            case KEY_5: return "5";
+            case KEY_6: return "6";
+            case KEY_7: return "7";
+            case KEY_8: return "8";
+            case KEY_9: return "9";
+            case KEY_F1: return "f1";
+            case KEY_F2: return "f2";
+            case KEY_F3: return "f3";
+            case KEY_F4: return "f4";
+            case KEY_F5: return "f5";
+            case KEY_F6: return "f6";
+            case KEY_F7: return "f7";
+            case KEY_F8: return "f8";
+            case KEY_F9: return "f9";
+            case KEY_F10: return "f10";
+            case KEY_F11: return "f11";
+            case KEY_F12: return "f12";
+            case KEY_TAB: return "tab";
+            case KEY_BACKSPACE: return "backspace";
+            case KEY_Q: return "q";
+            case KEY_W: return "w";
+            case KEY_E: return "e";
+            case KEY_R: return "r";
+            case KEY_T: return "t";
+            case KEY_Y: return "y";
+            case KEY_U: return "u";
+            case KEY_I: return "i";
+            case KEY_O: return "o";
+            case KEY_P: return "p";
+            case KEY_LEFT_SQUARE_BRACKET: return "[";
+            case KEY_RIGHT_SQUARE_BRACKET: return "]";
+            case KEY_BACK_SLASH: return "\\";
+            case KEY_CAPS_LOCK: return "capslock";
+            case KEY_A: return "a";
+            case KEY_S: return "s";
+            case KEY_D: return "d";
+            case KEY_F: return "f";
+            case KEY_G: return "g";
+            case KEY_H: return "h";
+            case KEY_J: return "j";
+            case KEY_K: return "k";
+            case KEY_L: return "l";
+            case KEY_SEMICOLON: return ";";
+            case KEY_ENTER: return "enter";
+            case KEY_LEFT_SHIFT: return "left_shift";
+            case KEY_RIGHT_SHIFT: return "right_shift";
+            case KEY_Z: return "z";
+            case KEY_X: return "x";
+            case KEY_C: return "c";
+            case KEY_V: return "v";
+            case KEY_B: return "b";
+            case KEY_N: return "n";
+            case KEY_M: return "m";
+            case KEY_COMMA: return ",";
+            case KEY_PERIOD: return ".";
+            case KEY_FORWARD_SLASH: return "/";
+            case KEY_LEFT_CONTROL: return "left_control";
+            case KEY_RIGHT_CONTROL: return "right_control";
+            case KEY_ALT: return "alt";
+            case KEY_SPACE: return "space";
+            case KEY_UP: return "up";
+            case KEY_DOWN: return "down";
+            case KEY_LEFT: return "left";
+            case KEY_RIGHT: return "right";
+            case KEY_ESCAPE: return "escape";
+        }
+        ErrorLogger.println("Could not recognize keycode: " + keycode);
+        return null;
+    }
 }
