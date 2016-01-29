@@ -96,7 +96,7 @@ public class TexturedBlock extends BlockEntity {
         super.update(mills);
         
         if (animation != null)
-            animation.update(animation.getTrackOn().getMillisBetweenImages());
+            animation.update(mills);
     }
     
     @Override
@@ -122,6 +122,14 @@ public class TexturedBlock extends BlockEntity {
             g2.fillRect((int)getX() + 2, (int)getY() + 2, (int)getWidth() - 4,
                     (int)getHeight() - 4);
         }
+    }
+
+    /**
+     * Get the animation of the textured block, if there is any. Otherwise returns null;
+     * @return The animation, or null if no animation was set
+     */
+    public Animation getAnimation() {
+        return animation;
     }
 
 }
